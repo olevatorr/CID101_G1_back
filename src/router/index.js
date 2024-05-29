@@ -37,6 +37,11 @@ const router = createRouter({
       name: 'Event',
       component: () => import('../views/EventView.vue')
     },
+    {
+      path: '/Feedback',
+      name: 'Feedback',
+      component: () => import('../views/FeedbackView.vue')
+    },
   ]
 })
 

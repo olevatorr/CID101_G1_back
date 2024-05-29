@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
-                <img src="../../public/img/LOGO-white.png" alt="Bootstrap" width="60" height="60">
+                <img src="../../public/img/LOGO-white.png" alt="Bootstrap" width="40" height="40">
             </a>
             <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
                 aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,10 +35,10 @@ import { RouterLink } from 'vue-router'
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/EventView"><a class="nav-link text-white" href="#">活動管理</a></router-link>
+                        <router-link to="/Event"><a class="nav-link text-white" href="#">活動管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">審核檢舉</a>
+                        <router-link to="/Feedback"><a class="nav-link text-white" href="#">留言管理</a></router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">最新消息管理</a>
@@ -53,7 +53,7 @@ import { RouterLink } from 'vue-router'
                         <a class="nav-link text-white" href="#">管理員帳號管理</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">海費知識管理</a>
+                        <a class="nav-link text-white" href="#">海廢知識管理</a>
                     </li>
                 </ul>
             </div>

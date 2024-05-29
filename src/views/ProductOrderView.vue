@@ -4,11 +4,11 @@
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                 <label class="btn btn-outline-dark" for="btnradio1">
-                        全部
+                    全部
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
                 <label class="btn btn-outline-dark" for="btnradio2">
-                        待處裡
+                    待處裡
                     <span class="badge text-bg-danger rounded-pill">14</span>
                 </label>
 
@@ -81,7 +81,7 @@
                                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio-1"
                                                     autocomplete="off" checked>
                                                 <label class="btn btn-outline-primary" for="btnradio-1">未處裡</label>
-    
+
                                                 <input type="radio" class="btn-check" name="btnradio" id="btnradio-2"
                                                     autocomplete="off">
                                                 <label class="btn btn-outline-primary" for="btnradio-2">運送中</label>
@@ -100,5 +100,22 @@
                 </tr>
             </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <li class="page-item">
+                    <a class="page-link text-dark" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
+                <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
+                <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link text-dark" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
