@@ -101,14 +101,6 @@
                   </div>
                 </div>
                 <div class="col-12">
-                  <label for="basic-url" class="form-label">產品簡短描述</label>
-                  <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                      style="height: 100px"></textarea>
-                    <label for="floatingTextarea2">出現於副標題下方</label>
-                  </div>
-                </div>
-                <div class="col-12">
                   <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
                   <div class="form-floating">
                     <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"

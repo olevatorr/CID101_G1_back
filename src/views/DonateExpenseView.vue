@@ -25,8 +25,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-md-6">
+                    <div class="mb-3">
+                        <label for="basic-url" class="form-label">捐款金額</label>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">NT$</span>
+                            <input type="text" class="form-control" aria-label="Dollar amount">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary justify-self-center">送出</button>
         </form>
         <div class="col-12">
             <p class="text-center fs-3">支出明細</p>
@@ -70,7 +79,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -115,7 +125,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -160,7 +171,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -205,7 +217,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -250,7 +263,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -295,7 +309,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -340,7 +355,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -385,7 +401,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -430,7 +447,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>
@@ -475,7 +493,8 @@
                                             <span class="badge text-bg-danger">請注意</span>
                                             <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這筆支出記錄。
                                                 <br>
-                                                一旦刪除,該記錄將無法恢復。</p>
+                                                一旦刪除,該記錄將無法恢復。
+                                            </p>
                                             <ul class="list-group list-group-numbered">在點擊確認刪除之前,請仔細檢查以下事項:
                                                 <li class="list-group-item border-0">確認選擇的是正確的支出記錄。</li>
                                                 <li class="list-group-item border-0">檢查刪除此記錄是否會對財務報表和預算追蹤產生影響。</li>

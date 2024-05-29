@@ -32,6 +32,11 @@ const router = createRouter({
       name: 'DonateExpense',
       component: () => import('../views/DonateExpenseView.vue')
     },
+    {
+      path: '/Event',
+      name: 'Event',
+      component: () => import('../views/EventView.vue')
+    },
   ]
 })
 

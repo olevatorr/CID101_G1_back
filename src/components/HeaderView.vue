@@ -35,7 +35,7 @@ import { RouterLink } from 'vue-router'
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">活動管理</a>
+                        <router-link to="/EventView"><a class="nav-link text-white" href="#">活動管理</a></router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">審核檢舉</a>
