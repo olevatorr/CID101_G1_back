@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <p class="text-center fs-2">商品列表</p>
     <div class="modal-body mt-3">
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -101,26 +102,28 @@
                   </div>
                 </div>
                 <div class="col-12">
+                  <div class="d-flex gap-4 mt-3">
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">主圖(白色底)</label>
+                      <input class="form-control" type="file" id="formFile" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">副圖1</label>
+                      <input class="form-control" type="file" id="formFile" accept="image/*">
+                    </div>
+                    <div class="mb-3">
+                      <label for="formFile" class="form-label">副圖2</label>
+                      <input class="form-control" type="file" id="formFile" accept="image/*">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
                   <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
                   <div class="form-floating">
                     <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
                       style="height: 300px"></textarea>
                     <label for="floatingTextarea2">出現於商品主要描述區域</label>
                   </div>
-                </div>
-              </div>
-              <div class="d-flex gap-4 mt-3">
-                <div class="mb-3">
-                  <label for="formFile" class="form-label">主圖(白色底)</label>
-                  <input class="form-control" type="file" id="formFile" accept="image/*">
-                </div>
-                <div class="mb-3">
-                  <label for="formFile" class="form-label">副圖1</label>
-                  <input class="form-control" type="file" id="formFile" accept="image/*">
-                </div>
-                <div class="mb-3">
-                  <label for="formFile" class="form-label">副圖2</label>
-                  <input class="form-control" type="file" id="formFile" accept="image/*">
                 </div>
               </div>
             </div>
@@ -159,12 +162,13 @@
           </td>
           <td>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop-revise">
               編輯
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-              aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" id="staticBackdrop-revise" data-bs-backdrop="static" data-bs-keyboard="false"
+              tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header bg-dark">
@@ -239,11 +243,19 @@
                         </div>
                       </div>
                       <div class="col-12">
-                        <label for="basic-url" class="form-label">產品簡短描述</label>
-                        <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                            style="height: 100px"></textarea>
-                          <label for="floatingTextarea2">出現於副標題下方</label>
+                        <div class="d-flex gap-4 mt-3">
+                          <div class="mb-3">
+                            <label for="formFile" class="form-label">主圖(白色底)</label>
+                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                          </div>
+                          <div class="mb-3">
+                            <label for="formFile" class="form-label">副圖1</label>
+                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                          </div>
+                          <div class="mb-3">
+                            <label for="formFile" class="form-label">副圖2</label>
+                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                          </div>
                         </div>
                       </div>
                       <div class="col-12">
@@ -253,20 +265,6 @@
                             style="height: 300px"></textarea>
                           <label for="floatingTextarea2">出現於商品主要描述區域</label>
                         </div>
-                      </div>
-                    </div>
-                    <div class="d-flex gap-4 mt-3">
-                      <div class="mb-3">
-                        <label for="formFile" class="form-label">主圖(白色底)</label>
-                        <input class="form-control" type="file" id="formFile" accept="image/*">
-                      </div>
-                      <div class="mb-3">
-                        <label for="formFile" class="form-label">副圖1</label>
-                        <input class="form-control" type="file" id="formFile" accept="image/*">
-                      </div>
-                      <div class="mb-3">
-                        <label for="formFile" class="form-label">副圖2</label>
-                        <input class="form-control" type="file" id="formFile" accept="image/*">
                       </div>
                     </div>
                   </div>

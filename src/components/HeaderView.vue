@@ -41,10 +41,10 @@ import { RouterLink } from 'vue-router'
                         <router-link to="/Feedback"><a class="nav-link text-white" href="#">留言管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">最新消息管理</a>
+                        <router-link to="/NewsList"><a class="nav-link text-white" href="#">最新消息管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">知識管理</a>
+                        <router-link to="/Knowledge"><a class="nav-link text-white" href="#">知識管理</a></router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="#">會員管理</a>

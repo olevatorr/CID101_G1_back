@@ -42,6 +42,16 @@ const router = createRouter({
       name: 'Feedback',
       component: () => import('../views/FeedbackView.vue')
     },
+    {
+      path: '/NewsList',
+      name: 'NewsList',
+      component: () => import('../views/NewsListView.vue')
+    },
+    {
+      path: '/Knowledge',
+      name: 'Knowledge',
+      component: () => import('../views/KnowledgeView.vue')
+    },
   ]
 })
 

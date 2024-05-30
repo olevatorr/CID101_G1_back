@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <p class="text-center fs-2">捐款支出</p>
         <form>
             <div class="row mt-3">
                 <div class="col-12 col-md-6">

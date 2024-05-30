@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+        <p class="text-center fs-2">留言列表</p>
         <div class="modal-body mt-3">
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
