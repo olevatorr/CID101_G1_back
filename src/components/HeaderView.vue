@@ -47,13 +47,13 @@ import { RouterLink } from 'vue-router'
                         <router-link to="/Knowledge"><a class="nav-link text-white" href="#">知識管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">會員管理</a>
+                        <router-link to="/Member"><a class="nav-link text-white" href="#">會員管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">管理員帳號管理</a>
+                        <router-link to="/Admin"><a class="nav-link text-white" href="#">管理員帳號管理</a></router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#">海廢知識管理</a>
+                        <router-link to="/Debris"><a class="nav-link text-white" href="#">海廢知識管理</a></router-link>
                     </li>
                 </ul>
             </div>

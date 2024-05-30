@@ -68,11 +68,11 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
+                                    <label for="basic-url" class="form-label mt-3">最新消息內文</label>
                                     <div class="form-floating">
                                         <textarea class="form-control" placeholder="Leave a comment here"
                                             id="floatingTextarea2" style="height: 300px"></textarea>
-                                        <label for="floatingTextarea2">出現於商品主要描述區域</label>
+                                        <label for="floatingTextarea2">最多500個中文字</label>
                                     </div>
                                 </div>
                             </div>
