@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <p class="text-center fs-2">留言列表</p>
+        <p class="text-center fs-2">檢舉留言審核</p>
         <div class="modal-body mt-3">
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
@@ -9,20 +9,21 @@
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio3">
-                    已下架
+                    未審核
+                    <span class="badge text-bg-danger rounded-pill">14</span>
                 </label>
             </div>
         </div>
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">留言編號#</th>
-                    <th scope="col">活動日期</th>
-                    <th scope="col">活動地區</th>
-                    <th scope="col">活動名稱</th>
-                    <th scope="col">活動地點</th>
+                    <th scope="col">檢舉編號#</th>
+                    <th scope="col">檢舉會員名稱</th>
+                    <th scope="col">被檢舉會員名稱</th>
+                    <th scope="col">檢舉原因</th>
                     <th scope="col">會員名稱</th>
                     <th scope="col">留言內容</th>
+                    <th scope="col">檢舉時間</th>
                     <th scope="col">留言操作</th>
                     <th scope="col">顯示留言</th>
                 </tr>

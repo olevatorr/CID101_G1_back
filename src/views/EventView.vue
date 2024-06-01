@@ -168,7 +168,7 @@
                         <!-- Modal -->
                         <div class="modal fade" id="eventlist" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
+                            <div class="modal-dialog  modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">活動編號 #1</h1>
@@ -183,6 +183,8 @@
                                                         <th scope="col">會員編號#</th>
                                                         <th scope="col">會員名稱</th>
                                                         <th scope="col">參加人數</th>
+                                                        <th scope="col">報名日期</th>
+                                                        <th scope="col">強制取消</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -190,6 +192,15 @@
                                                         <th scope="row">1</th>
                                                         <td>陳世修</td>
                                                         <td>7人</td>
+                                                        <td>2024/5/14 12:43:11</td>
+                                                        <td>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    role="switch" id="flexSwitchCheckChecked">
+                                                                <label class="form-check-label"
+                                                                    for="flexSwitchCheckChecked">取消此用戶報名</label>
+                                                            </div>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>

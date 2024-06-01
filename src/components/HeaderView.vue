@@ -34,11 +34,15 @@ import { RouterLink } from 'vue-router'
                             <li><router-link to="/DonateExpense"><a class="dropdown-item" href="#">捐款支出</a></router-link></li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <router-link to="/Event"><a class="nav-link text-white" href="#">活動管理</a></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/Feedback"><a class="nav-link text-white" href="#">留言管理</a></router-link>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            留言管理
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><router-link to="/Feedback"><a class="dropdown-item" href="#">留言列表</a></router-link></li>
+                            <li><router-link to="/FeedbackReport"><a class="dropdown-item" href="#">留言檢舉審核</a></router-link></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <router-link to="/NewsList"><a class="nav-link text-white" href="#">最新消息管理</a></router-link>

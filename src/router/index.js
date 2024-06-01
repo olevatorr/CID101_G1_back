@@ -1,14 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
     {
       path: '/ProductOrder',
       name: 'ProductOrder',
@@ -41,6 +35,11 @@ const router = createRouter({
       path: '/Feedback',
       name: 'Feedback',
       component: () => import('../views/FeedbackView.vue')
+    },
+    {
+      path: '/FeedbackReport',
+      name: 'FeedbackReport',
+      component: () => import('../views/FeedbackReportView.vue')
     },
     {
       path: '/NewsList',
