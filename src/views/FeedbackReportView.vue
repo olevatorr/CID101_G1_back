@@ -21,7 +21,6 @@
                     <th scope="col">檢舉會員名稱</th>
                     <th scope="col">被檢舉會員名稱</th>
                     <th scope="col">檢舉原因</th>
-                    <th scope="col">會員名稱</th>
                     <th scope="col">留言內容</th>
                     <th scope="col">檢舉時間</th>
                     <th scope="col">留言操作</th>
@@ -31,11 +30,9 @@
             <tbody class="table-group-divider">
                 <tr class="align-middle">
                     <th scope="row">1</th>
-                    <td>2024/6/23</td>
-                    <td>2024/6/30</td>
-                    <td>澎湖群島愛海行動</td>
-                    <td>澎湖縣篤行十村</td>
                     <td>陳世修</td>
+                    <td>羅嘉明</td>
+                    <td>仇恨言論或歧視</td>
                     <td>
                         <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
                             今天參加了海灘清潔活動,感觸良多。一大早,我們就來到了海邊,看到沙灘上散落著各種垃圾,塑膠袋、瓶罐、魚網、甚至是廢棄的家電,令人觸目驚心。
@@ -45,10 +42,11 @@
                             今天的淨灘活動雖然結束了,但保護環境的行動不會停止。讓我們一起為美麗的海洋盡一份力,給未來的generations留下一個乾淨的家園。
                         </div>
                     </td>
+                    <td>2024/4/2 14:32:41</td>
                     <td>
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">下架</label>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">審核通過</label>
                         </div>
                     </td>
                     <td>
