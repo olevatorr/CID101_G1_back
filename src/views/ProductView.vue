@@ -7,12 +7,12 @@
         <label class="btn btn-outline-dark" for="btnradio1">
           全部
         </label>
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" checked>
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
         <label class="btn btn-outline-dark" for="btnradio2">
           主打商品
           <span class="badge text-bg-warning rounded-pill">2</span>
         </label>
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" checked>
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
         <label class="btn btn-outline-dark" for="btnradio3">
           已上架
           <span class="badge text-bg-primary rounded-pill">32</span>
