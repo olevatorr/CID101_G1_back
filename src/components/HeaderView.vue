@@ -36,6 +36,10 @@ import { RouterLink } from 'vue-router'
                             <li><router-link to="/DonateExpense"><a class="dropdown-item" href="#">捐款支出</a></router-link></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <RouterLink to="/Event"><a class="nav-link text-white" aria-current="page" href="#">
+                            活動管理</a></RouterLink>
+                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">

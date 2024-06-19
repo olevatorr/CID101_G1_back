@@ -36,7 +36,7 @@
                     <th scope="col">會員名稱</th>
                     <th scope="col">訂單金額</th>
                     <th scope="col">訂單狀態</th>
-                    <th scope="col">訂單操作</th>
+                    <th scope="col">訂單明細與操作</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
@@ -63,18 +63,102 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
-                            訂單操作
+                            訂單明細與操作
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content p-2">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">訂單編號 #1</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">訂單資訊</th>
+                                                <th scope="col">內容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-group-divider">
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單號碼#</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單日期</th>
+                                                <td>2024/4/23</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂購人姓名</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人姓名</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人電話</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人收件地址</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">運送方式</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">付款方式</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單明細</th>
+                                                <td>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">商品名稱</th>
+                                                                <th scope="col">商品單價</th>
+                                                                <th scope="col">商品數量</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>Mark</td>
+                                                                <td>Otto</td>
+                                                                <td>@mdo</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>Jacob</td>
+                                                                <td>Thornton</td>
+                                                                <td>@fat</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td colspan="2">Larry the Bird</td>
+                                                                <td>@twitter</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單運費</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單總金額(含運費)</th>
+                                                <td>1</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                     <form>
                                         <div class="modal-body">
                                             <div class="btn-group" role="group"
