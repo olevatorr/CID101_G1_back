@@ -37,7 +37,7 @@
                 <tr class="align-middle">
                     <th scope="row">1</th>
                     <td>
-                        <img src="../../public/img/avatar.jpg" class="rounded-circle" alt="..." style="width: 50px">
+                        <img src="/img/avatar.jpg" class="rounded-circle" alt="..." style="width: 50px">
                     </td>
                     <td>a123456</td>
                     <td>黃政宏</td>
@@ -61,7 +61,7 @@
                                     </div>
                                     <form>
                                         <div class="modal-body">
-                                            <img src="../../public/img/avatar.jpg" class="rounded-circle mb-3 mx-auto d-block" alt="..." style="width: 100px">
+                                            <img src="/img/avatar.jpg" class="rounded-circle mb-3 mx-auto d-block" alt="..." style="width: 100px">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon1">帳號</span>
                                                 <input type="text" class="form-control" value="a123456"

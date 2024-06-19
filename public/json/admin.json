@@ -1,0 +1,29 @@
+[
+    {
+      "AD_ID": 1,
+      "AD_ACCOUNT": "admin",
+      "AD_PSW": "123",
+      "AD_NAME": "小烏龜",
+      "AD_STATUS": 1,
+      "AD_DATE": "2023-06-20",
+      "AC_ID": 1
+    },
+    {
+      "AD_ID": 2,
+      "AD_ACCOUNT": "admin02",
+      "AD_PSW": "qwerty456",
+      "AD_NAME": "Jane Smith",
+      "AD_STATUS": 1,
+      "AD_DATE": "2023-06-19",
+      "AC_ID": 2
+    },
+    {
+      "AD_ID": 3,
+      "AD_ACCOUNT": "admin03",
+      "AD_PSW": "password789",
+      "AD_NAME": "Michael Johnson",
+      "AD_STATUS": 0,
+      "AD_DATE": "2023-06-18",
+      "AC_ID": 1
+    }
+  ]

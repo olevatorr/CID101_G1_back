@@ -43,8 +43,8 @@
                 <tr class="align-middle">
                     <th scope="row">1</th>
                     <td>2024/4/23 15:33</td>
-                    <td>Mark</td>
-                    <td>NT$ 3,000</td>
+                    <td>邢富凱</td>
+                    <td>NT$ 2,980</td>
                     <td>
                         <div class="badge text-bg-danger text-wrap">
                             未處裡
@@ -93,27 +93,27 @@
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂購人姓名</th>
-                                                <td>1</td>
+                                                <td>邢富凱</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人姓名</th>
-                                                <td>1</td>
+                                                <td>林芊芃</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人電話</th>
-                                                <td>1</td>
+                                                <td>0912345678</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人收件地址</th>
-                                                <td>1</td>
+                                                <td>新北市</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">運送方式</th>
-                                                <td>1</td>
+                                                <td>宅配</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">付款方式</th>
-                                                <td>1</td>
+                                                <td>Line Pay</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單明細</th>
@@ -130,20 +130,21 @@
                                                         <tbody class="table-group-divider">
                                                             <tr>
                                                                 <th scope="row">1</th>
-                                                                <td>Mark</td>
-                                                                <td>Otto</td>
-                                                                <td>@mdo</td>
+                                                                <td>【飲料杯套經典款-海龜】</td>
+                                                                <td>120</td>
+                                                                <td>2</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">2</th>
-                                                                <td>Jacob</td>
-                                                                <td>Thornton</td>
-                                                                <td>@fat</td>
+                                                                <td>【側背包套經典款-鯨魚】</td>
+                                                                <td>$520</td>
+                                                                <td>4</td>
                                                             </tr>
                                                             <tr>
                                                                 <th scope="row">3</th>
-                                                                <td colspan="2">Larry the Bird</td>
-                                                                <td>@twitter</td>
+                                                                <td>【馬克杯套經典款-海龜】</td>
+                                                                <td>$660</td>
+                                                                <td>1</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -151,11 +152,11 @@
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單運費</th>
-                                                <td>1</td>
+                                                <td>0</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單總金額(含運費)</th>
-                                                <td>1</td>
+                                                <td>2980</td>
                                             </tr>
                                         </tbody>
                                     </table>

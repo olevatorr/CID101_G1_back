@@ -9,7 +9,7 @@
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio3">
-                    未審核
+                    審核未通過
                     <span class="badge text-bg-danger rounded-pill">14</span>
                 </label>
             </div>
