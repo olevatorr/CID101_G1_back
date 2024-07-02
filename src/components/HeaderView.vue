@@ -61,6 +61,9 @@ import { RouterLink } from 'vue-router'
                     <li class="nav-item">
                         <router-link to="/Debris"><a class="nav-link text-white" href="#">海廢知識管理</a></router-link>
                     </li>
+                    <li class="nav-item">
+                        <router-link to="/About"><a class="nav-link text-white" href="#">關於我們管理</a></router-link>
+                    </li>
                 </ul>
             </div>
         </div>

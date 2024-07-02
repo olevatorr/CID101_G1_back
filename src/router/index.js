@@ -71,6 +71,11 @@ const router = createRouter({
       name: 'Debris',
       component: () => import('../views/DebrisView.vue')
     },
+    {
+      path: '/About',
+      name: 'About',
+      component: () => import('../views/AboutView.vue')
+    },
   ]
 })
 
