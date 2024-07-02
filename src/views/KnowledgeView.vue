@@ -302,9 +302,7 @@ export default {
         async deleteItem(id) {
             console.log();
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/knowledgeDelete.php', {
-                    params: { K_ID: id }
-                });
+                const response = await axios.delete(`http://localhost/cid101/g1/api/knowledgeDelete.php?K_ID=${id}`);
                 if (!response.data.error) {
                     this.fetchData();
                 } else {
