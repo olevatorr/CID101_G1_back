@@ -3,9 +3,9 @@
         <p class="text-center fs-2">知識列表</p>
         <div class="modal-body mt-3">
             <p class="fs-4 d-inline-block">
-                知識數量限制: {{ knowledgeCount }}/16
+                知識數量限制: {{ knowledge.length }}/16
             </p>
-            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+            <button v-if="addKnowledge" type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop-revise">
                 <i class="fa-solid fa-plus me-2"></i>新增知識
             </button>
@@ -224,13 +224,17 @@ export default {
     mounted() {
         this.fetchData();
     },
+    computed:{
+        addKnowledge(){
+            return this.knowledge.length<16;
+        },
+    },
     methods: {
         async fetchData() {
             try {
                 const response = await axios.get('http://localhost/cid101/g1/api/knowledge.php');
                 if (!response.data.error) {
                     this.knowledge = response.data.knowledge;
-                    this.knowledgeCount = response.data.knowledgeCount;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -248,7 +252,6 @@ export default {
                     }
                 });
                 if (!response.data.error) {
-                    this.fetchData();
                     this.newItem = {
                         K_TITLE: '',
                         K_CONTENT: '',
@@ -256,6 +259,7 @@ export default {
                         K_URL: '',
                         K_DATE: ''
                     };
+                    this.fetchData();
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -267,11 +271,11 @@ export default {
         },
 
         async deleteItem(id) {
+            console.log();
             try {
                 const response = await axios.get('http://localhost/cid101/g1/api/knowledgeDelete.php', {
                     params: { K_ID: id }
                 });
-                console.log(id);
                 if (!response.data.error) {
                     this.fetchData();
                 } else {
