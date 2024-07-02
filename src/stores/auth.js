@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia'
+import Cookies from 'js-cookie';
+
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -9,12 +11,12 @@ export const useAuthStore = defineStore('auth', {
         login(admin) {
             this.loggedIn = true
             this.adminName = admin.AD_NAME
-            localStorage.setItem('loggedInAdmin', JSON.stringify(admin))
+            Cookies.set('loggedInAdmin', JSON.stringify(admin), { expires: 3 })
         },
         logout() {
             this.loggedIn = false
             this.adminName = ''
-            localStorage.removeItem('loggedInAdmin')
+            Cookies.remove('loggedInAdmin')
         },
         checkLoginStatus() {
             const loggedInAdmin = localStorage.getItem('loggedInAdmin')
