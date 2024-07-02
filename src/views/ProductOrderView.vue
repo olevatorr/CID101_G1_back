@@ -36,15 +36,15 @@
                     <th scope="col">會員名稱</th>
                     <th scope="col">訂單金額</th>
                     <th scope="col">訂單狀態</th>
-                    <th scope="col">訂單操作</th>
+                    <th scope="col">訂單明細與操作</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
                 <tr class="align-middle">
                     <th scope="row">1</th>
                     <td>2024/4/23 15:33</td>
-                    <td>Mark</td>
-                    <td>NT$ 3,000</td>
+                    <td>邢富凱</td>
+                    <td>NT$ 2,980</td>
                     <td>
                         <div class="badge text-bg-danger text-wrap">
                             未處裡
@@ -63,18 +63,103 @@
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
-                            訂單操作
+                            訂單明細與操作
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content p-2">
                                     <div class="modal-header">
                                         <h1 class="modal-title fs-5" id="staticBackdropLabel">訂單編號 #1</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">訂單資訊</th>
+                                                <th scope="col">內容</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="table-group-divider">
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單號碼#</th>
+                                                <td>1</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單日期</th>
+                                                <td>2024/4/23</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂購人姓名</th>
+                                                <td>邢富凱</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人姓名</th>
+                                                <td>林芊芃</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人電話</th>
+                                                <td>0912345678</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">收件人收件地址</th>
+                                                <td>新北市</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">運送方式</th>
+                                                <td>宅配</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">付款方式</th>
+                                                <td>Line Pay</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單明細</th>
+                                                <td>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">#</th>
+                                                                <th scope="col">商品名稱</th>
+                                                                <th scope="col">商品單價</th>
+                                                                <th scope="col">商品數量</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="table-group-divider">
+                                                            <tr>
+                                                                <th scope="row">1</th>
+                                                                <td>【飲料杯套經典款-海龜】</td>
+                                                                <td>120</td>
+                                                                <td>2</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">2</th>
+                                                                <td>【側背包套經典款-鯨魚】</td>
+                                                                <td>$520</td>
+                                                                <td>4</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th scope="row">3</th>
+                                                                <td>【馬克杯套經典款-海龜】</td>
+                                                                <td>$660</td>
+                                                                <td>1</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單運費</th>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr class="align-middle">
+                                                <th scope="row">訂單總金額(含運費)</th>
+                                                <td>2980</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                     <form>
                                         <div class="modal-body">
                                             <div class="btn-group" role="group"

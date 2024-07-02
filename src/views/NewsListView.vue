@@ -9,19 +9,15 @@
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio2">
-                    最新商品
+                    環保商品
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio3">
-                    新技術
+                    環保議題
                 </label>
                 <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio4">
-                    企業捐款
-                </label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-                <label class="btn btn-outline-dark" for="btnradio5">
-                    宣導
+                    淨灘活動
                 </label>
             </div>
             <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
