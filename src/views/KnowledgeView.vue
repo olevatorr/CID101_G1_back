@@ -3,9 +3,9 @@
         <p class="text-center fs-2">知識列表</p>
         <div class="modal-body mt-3">
             <p class="fs-4 d-inline-block">
-                知識數量限制: {{ knowledgeCount }}/16
+                知識數量限制: {{ knowledge.length }}/16
             </p>
-            <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+            <button v-if="addKnowledge" type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop-revise">
                 <i class="fa-solid fa-plus me-2"></i>新增知識
             </button>
@@ -40,17 +40,12 @@
                                 </div>
                                 <div class="col-12 col-md-6">
                                     <div class="mb-3">
-                                        <label for="basic-url" class="form-label">知識網址</label>
-                                        <div class="input-group">
-                                            <input v-model="newItem.K_URL" type="text" class="form-control"
-                                                id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                        <label for="imageUpload" class="form-label">知識主圖</label>
+                                        <div v-if="imagePreview">
+                                            <img :src="imagePreview" class="img-fluid img-thumbnail" alt="上傳的圖片">
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex gap-4 mt-3">
-                                    <div class="mb-3">
-                                        <label for="formFile" class="form-label">知識主圖</label>
-                                        <input class="form-control" type="file" id="formFile" accept="image/*">
+                                        <input class="form-control" type="file" id="imageUpload" accept="image/*"
+                                            @change="onFileChange" ref="fileInput">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -66,7 +61,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                            <button @click="addItem" type="button" class="btn btn-primary" data-bs-toggle="modal">新增知識</button>
+                            <button @click="addItem" type="button" class="btn btn-primary"
+                                data-bs-toggle="modal">新增知識</button>
                         </div>
                     </div>
                 </div>
@@ -94,7 +90,8 @@
                         </div>
                     </td>
                     <td>
-                        <button  type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" :data-bs-target="'#staticBackdrop-revised2-' + index">
+                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+                            :data-bs-target="'#staticBackdrop-revised2-' + index">
                             編輯
                         </button>
                         <!-- Modal -->
@@ -130,18 +127,14 @@
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="mb-3">
-                                                    <label for="basic-url" class="form-label">知識網址</label>
-                                                    <div class="input-group">
-                                                        <input v-model="item.K_URL" type="text" class="form-control"
-                                                            id="basic-url" aria-describedby="basic-addon3 basic-addon4">
+                                                    <label for="imageUpload" class="form-label">知識主圖</label>
+                                                    <div v-if="item.imagePreview || item.K_URL">
+                                                        <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/knowledge/${item.K_URL}`"
+                                                            class="img-fluid img-thumbnail" alt="知識圖片">
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex gap-4 mt-3">
-                                                <div class="mb-3">
-                                                    <label for="formFile" class="form-label">知識主圖</label>
-                                                    <input class="form-control" type="file" id="formFile"
-                                                        accept="image/*">
+                                                    <input class="form-control mt-2" type="file"
+                                                        :id="'imageUpload-' + index" accept="image/*"
+                                                        @change="(e) => onEditFileChange(e, item)">
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -158,7 +151,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                            <button @click="updateItem(item)" type="button" class="btn btn-primary" data-bs-toggle="modal" >確認修改</button>
+                                        <button @click="updateItem(item)" type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal">確認修改</button>
                                     </div>
                                 </div>
                             </div>
@@ -188,8 +182,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                        <button @click="deleteItem(item.K_ID)" type="button"
-                                            class="btn btn-primary" data-bs-toggle="modal">確認</button>
+                                        <button @click="deleteItem(item.K_ID)" type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal">確認</button>
                                     </div>
                                 </div>
                             </div>
@@ -211,17 +205,23 @@ export default {
                 K_TITLE: '',
                 K_CONTENT: '',
                 K_FROM: '',
-                K_URL: '',
-                K_DATE: ''
+                K_DATE: '',
+                K_URL: null
             },
             knowledgeCount: 0,
             error: false,
             errorMsg: '',
             edit: true,
+            imagePreview: '',
         };
     },
     mounted() {
         this.fetchData();
+    },
+    computed: {
+        addKnowledge() {
+            return this.knowledge.length < 16;
+        },
     },
     methods: {
         async fetchData() {
@@ -229,7 +229,6 @@ export default {
                 const response = await axios.get('http://localhost/cid101/g1/api/knowledge.php');
                 if (!response.data.error) {
                     this.knowledge = response.data.knowledge;
-                    this.knowledgeCount = response.data.knowledgeCount;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -241,20 +240,28 @@ export default {
         },
         async addItem() {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', JSON.stringify(this.newItem), {
+                const formData = new FormData(); // 改用formData 以利傳送檔案
+                for (const key in this.newItem) {
+                    formData.append(key, this.newItem[key]);
+                }
+
+                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', formData, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'multipart/form-data'
                     }
                 });
+
                 if (!response.data.error) {
-                    this.fetchData();
                     this.newItem = {
                         K_TITLE: '',
                         K_CONTENT: '',
                         K_FROM: '',
-                        K_URL: '',
-                        K_DATE: ''
+                        K_DATE: '',
+                        K_URL: null
                     };
+                    this.imagePreview = null;
+                    this.$refs.fileInput.value = '';
+                    this.fetchData();
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -264,13 +271,37 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-
+        // async addItem() {  純文字
+        //     try {
+        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', JSON.stringify(this.newItem), {
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         });
+        //         if (!response.data.error) {
+        //             this.newItem = {
+        //                 K_TITLE: '',
+        //                 K_CONTENT: '',
+        //                 K_FROM: '',
+        //                 K_URL: '',
+        //                 K_DATE: ''
+        //             };
+        //             this.imageUrl = ''
+        //             this.fetchData();
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+        
         async deleteItem(id) {
+            console.log();
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/knowledgeDelete.php', {
-                    params: { K_ID: id }
-                });
-                console.log(id);
+                const response = await axios.delete(`http://localhost/cid101/g1/api/knowledgeDelete.php?K_ID=${id}`);
                 if (!response.data.error) {
                     this.fetchData();
                 } else {
@@ -282,12 +313,34 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-                // 修改知識庫
+        // 修改知識庫
         async updateItem(item) {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', item);
+                const formData = new FormData();
+                for (const key in item) {
+                    if (key === 'newImage') {
+                        formData.append('K_URL', item.newImage);
+                    } else if (key !== 'imagePreview') {
+                        formData.append(key, item[key]);
+                    }
+                }
+
+                // 如果沒有新圖片，也要傳遞原來的 K_URL
+                if (!item.newImage && item.K_URL) {
+                    formData.append('K_URL', item.K_URL);
+                }
+
+                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
                 if (!response.data.error) {
                     this.fetchData();
+                    // 清理臨時數據
+                    delete item.newImage;
+                    delete item.imagePreview;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -297,7 +350,34 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-
+        // async updateItem(item) {
+        //     try {
+        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', item);
+        //         if (!response.data.error) {
+        //             this.fetchData();
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+        onFileChange(e) {
+            const file = e.target.files[0];
+            this.newItem.K_URL = file;
+            if (file) {
+                this.imagePreview = URL.createObjectURL(file);
+            }
+        },
+        onEditFileChange(e, item) {
+            const file = e.target.files[0];
+            if (file) {
+                item.newImage = file;
+                item.imagePreview = URL.createObjectURL(file);
+            }
+        },
     },
 };
 </script>

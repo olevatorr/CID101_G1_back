@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark" v-if="authStore.loggedIn">
+    <nav class="navbar navbar-expand-lg navbar-light bg-dark" v-if="loggedIn">
         <div class="container-fluid">
             <router-link to="/home">
                 <a class="navbar-brand" href="#">
@@ -70,10 +70,10 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <span class="nav-link text-white">{{ authStore.adminName }}</span>
+                        <span class="nav-link text-white">{{ adminName }}</span>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="#" @click="logout">登出</a>
+                        <a class="nav-link text-white" href="#" @click="navLogout">登出</a>
                     </li>
                 </ul>
             </div>
@@ -83,11 +83,20 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { onMounted} from 'vue'
+
 
 const authStore = useAuthStore()
+const { loggedIn, adminName } = storeToRefs(authStore)
 const router = useRouter()
 
-const logout = () => {
+
+onMounted(()=>{
+    authStore.checkLoginStatus()
+})
+
+const navLogout = () => {
     authStore.logout()
     router.push('/')
 }
