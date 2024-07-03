@@ -298,7 +298,7 @@ export default {
         //         this.errorMsg = error.message;
         //     }
         // },
-
+        
         async deleteItem(id) {
             console.log();
             try {
