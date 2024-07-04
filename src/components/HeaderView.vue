@@ -29,7 +29,7 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <li><router-link to="/DonateList"><a class="dropdown-item" href="#">查看捐款明細</a></router-link>
                             </li>
-                            <li><router-link to="/DonateExpense"><a class="dropdown-item"
+                            <li v-if="adminLevel===1"><router-link to="/DonateExpense"><a class="dropdown-item"
                                         href="#">捐款支出</a></router-link></li>
                         </ul>
                     </li>
@@ -58,7 +58,7 @@
                     <li class="nav-item">
                         <router-link to="/Member"><a class="nav-link text-white" href="#">會員管理</a></router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="adminLevel===1">
                         <router-link to="/Admin"><a class="nav-link text-white" href="#">管理員帳號管理</a></router-link>
                     </li>
                     <li class="nav-item">
@@ -88,7 +88,7 @@ import { onMounted} from 'vue'
 
 
 const authStore = useAuthStore()
-const { loggedIn, adminName } = storeToRefs(authStore)
+const { loggedIn, adminName, adminLevel } = storeToRefs(authStore)
 const router = useRouter()
 
 
