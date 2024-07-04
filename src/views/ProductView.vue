@@ -3,30 +3,37 @@
     <p class="text-center fs-2">商品列表</p>
     <div class="modal-body mt-3">
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-        <label class="btn btn-outline-dark" for="btnradio1">
-          全部
-        </label>
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" v-model="filter" value="all"
+          autocomplete="off">
+        <label class="btn btn-outline-dark" for="btnradio1">全部</label>
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" v-model="filter" value="featured"
+          autocomplete="off">
         <label class="btn btn-outline-dark" for="btnradio2">
           主打商品
-          <span class="badge text-bg-warning rounded-pill">2</span>
+          <span class="badge text-bg-warning rounded-pill">{{ featuredCount }}</span>
         </label>
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio3" v-model="filter" value="listed"
+          autocomplete="off">
         <label class="btn btn-outline-dark" for="btnradio3">
           已上架
-          <span class="badge text-bg-primary rounded-pill">32</span>
+          <span class="badge text-bg-primary rounded-pill">{{ listedCount }}</span>
         </label>
-        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
+
+        <input type="radio" class="btn-check" name="btnradio" id="btnradio4" v-model="filter" value="unlisted"
+          autocomplete="off">
         <label class="btn btn-outline-dark" for="btnradio4">
           未上架
-          <span class="badge text-bg-danger rounded-pill">3</span>
+          <span class="badge text-bg-danger rounded-pill">{{ unlistedCount }}</span>
         </label>
       </div>
+
       <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
         <i class="fa-solid fa-plus me-2"></i>新增商品
       </button>
       <!-- Modal -->
+      <!-- 商品新增 -->
       <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -41,7 +48,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">產品名稱</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="basic-url"
+                      <input v-model="newItem.P_NAME" type="text" class="form-control" id="basic-url"
                         aria-describedby="basic-addon3 basic-addon4">
                     </div>
                   </div>
@@ -50,7 +57,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">產品副標題</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="basic-url"
+                      <input v-model="newItem.P_SUBTITLE" type="text" class="form-control" id="basic-url"
                         aria-describedby="basic-addon3 basic-addon4">
                     </div>
                   </div>
@@ -71,7 +78,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">材質</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="basic-url"
+                      <input v-model="newItem.P_MATERIAL" type="text" class="form-control" id="basic-url"
                         aria-describedby="basic-addon3 basic-addon4">
                     </div>
                   </div>
@@ -80,7 +87,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">尺寸</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="basic-url"
+                      <input v-model="newItem.P_SIZE" type="text" class="form-control" id="basic-url"
                         aria-describedby="basic-addon3 basic-addon4">
                     </div>
                   </div>
@@ -89,7 +96,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">顏色</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="basic-url"
+                      <input v-model="newItem.P_COLOR" type="text" class="form-control" id="basic-url"
                         aria-describedby="basic-addon3 basic-addon4">
                     </div>
                   </div>
@@ -98,7 +105,7 @@
                   <label for="basic-url" class="form-label">產品價格</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">NT$</span>
-                    <input type="text" class="form-control" aria-label="Dollar amount">
+                    <input v-model="newItem.P_PRICE" type="text" class="form-control" aria-label="Dollar amount">
                   </div>
                 </div>
                 <div class="col-12">
@@ -120,8 +127,8 @@
                 <div class="col-12">
                   <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
                   <div class="form-floating">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                      style="height: 300px"></textarea>
+                    <textarea v-model="newItem.P_CONTENT" class="form-control" placeholder="Leave a comment here"
+                      id="floatingTextarea2" style="height: 300px"></textarea>
                     <label for="floatingTextarea2">出現於商品主要描述區域</label>
                   </div>
                 </div>
@@ -129,7 +136,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-              <button type="button" class="btn btn-primary">新增商品</button>
+              <button @click="addItem" type="button" class="btn btn-primary" data-bs-toggle="modal">新增商品</button>
             </div>
           </div>
         </div>
@@ -143,32 +150,37 @@
           <th scope="col">商品金額</th>
           <th scope="col">商品狀態</th>
           <th scope="col">商品編輯</th>
+          <th scope="col">商品刪除</th>
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr class="align-middle">
-          <th scope="row">1</th>
-          <td>【飲料杯套經典款-鯨魚】</td>
-          <td>NT$ 120</td>
+        <tr v-for="(item, index) in filteredProducts" :key="item.P_ID" class="align-middle">
+          <th scope="row">{{ index + 1 }}</th>
+          <td>{{ item.P_NAME }}</td>
+          <td>{{ item.P_PRICE }}</td>
+          <!-- 商品狀態 -->
           <td>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input class="form-check-input" type="checkbox" role="switch" :id="'hotSwitch' + item.P_ID"
+                v-model="item.P_HOT">
               <label class="form-check-label" for="flexSwitchCheckDefault">主打商品</label>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+              <input class="form-check-input" type="checkbox" role="switch" :id="'statusSwitch' + item.P_ID"
+                v-model="item.P_STATUS">
               <label class="form-check-label" for="flexSwitchCheckChecked">上架</label>
             </div>
           </td>
+          <!-- 商品修改 -->
           <td>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
-              data-bs-target="#staticBackdrop-revise">
+              :data-bs-target="'#staticBackdrop-revised2-' + index">
               編輯
             </button>
             <!-- Modal -->
-            <div class="modal fade" id="staticBackdrop-revise" data-bs-backdrop="static" data-bs-keyboard="false"
-              tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal fade" :id="'staticBackdrop-revised2-' + index" data-bs-backdrop="static"
+              data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header bg-dark">
@@ -182,7 +194,7 @@
                         <div class="mb-3">
                           <label for="basic-url" class="form-label">產品名稱</label>
                           <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input v-model="item.P_NAME" type="text" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3 basic-addon4">
                           </div>
                         </div>
@@ -191,7 +203,7 @@
                         <div class="mb-3">
                           <label for="basic-url" class="form-label">產品副標題</label>
                           <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input v-model="item.P_SUBTITLE" type="text" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3 basic-addon4">
                           </div>
                         </div>
@@ -212,7 +224,7 @@
                         <div class="mb-3">
                           <label for="basic-url" class="form-label">材質</label>
                           <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input v-model="item.P_MATERIAL" type="text" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3 basic-addon4">
                           </div>
                         </div>
@@ -221,7 +233,7 @@
                         <div class="mb-3">
                           <label for="basic-url" class="form-label">尺寸</label>
                           <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input v-model="item.P_SIZE" type="text" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3 basic-addon4">
                           </div>
                         </div>
@@ -230,7 +242,7 @@
                         <div class="mb-3">
                           <label for="basic-url" class="form-label">顏色</label>
                           <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input v-model="item.P_COLOR" type="text" class="form-control" id="basic-url"
                               aria-describedby="basic-addon3 basic-addon4">
                           </div>
                         </div>
@@ -239,7 +251,7 @@
                         <label for="basic-url" class="form-label">產品價格</label>
                         <div class="input-group mb-3">
                           <span class="input-group-text">NT$</span>
-                          <input type="text" class="form-control" aria-label="Dollar amount">
+                          <input v-model="item.P_PRICE" type="text" class="form-control" aria-label="Dollar amount">
                         </div>
                       </div>
                       <div class="col-12">
@@ -261,8 +273,8 @@
                       <div class="col-12">
                         <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
                         <div class="form-floating">
-                          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                            style="height: 300px"></textarea>
+                          <textarea v-model="item.P_CONTENT" class="form-control" placeholder="Leave a comment here"
+                            id="floatingTextarea2" style="height: 300px"></textarea>
                           <label for="floatingTextarea2">出現於商品主要描述區域</label>
                         </div>
                       </div>
@@ -270,7 +282,36 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary">新增商品</button>
+                    <button @click="updateItem(item)" type="button" class="btn btn-primary"
+                      data-bs-toggle="modal">確認修改</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <!-- 商品刪除 -->
+          <td>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#deleteModal-' + item.P_ID">
+              刪除
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" :id="'deleteModal-' + item.P_ID" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+              :aria-labelledby="'deleteModalLabel-' + item.P_ID" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">刪除商品</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <span class="badge text-bg-danger">請注意</span>
+                    <p class="m-3 fw-bold fs-4 text-center">您即將永久刪除這個商品。
+                      <br>確定要繼續嗎？
+                    </p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button @click="deleteItem(item.P_ID)" type="button" class="btn btn-danger" data-bs-dismiss="modal">確認刪除</button>
                   </div>
                 </div>
               </div>
@@ -298,3 +339,149 @@
     </nav>
   </div>
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      product: [],
+      newItem: {
+        P_ID: '',
+        P_NAME: '',
+        P_PRICE: '',
+        P_SUBTITLE: '',
+        P_MAIN_IMG: '',
+        P_IMG1: '',
+        P_IMG2: '',
+        P_CONTENT: '',
+        P_MATERIAL: '',
+        P_SIZE: '',
+        P_COLOR: '',
+        P_HOT: false,
+        P_STATUS: false,
+        PS_ID: '',
+      },
+      productCount: 0,
+      error: false,
+      errorMsg: '',
+      edit: true,
+      filter: 'all',
+
+    };
+  },
+  computed: {
+    filteredProducts() {
+      switch (this.filter) {
+        case 'featured':
+          return this.product.filter(item => item.P_HOT);
+        case 'listed':
+          return this.product.filter(item => item.P_STATUS);
+        case 'unlisted':
+          return this.product.filter(item => !item.P_STATUS);
+        default:
+          return this.product;
+      }
+    },
+    featuredCount() {
+      return this.product.filter(item => item.P_HOT).length;
+    },
+    listedCount() {
+      return this.product.filter(item => item.P_STATUS).length;
+    },
+    unlistedCount() {
+      return this.product.filter(item => !item.P_STATUS).length;
+    }
+  },
+mounted() {
+  this.fetchData();
+},
+methods: {
+    // 取得資料
+    async fetchData() {
+    try {
+      const response = await axios.get('http://localhost/cid101/g1/api/product.php');
+      if (!response.data.error) {
+        this.product = response.data.product;
+        this.productCount = response.data.productCount;
+      } else {
+        this.error = true;
+        this.errorMsg = response.data.msg;
+      }
+    } catch (error) {
+      this.error = true;
+      this.errorMsg = error.message;
+    }
+  },
+    // 新增商品
+    async addItem() {
+    try {
+      const response = await axios.post('http://localhost/cid101/g1/api/productAdd.php', JSON.stringify(this.newItem), {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.data.error) {
+        this.fetchData();
+        this.newItem = {
+          P_ID: '',
+          P_NAME: '',
+          P_PRICE: '',
+          P_SUBTITLE: '',
+          P_MAIN_IMG: '',
+          P_IMG1: '',
+          P_IMG2: '',
+          P_CONTENT: '',
+          P_MATERIAL: '',
+          P_SIZE: '',
+          P_COLOR: '',
+          P_HOT: false,
+          P_STATUS: false,
+          PS_ID: '',
+        };
+      } else {
+        this.error = true;
+        this.errorMsg = response.data.msg;
+      }
+    } catch (error) {
+      this.error = true;
+      this.errorMsg = error.message;
+    }
+  },
+    //刪除商品
+    async deleteItem(id) {
+    try {
+      const response = await axios.get('http://localhost/cid101/g1/api/productDelete.php', {
+        params: { P_ID: id }
+      });
+      console.log(id);
+      if (!response.data.error) {
+        this.fetchData();
+      } else {
+        this.error = true;
+        this.errorMsg = response.data.msg;
+      }
+    } catch (error) {
+      this.error = true;
+      this.errorMsg = error.message;
+    }
+  },
+    // 修改商品
+    async updateItem(item) {
+    try {
+      const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', item);
+      if (!response.data.error) {
+        this.fetchData();
+      } else {
+        this.error = true;
+        this.errorMsg = response.data.msg;
+      }
+    } catch (error) {
+      this.error = true;
+      this.errorMsg = error.message;
+    }
+  },
+},
+};
+</script>

@@ -1,103 +1,227 @@
 <template>
     <div class="container">
-        <p class="text-center fs-2">回饋表單列表</p>
-        <div class="modal-body mt-3">
-            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-dark" for="btnradio1">
-                    全部
-                </label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                <label class="btn btn-outline-dark" for="btnradio3">
+        <h2 class="text-center fs-2 mb-4">回饋表單列表</h2>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="btn-group" role="group" aria-label="回饋狀態篩選">
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" v-model="filter" value="all"
+                    autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio1">全部</label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio2" v-model="filter"
+                    value="unprocessed" autocomplete="off">
+                <label class="btn btn-outline-danger" for="btnradio2">
                     未處理
-                    <span class="badge text-bg-danger rounded-pill">3</span>
+                    <span class="badge bg-danger rounded-pill">{{ unprocessedCount }}</span>
+                </label>
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" v-model="filter" value="processed"
+                    autocomplete="off">
+                <label class="btn btn-outline-success" for="btnradio3">
+                    已處理
+                    <span class="badge bg-success rounded-pill">{{ processedCount }}</span>
                 </label>
             </div>
+            <div>
+                <span class="me-2">共 {{ totalCount }} 筆資料</span>
+            </div>
         </div>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">訊息編號#</th>
-                    <th scope="col">姓名</th>
-                    <th scope="col">手機</th>
-                    <th scope="col">信箱</th>
-                    <th scope="col">訊息</th>
-                    <th scope="col">傳送日期</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>樂樂</td>
-                    <td>0912-345-678</td>
-                    <td>Joy@email.com</td>
-                    <td>
-                        <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            我對你們的海洋垃圾問題資訊平台很感興趣。請問你們有哪些互動性的內容可以幫助我更好地理解這個問題的嚴重性？我特別想了解有關微塑料污染的數據和圖像。另外，你們有提供任何可以讓普通民眾參與的環保行動或計劃嗎？我也很想知道平台上是否有針對學校或社區的教育資源。期待能夠得到您的回覆，謝謝！
-                        </div>
-                    </td>
-                    <td>2024/06/25</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>怒怒</td>
-                    <td>0923-456-789</td>
-                    <td>Anger@email.com</td>
-                    <td>
-                        <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            你們的平台看起來很全面，但我有一些問題想詢問。關於海洋垃圾的來源，你們有詳細的分類數據嗎？我特別關心工業污染對海洋的影響。另外，我想了解你們是如何確保平台上的信息都是準確且最新的？你們和哪些研究機構或環保組織有合作？如果我想報告自己所在地區的海洋污染問題，平台上有相應的功能嗎？希望能得到詳細的答覆，謝謝。
-                        </div>
-                    </td>
-                    <td>2024/06/26</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>憂憂</td>
-                    <td>0934-567-890</td>
-                    <td>Sadness@email.com</td>
-                    <td>
-                        <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            看到海洋遭受如此嚴重的污染，我感到非常憂心。我想知道作為個人，我能為解決這個問題做些什麼？
-                            你們的平台有提供任何指導或建議嗎？比如如何減少日常生活中的塑料使用，或者參與哪些淨灘活動？
-                            另外，你們有追蹤報導一些成功的海洋清理項目嗎？我也很想了解政府在這方面的政策和行動。如果可以的話，我希望能定期收到你們的最新資訊。
-                            非常感謝你們為保護海洋所做的努力。
-                        </div>
-                    </td>
-                    <td>2024/06/27</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>焦焦</td>
-                    <td>0945-678-901</td>
-                    <td>Anxiety@email.com</td>
-                    <td>
-                        <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            我是一名環境科學的學生，對你們平台上的數據很感興趣。請問你們多久更新一次數據？
-                            數據來源是哪裡？我特別想了解近年來海洋垃圾的變化趨勢，你們有這方面的長期追蹤數據嗎？
-                            另外，平台上的互動內容是否適合用於課堂教學？如果我想基於你們的數據進行一些研究，需要什麼樣的許可嗎？
-                            我也很想知道你們未來有什麼新的功能或內容會加入到平台中。非常期待您的回覆！
-                        </div>
-                    </td>
-                    <td>2024/06/28</td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>厭厭</td>
-                    <td>0956-789-012</td>
-                    <td>Disgust@email.com</td>
-                    <td>
-                        <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            我是一家環保NGO的項目經理，對你們的平台很感興趣。
-                            我們正在策劃一個大型的海洋保護活動，想知道是否有可能與你們合作？你們能提供哪些資源或支持？
-                            例如，我們可以使用你們的數據或圖像嗎？另外，你們平台有支持多語言嗎？我們希望能夠觸及更廣泛的受眾。
-                            還有，你們是否曾與政府部門合作推動相關政策？如果方便的話，我們也希望能夠安排一次會議，進一步討論合作可能。期待您的回覆，謝謝。
-                        </div>
-                    </td>
-                    <td>2024/06/29</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">姓名</th>
+                        <th scope="col">手機</th>
+                        <th scope="col">信箱</th>
+                        <th scope="col">訊息</th>
+                        <th scope="col">傳送日期</th>
+                        <th scope="col">狀態</th>
+                        <th scope="col">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item, index) in paginatedInquiries" :key="item.I_ID" class="align-middle">
+                        <th scope="row">{{ (currentPage - 1) * itemsPerPage + index + 1 }}</th>
+                        <td>{{ item.I_NAME }}</td>
+                        <td>{{ formatPhoneNumber(item.I_PHONE) }}</td>
+                        <td>{{ item.I_EMAIL }}</td>
+                        <td>
+                            <div class="text-truncate" style="max-width: 200px;" :title="item.I_CONTENT">
+                                {{ item.I_CONTENT }}
+                            </div>
+                        </td>
+                        <td>{{ formatDate(item.I_DATE) }}</td>
+                        <!--  未處理  已處理 -->
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                    :id="'statusSwitch' + item.I_ID" v-model="item.I_STATUS"
+                                    @change="toggleStatus(item)">
+                                <label class="form-check-label" :for="'statusSwitch' + item.I_ID">{{ item.I_STATUS ?
+                                    '已處理' : '未處理' }}</label>
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-primary btn-sm me-2" data-bs-toggle="modal"
+                                :data-bs-target="'#contactModal-' + item.I_ID">
+                                詳情
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <!-- 分頁控制 -->
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                    <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">上一頁</a>
+                </li>
+                <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: page === currentPage }">
+                    <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
+                </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">下一頁</a>
+                </li>
+            </ul>
+        </nav>
 
+        <!-- 詳情模態框 -->
+        <div v-for="item in inquiry" :key="'detail-' + item.I_ID" class="modal fade" :id="'contactModal-' + item.I_ID"
+            tabindex="-1" :aria-labelledby="'contactModalLabel-' + item.I_ID" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" :id="'contactModalLabel-' + item.I_ID">聯絡人詳細資訊</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>姓名：</strong> {{ item.I_NAME }}</p>
+                        <p><strong>電話：</strong> {{ formatPhoneNumber(item.I_PHONE) }}</p>
+                        <p><strong>電子郵件：</strong> {{ item.I_EMAIL }}</p>
+                        <p><strong>留言內容：</strong></p>
+                        <p>{{ item.I_CONTENT }}</p>
+                        <p><strong>日期：</strong> {{ formatDate(item.I_DATE) }}</p>
+                        <p><strong>狀態：</strong>
+                            <span :class="item.I_STATUS ? 'badge bg-success' : 'badge bg-danger'">
+                                {{ item.I_STATUS ? '已處理' : '未處理' }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            inquiry: [],
+            filter: 'all',
+            error: false,
+            errorMsg: '',
+            selectedItem: null,
+            currentPage: 1,
+            itemsPerPage: 10,
+            I_STATUS: false
+        };
+    },
+    computed: {
+        filteredInquiry() {
+            switch (this.filter) {
+                case 'unprocessed':
+                    return this.inquiry.filter(item => !item.I_STATUS);
+                case 'processed':
+                    return this.inquiry.filter(item => item.I_STATUS);
+                default:
+                    return this.inquiry;
+            }
+        },
+        unprocessedCount() {
+            return this.inquiry.filter(item => !item.I_STATUS).length;
+        },
+        processedCount() {
+            return this.inquiry.filter(item => item.I_STATUS).length;
+        },
+        totalCount() {
+            return this.inquiry.length;
+        },
+        totalPages() {
+            return Math.ceil(this.filteredInquiry.length / this.itemsPerPage);
+        },
+        paginatedInquiries() {
+            const start = (this.currentPage - 1) * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.filteredInquiry.slice(start, end);
+        }
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        async fetchData() {
+            try {
+                const response = await axios.get('http://localhost/cid101/g1/api/inquiry.php');
+                if (!response.data.error) {
+                    this.inquiry = response.data.inquiry;
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                    this.showToast('錯誤', this.errorMsg, 'error');
+                }
+            } catch (error) {
+                this.error = true;
+                this.errorMsg = error.message;
+                this.showToast('錯誤', this.errorMsg, 'error');
+            }
+        },
+        formatPhoneNumber(phoneNumber) {
+            const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+            const match = cleaned.match(/^(\d{4})(\d{3})(\d{3})$/);
+            if (match) {
+                return `${match[1]}-${match[2]}-${match[3]}`;
+            }
+            return phoneNumber;
+        },
+        formatDate(dateString) {
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+            return new Date(dateString).toLocaleDateString('zh-TW', options);
+        },
+        openStatusModal(item) {
+            this.selectedItem = item;
+            const statusModal = new bootstrap.Modal(document.getElementById('statusModal'));
+            statusModal.show();
+        },
+        changePage(page) {
+            if (page >= 1 && page <= this.totalPages) {
+                this.currentPage = page;
+            }
+        },
+        showToast(title, message, type) {
+            // 這裡可以實現一個吐司通知功能，例如使用 bootstrap 的 toast 或其他通知庫
+            console.log(`${title}: ${message}`);
+        }
+    },
+    watch: {
+        filter() {
+            this.currentPage = 1;
+        }
+    }
+};
+</script>
+
+<style scoped>
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.text-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+</style>
