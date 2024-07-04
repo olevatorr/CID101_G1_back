@@ -66,7 +66,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                            <button @click="addItem" type="button" class="btn btn-primary" data-bs-toggle="modal">新增知識</button>
+                            <button @click="addItem" type="button" class="btn btn-primary"
+                                data-bs-toggle="modal">新增知識</button>
                         </div>
                     </div>
                 </div>
@@ -94,7 +95,8 @@
                         </div>
                     </td>
                     <td>
-                        <button  type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" :data-bs-target="'#staticBackdrop-revised2-' + index">
+                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+                            :data-bs-target="'#staticBackdrop-revised2-' + index">
                             編輯
                         </button>
                         <!-- Modal -->
@@ -158,7 +160,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                            <button @click="updateItem(item)" type="button" class="btn btn-primary" data-bs-toggle="modal" >確認修改</button>
+                                        <button @click="updateItem(item)" type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal">確認修改</button>
                                     </div>
                                 </div>
                             </div>
@@ -189,8 +192,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                        <button @click="deleteItem(item.K_ID)" type="button"
-                                            class="btn btn-primary" data-bs-toggle="modal">確認</button>
+                                        <button @click="deleteItem(item.K_ID)" type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal">確認</button>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +286,7 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-                // 修改知識庫
+        // 修改知識庫
         async updateItem(item) {
             try {
                 const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', item);
