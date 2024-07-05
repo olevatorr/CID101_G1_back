@@ -1,29 +1,8 @@
-<template>
-    <div class="container">
-        <div class="p-5 col-9 m-auto mt-5 bg-light rounded">
-            <div class="text-center p-3">
-                <img src="/img/LOGO-color.png" alt="Bootstrap" height="120">
-            </div>
-            <p class="text-center fs-1 fw-bold">後台管理系統</p>
-            <form @submit.prevent="backLogin">
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">管理員帳號</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" v-model="admin.acc" aria-describedby="emailHelp">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">管理員密碼</label>
-                    <input type="password" class="form-control" v-model="admin.psw" id="exampleInputPassword1">
-                </div>
-                <button type="submit" class="btn btn-primary m-auto d-block">登入</button>
-            </form>
-        </div>
-    </div>
-</template>
-
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 import axios from 'axios';
 
 const admin = ref({
@@ -32,6 +11,8 @@ const admin = ref({
 })
 const authStore = useAuthStore()
 const router = useRouter()
+
+const {loggedIn} = storeToRefs(authStore)
 
 const backLogin = async () => {
     try {
@@ -59,4 +40,30 @@ const backLogin = async () => {
         alert('登錄過程中出現錯誤：' + error.message)
     }
 }
+
+onMounted(() => {
+    authStore.checkLoginStatus()
+    if(loggedIn) router.push('/home')
+})
 </script>
+<template>
+    <div class="container">
+        <div class="p-5 col-9 m-auto mt-5 bg-light rounded">
+            <div class="text-center p-3">
+                <img src="/img/LOGO-color.png" alt="Bootstrap" height="120">
+            </div>
+            <p class="text-center fs-1 fw-bold">後台管理系統</p>
+            <form @submit.prevent="backLogin">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">管理員帳號</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" v-model="admin.acc" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label">管理員密碼</label>
+                    <input type="password" class="form-control" v-model="admin.psw" id="exampleInputPassword1">
+                </div>
+                <button type="submit" class="btn btn-primary m-auto d-block">登入</button>
+            </form>
+        </div>
+    </div>
+</template>
