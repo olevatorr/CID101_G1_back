@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <p class="text-center fs-2">商品列表</p>
+
     <div class="modal-body mt-3">
+      <!-- 篩選 -->
       <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" class="btn-check" name="btnradio" id="btnradio1" v-model="filter" value="all"
           autocomplete="off">
@@ -29,18 +31,17 @@
         </label>
       </div>
 
-      <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+      <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#additem">
         <i class="fa-solid fa-plus me-2"></i>新增商品
       </button>
       <!-- Modal -->
       <!-- 商品新增 -->
-      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal" id="additem" data-bs-backdrop="static">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header bg-dark">
-              <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">新增產品</h1>
-              <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
+              <h1 class="modal-title fs-5 text-white">新增產品</h1>
+              <button type="button" class="btn-close bg-white" data-bs-toggle="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <div class="row">
@@ -48,8 +49,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">產品名稱</label>
                     <div class="input-group">
-                      <input v-model="newItem.P_NAME" type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4">
+                      <input v-model="newItem.P_NAME" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -57,16 +57,15 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">產品副標題</label>
                     <div class="input-group">
-                      <input v-model="newItem.P_SUBTITLE" type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4">
+                      <input v-model="newItem.P_SUBTITLE" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
                 <div class="col-12 col-md-6">
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">產品類別</label>
-                    <select class="form-select" aria-label="Default select example">
-                      <option selected>請選擇類別</option>
+                    <select v-model="newItem.PS_ID" class="form-select" aria-label="Default select example">
+                      <option value="" disabled selected>請選擇類別</option>
                       <option value="1">杯套類</option>
                       <option value="2">上衣類</option>
                       <option value="3">包包類</option>
@@ -78,8 +77,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">材質</label>
                     <div class="input-group">
-                      <input v-model="newItem.P_MATERIAL" type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4">
+                      <input v-model="newItem.P_MATERIAL" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -87,8 +85,7 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">尺寸</label>
                     <div class="input-group">
-                      <input v-model="newItem.P_SIZE" type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4">
+                      <input v-model="newItem.P_SIZE" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
@@ -96,34 +93,43 @@
                   <div class="mb-3">
                     <label for="basic-url" class="form-label">顏色</label>
                     <div class="input-group">
-                      <input v-model="newItem.P_COLOR" type="text" class="form-control" id="basic-url"
-                        aria-describedby="basic-addon3 basic-addon4">
+                      <input v-model="newItem.P_COLOR" type="text" class="form-control">
                     </div>
                   </div>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                   <label for="basic-url" class="form-label">產品價格</label>
                   <div class="input-group mb-3">
                     <span class="input-group-text">NT$</span>
                     <input v-model="newItem.P_PRICE" type="text" class="form-control" aria-label="Dollar amount">
                   </div>
                 </div>
-                <div class="col-12">
-                  <div class="d-flex gap-4 mt-3">
-                    <div class="mb-3">
-                      <label for="formFile" class="form-label">主圖(白色底)</label>
-                      <input class="form-control" type="file" id="formFile" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                      <label for="formFile" class="form-label">副圖1</label>
-                      <input class="form-control" type="file" id="formFile" accept="image/*">
-                    </div>
-                    <div class="mb-3">
-                      <label for="formFile" class="form-label">副圖2</label>
-                      <input class="form-control" type="file" id="formFile" accept="image/*">
-                    </div>
+                <!-- 最上面 新增商品的圖片修改 -->
+                <div class="mb-3 col-md-4">
+                  <label for="formFile" class="form-label">主圖(白色底)</label>
+                  <div v-if="mainImagePreview">
+                    <img :src="mainImagePreview" class="img-fluid img-thumbnail" alt="主圖(白色底)">
                   </div>
+                  <input class="form-control mt-2" type="file" id="mainImageUpload" accept="image/*"
+                    @change="onMainImageChange" ref="mainImageInput">
                 </div>
+                <div class="mb-3 col-md-4">
+                  <label for="formFile" class="form-label">副圖1</label>
+                  <div v-if="imagePreview1">
+                    <img :src="imagePreview1" class="img-fluid img-thumbnail" alt="副圖1">
+                  </div>
+                  <input class="form-control mt-2" type="file" id="image1Upload" accept="image/*"
+                    @change="onImage1Change" ref="image1Input">
+                </div>
+                <div class="mb-3 col-md-4">
+                  <label for="formFile" class="form-label">副圖2</label>
+                  <div v-if="imagePreview2">
+                    <img :src="imagePreview2" class="img-fluid img-thumbnail" alt="副圖2">
+                  </div>
+                  <input class="form-control mt-2" type="file" id="image2Upload" accept="image/*"
+                    @change="onImage2Change" ref="image2Input">
+                </div>
+
                 <div class="col-12">
                   <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
                   <div class="form-floating">
@@ -135,7 +141,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal">取消</button>
               <button @click="addItem" type="button" class="btn btn-primary" data-bs-toggle="modal">新增商品</button>
             </div>
           </div>
@@ -254,19 +260,38 @@
                           <input v-model="item.P_PRICE" type="text" class="form-control" aria-label="Dollar amount">
                         </div>
                       </div>
+                      <!-- 圖片修改 -->
                       <div class="col-12">
                         <div class="d-flex gap-4 mt-3">
                           <div class="mb-3">
                             <label for="formFile" class="form-label">主圖(白色底)</label>
-                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                            <div v-if="item?.mainImagePreview || item?.P_MAIN_IMG">
+                              <img
+                                :src="item?.mainImagePreview || `http://localhost/cid101/g1/upload/img/product/${item?.P_MAIN_IMG}`"
+                                class="img-fluid img-thumbnail" alt="主圖(白色底)">
+                            </div>
+                            <input class="form-control mt-2" type="file" :id="'mainImageUpload-' + index"
+                              accept="image/*" @change="(e) => onMainImageChange(e, item)">
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖1</label>
-                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                            <div v-if="item?.image1Preview || item?.P_IMG1">
+                              <img
+                                :src="item?.image1Preview || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG1}`"
+                                class="img-fluid img-thumbnail" alt="副圖1">
+                            </div>
+                            <input class="form-control mt-2" type="file" :id="'image1Upload-' + index" accept="image/*"
+                              @change="(e) => onImage1Change(e, item)">
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖2</label>
-                            <input class="form-control" type="file" id="formFile" accept="image/*">
+                            <div v-if="item?.image2Preview || item?.P_IMG2">
+                              <img
+                                :src="item?.image2Preview || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG2}`"
+                                class="img-fluid img-thumbnail" alt="副圖2">
+                            </div>
+                            <input class="form-control mt-2" type="file" :id="'image2Upload-' + index" accept="image/*"
+                              @change="(e) => onImage2Change(e, item)">
                           </div>
                         </div>
                       </div>
@@ -291,12 +316,13 @@
           </td>
           <!-- 商品刪除 -->
           <td>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" :data-bs-target="'#deleteModal-' + item.P_ID">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              :data-bs-target="'#deleteModal-' + item.P_ID">
               刪除
             </button>
             <!-- Modal -->
-            <div class="modal fade" :id="'deleteModal-' + item.P_ID" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-              :aria-labelledby="'deleteModalLabel-' + item.P_ID" aria-hidden="true">
+            <div class="modal fade" :id="'deleteModal-' + item.P_ID" data-bs-backdrop="static" data-bs-keyboard="false"
+              tabindex="-1" :aria-labelledby="'deleteModalLabel-' + item.P_ID" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -311,7 +337,8 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                    <button @click="deleteItem(item.P_ID)" type="button" class="btn btn-danger" data-bs-dismiss="modal">確認刪除</button>
+                    <button @click="deleteItem(item.P_ID)" type="button" class="btn btn-danger"
+                      data-bs-dismiss="modal">確認刪除</button>
                   </div>
                 </div>
               </div>
@@ -347,6 +374,19 @@ export default {
   data() {
     return {
       product: [],
+      // items: [
+      //   {
+      //     mainImagePreview: '',
+      //     image1Preview1: '',
+      //     image2Preview2: '',
+      //     P_MAIN_IMG: '',
+      //     P_IMG1: '',
+      //     P_IMG2: ''
+      //   }
+      // ],
+      mainImagePreview: '',
+      imagePreview1: '',
+      imagePreview2: '',
       newItem: {
         P_ID: '',
         P_NAME: '',
@@ -368,11 +408,14 @@ export default {
       errorMsg: '',
       edit: true,
       filter: 'all',
-
     };
+  },
+  mounted() {
+    this.fetchData();
   },
   computed: {
     filteredProducts() {
+      if (!this.product) return []; // 添加安全檢查
       switch (this.filter) {
         case 'featured':
           return this.product.filter(item => item.P_HOT);
@@ -385,103 +428,151 @@ export default {
       }
     },
     featuredCount() {
-      return this.product.filter(item => item.P_HOT).length;
+      return this.product ? this.product.filter(item => item.P_HOT).length : 0;
     },
     listedCount() {
-      return this.product.filter(item => item.P_STATUS).length;
+      return this.product ? this.product.filter(item => item.P_STATUS).length : 0;
     },
     unlistedCount() {
-      return this.product.filter(item => !item.P_STATUS).length;
+      return this.product ? this.product.filter(item => !item.P_STATUS).length : 0;
     }
   },
-mounted() {
-  this.fetchData();
-},
-methods: {
+
+  methods: {
     // 取得資料
     async fetchData() {
-    try {
-      const response = await axios.get('http://localhost/cid101/g1/api/product.php');
-      if (!response.data.error) {
-        this.product = response.data.product;
-        this.productCount = response.data.productCount;
-      } else {
+      try {
+        const response = await axios.get('http://localhost/cid101/g1/api/product.php');
+        if (!response.data.error) {
+          this.product = response.data.product;
+          this.productCount = response.data.productCount;
+        } else {
+          this.error = true;
+          this.errorMsg = response.data.msg;
+        }
+      } catch (error) {
         this.error = true;
-        this.errorMsg = response.data.msg;
+        this.errorMsg = error.message;
       }
-    } catch (error) {
-      this.error = true;
-      this.errorMsg = error.message;
-    }
-  },
+    },
     // 新增商品
     async addItem() {
-    try {
-      const response = await axios.post('http://localhost/cid101/g1/api/productAdd.php', JSON.stringify(this.newItem), {
-        headers: {
-          'Content-Type': 'application/json'
+      try {
+        if (!this.newItem.P_NAME) {
+          alert('請輸入產品名稱');
+          return;
         }
-      });
-      if (!response.data.error) {
-        this.fetchData();
-        this.newItem = {
-          P_ID: '',
-          P_NAME: '',
-          P_PRICE: '',
-          P_SUBTITLE: '',
-          P_MAIN_IMG: '',
-          P_IMG1: '',
-          P_IMG2: '',
-          P_CONTENT: '',
-          P_MATERIAL: '',
-          P_SIZE: '',
-          P_COLOR: '',
-          P_HOT: false,
-          P_STATUS: false,
-          PS_ID: '',
-        };
-      } else {
+        FormData
+        const formData = new FormData();
+        console.log(formData);
+        for (const key in this.newItem) {
+          if (key === 'P_HOT' || key === 'P_STATUS') {
+            formData.append(key, this.newItem[key] ? '1' : '0');
+          } else {
+            formData.append(key, this.newItem[key]);
+          }
+        }
+
+        const response = await axios.post('http://localhost/cid101/g1/api/productAdd.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        if (!response.data.error) {
+          this.newItem = {
+            P_ID: '',
+            P_NAME: '',
+            P_PRICE: '',
+            P_SUBTITLE: '',
+            P_MAIN_IMG: null,
+            P_IMG1: null,
+            P_IMG2: null,
+            P_CONTENT: '',
+            P_MATERIAL: '',
+            P_SIZE: '',
+            P_COLOR: '',
+            P_HOT: false,
+            P_STATUS: false,
+            PS_ID: '',
+          };
+
+          // 重置文件輸入
+          if (this.$refs.mainImageInput) this.$refs.mainImageInput.value = '';
+          if (this.$refs.image1Input) this.$refs.image1Input.value = '';
+          if (this.$refs.image2Input) this.$refs.image2Input.value = '';
+
+          this.fetchData();
+        } else {
+          this.error = true;
+          this.errorMsg = response.data.msg;
+        }
+      } catch (error) {
         this.error = true;
-        this.errorMsg = response.data.msg;
+        this.errorMsg = error.message;
       }
-    } catch (error) {
-      this.error = true;
-      this.errorMsg = error.message;
-    }
-  },
+    },
+
     //刪除商品
     async deleteItem(id) {
-    try {
-      const response = await axios.get('http://localhost/cid101/g1/api/productDelete.php', {
-        params: { P_ID: id }
-      });
-      console.log(id);
-      if (!response.data.error) {
-        this.fetchData();
-      } else {
+      console.log();
+      try {
+        const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?K_ID=${id}`);
+        if (!response.data.error) {
+          this.fetchData();
+        } else {
+          this.error = true;
+          this.errorMsg = response.data.msg;
+        }
+      } catch (error) {
         this.error = true;
-        this.errorMsg = response.data.msg;
+        this.errorMsg = error.message;
       }
-    } catch (error) {
-      this.error = true;
-      this.errorMsg = error.message;
-    }
-  },
+    },
     // 修改商品
-    async updateItem(item) {
-    try {
-      const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', item);
-      if (!response.data.error) {
-        this.fetchData();
-      } else {
-        this.error = true;
-        this.errorMsg = response.data.msg;
+    // async updateItem(item) {
+    //   try {
+    //     const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', item);
+    //     if (!response.data.error) {
+    //       this.fetchData();
+    //     } else {
+    //       this.error = true;
+    //       this.errorMsg = response.data.msg;
+    //     }
+    //   } catch (error) {
+    //     this.error = true;
+    //     this.errorMsg = error.message;
+    //   }
+    // },
+    // onEditFileChange(e, item) {
+    //   const file = e.target.files[0];
+    //   if (file) {
+    //     item.newImage = file;
+    //     item.imagePreview = URL.createObjectURL(file);
+    //   }
+    // },
+    onMainImageChange(e) {
+      const file = e.target.files[0];
+      this.newItem.P_MAIN_IMG = file;
+      if (file) {
+        this.mainImagePreview = URL.createObjectURL(file);
       }
-    } catch (error) {
-      this.error = true;
-      this.errorMsg = error.message;
+    },
+    onImage1Change(e) {
+      const file = e.target.files[0];
+      this.newItem.P_IMG1 = file;
+      if (file) {
+        this.imagePreview1 = URL.createObjectURL(file);
+      }
+    },
+    onImage2Change(e) {
+      const file = e.target.files[0];
+      this.newItem.P_IMG2 = file;
+      if (file) {
+        this.imagePreview2 = URL.createObjectURL(file);
+      }
     }
+
   },
-},
 };
 </script>

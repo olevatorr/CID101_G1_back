@@ -40,11 +40,11 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr class="align-middle">
-                    <th scope="row">1</th>
-                    <td>2024/4/23 15:33</td>
-                    <td>邢富凱</td>
-                    <td>NT$ 2,980</td>
+                <tr v-for="(item, index) in productOrder" :key="item.id" class="align-middle">
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ item.PO_DATE }}</td>
+                    <td>{{ item.PO_NAME }}</td>
+                    <td>{{ item.PO_AMOUNT }}</td>
                     <td>
                         <div class="badge text-bg-danger text-wrap">
                             未處裡
@@ -59,15 +59,17 @@
                             已取消
                         </div>
                     </td>
+                    <!-- 訂單明細與操作 -->
                     <td>
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
+                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+                            :data-bs-target="'#staticBackdrop-revised2-' + index">
                             訂單明細與操作
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade" :id="'staticBackdrop-revised2-' + index" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content p-2">
                                     <div class="modal-header">
@@ -85,36 +87,38 @@
                                         <tbody class="table-group-divider">
                                             <tr class="align-middle">
                                                 <th scope="row">訂單號碼#</th>
-                                                <td>1</td>
+                                                <td>{{ index + 1 }}</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單日期</th>
-                                                <td>2024/4/23</td>
+                                                <td>{{ item.PO_DATE }}</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂購人姓名</th>
-                                                <td>邢富凱</td>
+                                                <td>{{ item.PO_NAME }}</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人姓名</th>
-                                                <td>林芊芃</td>
+                                                <td>{{ item.PO_NAME }}</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人電話</th>
-                                                <td>0912345678</td>
+                                                <td>{{ item.PO_PHONE }}</td>
+                                                <!-- 為啥手機號碼都沒有0? -->
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人收件地址</th>
-                                                <td>新北市</td>
+                                                <td>{{ item.PO_ADDR }}</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">運送方式</th>
-                                                <td>宅配</td>
+                                                <td>表格沒有這個</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">付款方式</th>
-                                                <td>Line Pay</td>
+                                                <td>{{ item.PM_ID }}</td>
                                             </tr>
+                                            <!-- 要串另一個表格? -->
                                             <tr class="align-middle">
                                                 <th scope="row">訂單明細</th>
                                                 <td>
@@ -131,7 +135,7 @@
                                                             <tr>
                                                                 <th scope="row">1</th>
                                                                 <td>【飲料杯套經典款-海龜】</td>
-                                                                <td>120</td>
+                                                                <td>$120</td>
                                                                 <td>2</td>
                                                             </tr>
                                                             <tr>
@@ -152,7 +156,7 @@
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單運費</th>
-                                                <td>0</td>
+                                                <td>60</td>
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單總金額(含運費)</th>
@@ -183,6 +187,7 @@
                             </div>
                         </div>
                     </td>
+
                 </tr>
             </tbody>
         </table>
@@ -205,3 +210,111 @@
         </nav>
     </div>
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            productOrder: [],
+            newItem: {
+                PO_ID: '',              //訂單ID
+                U_ID: '',               //會員ID
+                PO_NAME: '',            //收貨人姓名
+                PO_PHONE: '',           //電話
+                PO_AMOUNT: '',          //總價
+                PO_ADDR: '',            //送貨地址
+                PM_ID: '',              //付款方式
+                PO_DATE: '',            //訂單成立時間
+                S_STATUS: '',           //訂單狀態
+            },
+            productOrderCount: 0,
+            error: false,
+            errorMsg: '',
+            edit: true,
+        };
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        
+        async fetchData() {
+            try {
+                const response = await axios.get('http://localhost/cid101/g1/api/productOrder.php');
+                if (!response.data.error) {
+                    this.productOrder = response.data.productOrder;
+                    this.productOrderCount = response.data.productOrderCount;
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        // 新增訂單 
+        // async addItem() {
+        //     try {
+        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', JSON.stringify(this.newItem), {
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
+        //         });
+        //         if (!response.data.error) {
+        //             this.fetchData();
+        //             this.newItem = {
+        //                 K_TITLE: '',
+        //                 K_CONTENT: '',
+        //                 K_FROM: '',
+        //                 K_URL: '',
+        //                 K_DATE: ''
+        //             };
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+        // 刪除訂單 
+        // async deleteItem(id) {
+        //     try {
+        //         const response = await axios.get('http://localhost/cid101/g1/api/productOrderDelete.php', {
+        //             params: { PO_ID: id }
+        //         });
+        //         console.log(id);
+        //         if (!response.data.error) {
+        //             this.fetchData();
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+        // 修改訂單 
+        // async updateItem(item) {
+        //     try {
+        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', item);
+        //         if (!response.data.error) {
+        //             this.fetchData();
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+
+    },
+};
+</script>
