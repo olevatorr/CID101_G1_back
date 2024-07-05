@@ -9,6 +9,9 @@ export default defineConfig(({ mode }) => {
   const apiBaseUrl = mode === 'development' 
     ? 'http://localhost/cid101/g1/api/'
     : '/cid101/g1/api/'
+  const imgBaseUrl = mode === 'development' 
+    ? 'http://localhost/cid101/g1/upload/img'
+    : '/cid101/g1/upload/img'
 
   return {
     base: '/cid101/g1/',
@@ -25,7 +28,8 @@ export default defineConfig(({ mode }) => {
       }
     },
     define: {
-      __API_BASE_URL__: JSON.stringify(apiBaseUrl)
+      __API_BASE_URL__: JSON.stringify(apiBaseUrl),
+      __IMG_BASE_URL__: JSON.stringify(imgBaseUrl)
     }
   }
 })

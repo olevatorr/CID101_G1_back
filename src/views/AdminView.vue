@@ -1,8 +1,10 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import axios from 'axios'
 
 const adminList = ref([])
+const filterBtn = ref(1)
+const searchBar = ref(null)
 
 onMounted(() => {
   fetchAdminData()
@@ -73,6 +75,46 @@ const adminDelete = async (adminID) => {
     }
 };
 
+// 計算停權
+const suspensionCount = computed(()=> {
+    return adminList.value.reduce((acc,cur) => {
+        if (cur.AD_STATUS === 1){
+            // console.log(acc++);
+            acc++
+            return acc
+        }
+        return acc
+    }, 0)
+})
+
+const filterAdmin = (num) => {
+    filterBtn.value = num
+}
+
+const showAdmin = computed(()=>{
+    if(filterBtn.value === 1) {
+        const filterList = adminList.value
+        if(searchBar.value){
+            let text = searchBar.value.toUpperCase()
+            const searchFilterList = filterList.filter(admin => {
+                return admin.AD_ACCOUNT.toUpperCase().includes(text) || admin.AD_NAME.toUpperCase().includes(text)
+            })
+            return searchFilterList
+        }
+        return  filterList
+    } else {
+        const filterList = adminList.value.filter(admin => admin.AD_STATUS === 1)
+        if(searchBar.value){
+            let text = searchBar.value.toUpperCase()
+            const searchFilterList = filterList.filter(admin => {
+                return admin.AD_ACCOUNT.toUpperCase().includes(text) || admin.AD_NAME.toUpperCase().includes(text)
+            })
+            return searchFilterList
+        }
+        return filterList
+    }
+})
+
 </script>
 <template>
   <div class="container">
@@ -87,18 +129,18 @@ const adminDelete = async (adminID) => {
             id="btnradio1"
             autocomplete="off"
             checked
+            @click="filterAdmin(1)"
           />
           <label class="btn btn-outline-dark" for="btnradio1"> 全部 </label>
-          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
+          <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off" @click="filterAdmin(0)" />
           <label class="btn btn-outline-dark" for="btnradio2">
             已停權
-            <span class="badge text-bg-danger rounded-pill">14</span>
+            <span class="badge text-bg-danger rounded-pill">{{suspensionCount}}</span>
           </label>
         </div>
       </div>
       <form class="d-flex col-8 w-25" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-        <button class="btn btn-outline-success" type="submit">Search</button>
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchBar"/>
       </form>
     </div>
     <table class="table">
@@ -115,7 +157,7 @@ const adminDelete = async (adminID) => {
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr class="align-middle" v-for="admin in adminList" :key="admin.AD_ID">
+        <tr class="align-middle" v-for="admin in showAdmin" :key="admin.AD_ID">
           <th scope="row">{{ admin.AD_ID }}</th>
           <td>{{ admin.AD_NAME }}</td>
           <td>{{ admin.AD_ACCOUNT }}</td>
