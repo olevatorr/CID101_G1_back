@@ -2,16 +2,21 @@
     <div class="container">
         <p class="text-center fs-2">消息列表</p>
         <div class="modal-body mt-3">
+            <!-- category.id是陣列中單數個的id -->
+            <!-- category.id是陣列中單數個的id -->
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <!-- 使用 v-for 來動態生成分類按鈕 -->
-                <!-- checked被選中，@change 是事件綁定，表示當單選按鈕的值發生改變時要執行的方法 -->
-                <input type="radio" class="btn-check" name="btnradio" :id="'btnradio' + (index + 1)" autocomplete="off"
-                    :checked="selectedCategory === category.id" v-for="(category, index) in categories" :key="index"
-                    @change="filterNews(category.id)">
-                <label class="btn btn-outline-dark" :for="'btnradio' + (index + 1)"
-                    v-for="(category, index) in categories" :key="index">
-                    {{ category.name }}
-                </label>
+                <!-- 用 template 渲染時不會直接在 DOM 中生成額外的元素，它本身就像是一個隱藏的容器，只用來包裝內部的元素。 -->
+                <template v-for="category in categories" :key="category.id">
+                    <!-- :checked，跟 input 綁定，以以 :id="'btnradio' + category.id" -->
+                    <!-- :id="'btnradio' + category.id"，動態生成每個單選按鈕的 id 屬性，確保每個按鈕有唯一的識別符。 -->
+                    <input type="radio" class="btn-check" name="btnradio" :id="'btnradio' + category.id"
+                        autocomplete="off" :checked="selectedCategory === category.id"
+                        @change="filterNews(category.id)">
+                    <label class="btn btn-outline-dark" :for="'btnradio' + category.id">
+                        {{ category.name }}
+                    </label>
+                    <!-- input 有id值 和 label 的for綁定，點擊 label的環保商品，id="btnradio2" 的 input 就會被選中，增加用戶點擊區域 -->
+                </template>
             </div>
             <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
                 data-bs-target="#staticBackdrop-revise">
@@ -43,7 +48,7 @@
                                         <label for="basic-url" class="form-label">消息類別</label>
                                         <select v-model="newItem.NS_ID" class="form-select"
                                             aria-label="Default select example">
-                                            <option selected>請選擇類別</option>
+                                            <option selected value="">請選擇類別</option>
                                             <option v-for="(category, index) in categories" :key="index"
                                                 :value="category.id">
                                                 <!-- 回傳給後端的value值 -->
@@ -54,8 +59,13 @@
                                 </div>
                                 <div class="d-flex gap-4 mt-3">
                                     <div class="mb-3">
-                                        <label for="formFile" class="form-label">最新消息主圖</label>
-                                        <input class="form-control" type="file" id="formFile" accept="image/*">
+                                        <!-- 讓圖片有預覽功能 -->
+                                        <label for="imageUpload" class="form-label">最新消息主圖</label>
+                                        <div v-if="imagePreview">
+                                            <img :src="imagePreview" class="img-fluid img-thumbnail" alt="上傳的圖片">
+                                        </div>
+                                        <input class="form-control" type="file" id="imageUpload" accept="image/*"
+                                            @change="onFileChange" ref="fileInput">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -144,9 +154,15 @@
                                             </div>
                                             <div class="d-flex gap-4 mt-3">
                                                 <div class="mb-3">
-                                                    <label for="formFile" class="form-label">最新消息主圖</label>
-                                                    <input class="form-control" type="file" id="formFile"
-                                                        accept="image/*">
+                                                    <!-- 預覽上傳圖片 -->
+                                                    <label for="imageUpload" class="form-label">最新消息主圖</label>
+                                                    <div v-if="item.imagePreview || item.N_IMG">
+                                                        <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/news/${item.N_IMG}`"
+                                                            class="img-fluid img-thumbnail" alt="消息圖片">
+                                                    </div>
+                                                    <input class="form-control mt-2" type="file"
+                                                        :id="'imageUpload-' + index" accept="image/*"
+                                                        @change="(e) => onEditFileChange(e, item)">
                                                 </div>
                                             </div>
                                             <div class="col-12">
@@ -163,8 +179,8 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                            @click="updateItem(item)">修改消息</button>
+                                        <button @click="updateItem(item)" type="button" class="btn btn-primary"
+                                            data-bs-toggle="modal">修改消息</button>
                                     </div>
                                 </div>
                             </div>
@@ -203,12 +219,14 @@ export default {
             newItem: {
                 N_TITLE: '',
                 N_CONTENT: '',
-                NS_ID: ''// 添加類別 ID 屬性
+                NS_ID: '',// 添加類別 ID 屬性
+                N_IMG: null//圖片顯示，空值和null都可以
             },
             newsCount: 0,
             error: false,
             erroMsg: '',
             edit: true,
+            imagePreview: '', // 上傳圖片預覽
             categories: [
                 { id: 1, name: '全部' },
                 { id: 2, name: '環保商品' },
@@ -221,9 +239,9 @@ export default {
     computed: {
         filteredNews() {
             if (this.selectedCategory === 1) {
-                return this.news;
+                return this.news; // 當 selectedCategory 為 1 時，返回所有新聞
             }
-            return this.news.filter(item => item.NS_ID === this.selectedCategory);
+            return this.news.filter(item => item.NS_ID === this.selectedCategory); // 否則，根據 selectedCategory 過濾新聞
         }
     },
     mounted() {
@@ -236,7 +254,7 @@ export default {
                 const response = await axios.get('http://localhost/cid101/g1/api/news.php');
                 if (!response.data.error) {
                     this.news = response.data.news;
-                    this.newsCount = response.data.newsCount;
+                    // this.newsCount = response.data.newsCount;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -248,18 +266,27 @@ export default {
         },
         async addItem() {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/newsAdd.php', JSON.stringify(this.newItem), {
+                // 新增圖片設定
+                const formData = new FormData(); // 改用formData 以利傳送檔案
+                for (const key in this.newItem) {
+                    formData.append(key, this.newItem[key]);
+                }
+                const response = await axios.post('http://localhost/cid101/g1/api/newsAdd.php', formData, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'multipart/form-data'
                     }
                 });
+                // 一般資訊設定
                 if (!response.data.error) {
-                    this.fetchData();
                     this.newItem = {
                         N_TITLE: '',
                         N_CONTENT: '',
-                        NS_ID: '' // 重置類別 ID
+                        NS_ID: '', // 重置類別 ID
+                        N_IMG: null
                     };
+                    this.imagePreview = null;
+                    this.$refs.fileInput.value = '';
+                    this.fetchData();
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -269,6 +296,7 @@ export default {
                 this.errorMsg = error.message;
             }
         },
+        //篩選使用
         filterNews(categoryId) {
             this.selectedCategory = categoryId;
         },
@@ -276,13 +304,31 @@ export default {
         //點到的那個，所以有 item 當變數，要記得去綁訂唯一值id的button
         async updateItem(item) {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/newsUpdate.php', item, {
+                // 圖片上傳
+                const formData = new FormData();
+                for (const key in item) {
+                    if (key === 'newImage') {
+                        formData.append('N_IMG', item.newImage);
+                    } else if (key !== 'imagePreview') {
+                        formData.append(key, item[key]);
+                    }
+                }
+
+                // 如果沒有新圖片，也要傳遞原來的 N_IMG
+                if (!item.newImage && item.N_IMG) {
+                    formData.append('N_IMG', item.N_IMG);
+                }
+
+                const response = await axios.post('http://localhost/cid101/g1/api/newsUpdate.php', formData, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'multipart/form-data'
                     }
                 });
                 if (!response.data.error) {
                     this.fetchData();
+                    // 清理臨時數據
+                    delete item.newImage;
+                    delete item.imagePreview;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -290,6 +336,20 @@ export default {
             } catch (error) {
                 this.error = true;
                 this.errorMsg = error.message;
+            }
+        },
+        onFileChange(e) {
+            const file = e.target.files[0];
+            this.newItem.N_IMG = file;
+            if (file) {
+                this.imagePreview = URL.createObjectURL(file);
+            }
+        },
+        onEditFileChange(e, item) {
+            const file = e.target.files[0];
+            if (file) {
+                item.newImage = file;
+                item.imagePreview = URL.createObjectURL(file);
             }
         },
 
