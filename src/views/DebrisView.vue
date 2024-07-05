@@ -134,14 +134,12 @@ export default {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
-                if (!response.data.success) {
+                if (response.data.success) {
                     alert('文件上傳成功');
                     this.fetchData(); // 刷新資料或執行其他操作
                     this.DDL_DATE = ''; 
                     this.selectedFile = null; 
                     document.getElementById('formFile').value = '';
-                } else {
-                    alert('上傳失敗: ' + response.data.message);
                 }
             } catch (error) {
                 console.error('上傳失敗:', error);
