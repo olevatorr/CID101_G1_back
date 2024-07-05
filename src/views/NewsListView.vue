@@ -313,12 +313,10 @@ export default {
                         formData.append(key, item[key]);
                     }
                 }
-
                 // 如果沒有新圖片，也要傳遞原來的 N_IMG
                 if (!item.newImage && item.N_IMG) {
                     formData.append('N_IMG', item.N_IMG);
                 }
-
                 const response = await axios.post('http://localhost/cid101/g1/api/newsUpdate.php', formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
