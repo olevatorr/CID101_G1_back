@@ -240,7 +240,7 @@ export default {
             }
         },
         async addItem() {
-            try {
+            try {FormData
                 const formData = new FormData(); // 改用formData 以利傳送檔案
                 for (const key in this.newItem) {
                     formData.append(key, this.newItem[key]);
