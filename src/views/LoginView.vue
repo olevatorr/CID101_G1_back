@@ -43,7 +43,7 @@ const backLogin = async () => {
 
 onMounted(() => {
     authStore.checkLoginStatus()
-    if(loggedIn) router.push('/home')
+    if(loggedIn) router.push('/')
 })
 </script>
 <template>

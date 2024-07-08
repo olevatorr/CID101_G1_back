@@ -531,6 +531,7 @@ export default {
             const file = e.target.files[0];
             if (file) {
                 item.newImage = file;
+                console.log(item);
                 item.imagePreview = URL.createObjectURL(file);
             }
         },

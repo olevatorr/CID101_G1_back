@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import Cookies from 'js-cookie';
+import { useRouter } from 'vue-router'
 
 
 export const useAuthStore = defineStore('auth', {
@@ -7,6 +8,7 @@ export const useAuthStore = defineStore('auth', {
         loggedIn: false,
         adminName: '',
         adminLevel: '',
+        router: useRouter()
     }),
     actions: {
         login(admin) {
@@ -27,6 +29,7 @@ export const useAuthStore = defineStore('auth', {
                 this.login(admin)
             } else {
                 this.logout()
+                this.router.push('/')
             }
         }
     }
