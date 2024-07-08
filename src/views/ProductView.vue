@@ -521,6 +521,7 @@ export default {
       console.log();
       try {
         const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?P_ID=${id}`);
+        const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?P_ID=${id}`);
         if (!response.data.error) {
           this.fetchData();
         } else {
@@ -532,6 +533,7 @@ export default {
         this.errorMsg = error.message;
       }
     },
+    
     // 修改商品
     async updateItem(item) {
       try {
@@ -586,6 +588,62 @@ export default {
 
 
     // 選擇圖片
+    onEditFileChange(e, item) {
+      const file = e.target.files[0];
+      if (file) {
+        item.newImage = file;
+        item.imagePreview = URL.createObjectURL(file);
+      }
+    },
+    async updateItem(item) {
+    try {
+        const formData = new FormData();
+        
+        for (const key in item) {
+            // 如果是圖片字段，檢查圖片是否存在，存在則添加到 formData
+            if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
+                if (item[key]) {
+                    formData.append(key, item[key]);
+                }
+            } else {
+                formData.append(key, item[key]);
+            }
+        }
+
+        // 如果圖片字段沒有新圖片，但原來的圖片URL存在，也要傳遞原來的 URL
+        if (!item.P_MAIN_IMG && item.P_MAIN_IMG_URL) {
+            formData.append('P_MAIN_IMG', item.P_MAIN_IMG_URL);
+        }
+        if (!item.P_IMG1 && item.P_IMG1_URL) {
+            formData.append('P_IMG1', item.P_IMG1_URL);
+        }
+        if (!item.P_IMG2 && item.P_IMG2_URL) {
+            formData.append('P_IMG2', item.P_IMG2_URL);
+        }
+
+        const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
+        if (!response.data.error) {
+            this.fetchData();
+            // 清理臨時數據
+            delete item.P_MAIN_IMG;
+            delete item.P_IMG1;
+            delete item.P_IMG2;
+        } else {
+            this.error = true;
+            this.errorMsg = response.data.msg;
+        }
+    } catch (error) {
+        this.error = true;
+        this.errorMsg = error.message;
+    }
+},
+
+
     onEditFileChange(e, item) {
       const file = e.target.files[0];
       if (file) {
