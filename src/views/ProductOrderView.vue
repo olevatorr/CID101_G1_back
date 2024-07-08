@@ -118,7 +118,7 @@
                                                 <th scope="row">付款方式</th>
                                                 <td>{{ item.PM_ID }}</td>
                                             </tr>
-                                            <!-- 要串另一個表格? -->
+                                            <!-- 要串另一個表格 -->
                                             <tr class="align-middle">
                                                 <th scope="row">訂單明細</th>
                                                 <td>
@@ -255,66 +255,6 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-        // 新增訂單 
-        // async addItem() {
-        //     try {
-        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', JSON.stringify(this.newItem), {
-        //             headers: {
-        //                 'Content-Type': 'application/json'
-        //             }
-        //         });
-        //         if (!response.data.error) {
-        //             this.fetchData();
-        //             this.newItem = {
-        //                 K_TITLE: '',
-        //                 K_CONTENT: '',
-        //                 K_FROM: '',
-        //                 K_URL: '',
-        //                 K_DATE: ''
-        //             };
-        //         } else {
-        //             this.error = true;
-        //             this.errorMsg = response.data.msg;
-        //         }
-        //     } catch (error) {
-        //         this.error = true;
-        //         this.errorMsg = error.message;
-        //     }
-        // },
-        // 刪除訂單 
-        // async deleteItem(id) {
-        //     try {
-        //         const response = await axios.get('http://localhost/cid101/g1/api/productOrderDelete.php', {
-        //             params: { PO_ID: id }
-        //         });
-        //         console.log(id);
-        //         if (!response.data.error) {
-        //             this.fetchData();
-        //         } else {
-        //             this.error = true;
-        //             this.errorMsg = response.data.msg;
-        //         }
-        //     } catch (error) {
-        //         this.error = true;
-        //         this.errorMsg = error.message;
-        //     }
-        // },
-        // 修改訂單 
-        // async updateItem(item) {
-        //     try {
-        //         const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', item);
-        //         if (!response.data.error) {
-        //             this.fetchData();
-        //         } else {
-        //             this.error = true;
-        //             this.errorMsg = response.data.msg;
-        //         }
-        //     } catch (error) {
-        //         this.error = true;
-        //         this.errorMsg = error.message;
-        //     }
-        // },
-
     },
 };
 </script>
