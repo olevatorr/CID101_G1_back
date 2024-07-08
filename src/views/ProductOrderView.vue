@@ -104,7 +104,6 @@
                                             <tr class="align-middle">
                                                 <th scope="row">收件人電話</th>
                                                 <td>{{ item.PO_PHONE }}</td>
-                                                <!-- 為啥手機號碼都沒有0? -->
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">收件人收件地址</th>
@@ -160,7 +159,7 @@
                                             </tr>
                                             <tr class="align-middle">
                                                 <th scope="row">訂單總金額(含運費)</th>
-                                                <td>2980</td>
+                                                <td>{{ item.PO_AMOUNT+60 }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -225,9 +224,10 @@ export default {
                 PO_PHONE: '',           //電話
                 PO_AMOUNT: '',          //總價
                 PO_ADDR: '',            //送貨地址
-                PM_ID: '',              //付款方式
+                PM_NMAE:'',              //付款方式
                 PO_DATE: '',            //訂單成立時間
                 S_STATUS: '',           //訂單狀態
+                PO_TRANS: '',           //運送方式
             },
             productOrderCount: 0,
             error: false,
