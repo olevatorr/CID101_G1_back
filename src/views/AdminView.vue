@@ -1,10 +1,16 @@
 <script setup>
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref, computed, reactive } from 'vue'
 import axios from 'axios'
 
 const adminList = ref([])
 const filterBtn = ref(1)
 const searchBar = ref(null)
+const newAdmin = reactive({
+    AD_ACCOUNT: '',
+    AD_PSW: '',
+    AD_NAME: '',
+    AD_LEVEL: ''
+})
 
 onMounted(() => {
   fetchAdminData()
@@ -23,6 +29,19 @@ const fetchAdminData = async () => {
   } catch (error) {
     alert('資料獲取失敗', error.message)
   }
+}
+// 新增
+const adminAdd = async ()=> {
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/adminAdd.php`, newAdmin)
+        if(!response.data.error){
+            fetchAdminData()
+        } else {
+            alert(response.data.msg || '新增失敗')
+        }
+    } catch (error){
+        alert('新增失敗', error.message)
+    }
 }
 
 // 停權
@@ -138,9 +157,96 @@ const showAdmin = computed(()=>{
             <span class="badge text-bg-danger rounded-pill">{{suspensionCount}}</span>
           </label>
         </div>
+        <button
+              type="button"
+              class="btn btn-primary ms-2"
+              data-bs-toggle="modal"
+              data-bs-target="#addAdmin"
+            >
+              新增管理員
+            </button>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="addAdmin"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">
+                      新增管理員
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <form>
+                    <div class="modal-body">
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">管理員名稱</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="newAdmin.AD_NAME"
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">帳號</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="newAdmin.AD_ACCOUNT"
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">密碼</span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          v-model="newAdmin.AD_PSW"
+                          aria-label="Username"
+                          aria-describedby="basic-addon1"
+                        />
+                      </div>
+                      <div class="input-group mb-3" v-if="newAdmin.AD_ID !== 1">
+                        <span class="input-group-text" id="basic-addon1">管理員等級</span>
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          v-model="newAdmin.AD_LEVEL"
+                        >
+                          <option value="1">超級管理員</option>
+                          <option value="2">一般管理員</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        取消
+                      </button>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" @click="adminAdd">
+                        確認新增
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
       </div>
-      <form class="d-flex col-8 w-25" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchBar"/>
+      <form class="d-flex col-8 w-25">
+        <input class="form-control me-2" placeholder="Search" v-model="searchBar"/>
       </form>
     </div>
     <table class="table">
@@ -170,10 +276,10 @@ const showAdmin = computed(()=>{
                 type="checkbox"
                 role="switch"
                 :checked="admin.AD_STATUS"
-                id="flexSwitchCheckChecked"
+                :id="'flexSwitchCheckChecked' + admin.AD_ID"
                 @change="suspensionSwitch($event, admin)"
               />
-              <label class="form-check-label" for="flexSwitchCheckChecked">停權</label>
+              <label class="form-check-label" :for="'flexSwitchCheckChecked' + admin.AD_ID">停權</label>
             </div>
           </td>
           <td>
@@ -199,7 +305,7 @@ const showAdmin = computed(()=>{
                 <div class="modal-content">
                   <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">
-                      會員編號 #{{ admin.AD_ID }}
+                      管理員編號 #{{ admin.AD_ID }}
                     </h1>
                     <button
                       type="button"

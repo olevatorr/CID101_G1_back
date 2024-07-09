@@ -16,6 +16,7 @@ export const useAuthStore = defineStore('auth', {
             this.adminName = admin.AD_NAME
             this.adminLevel = admin.AD_LEVEL
             Cookies.set('loggedInAdmin', JSON.stringify(admin), { expires: 3 })
+            this.router.push('/home')
         },
         logout() {
             this.loggedIn = false
