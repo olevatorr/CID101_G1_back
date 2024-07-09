@@ -71,7 +71,7 @@
                         <tr v-for="(item, index) in EXPENDITURE" :key="item.id">
                             <td>{{ index + 1 }}</td>
                             <td>{{ item.EL_NAME }}</td>
-                            <td>{{ item.EL_NAME }}</td>
+                            <td>{{ item.EL_TITLE }}</td>
                             <td>{{ item.EL_OUTLAY }}</td>
                             <td>{{ item.EL_DATE }}</td>
                         </tr>
