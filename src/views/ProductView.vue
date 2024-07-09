@@ -275,9 +275,9 @@
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖1</label>
-                            <div v-if="item?.image1Preview || item?.P_IMG1">
+                            <div v-if="item?.image1Preview1 || item?.P_IMG1">
                               <img
-                                :src="item?.image1Preview || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG1}`"
+                                :src="item?.image1Preview1 || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG1}`"
                                 class="img-fluid img-thumbnail" alt="副圖1">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image1Upload-' + index" accept="image/*"
@@ -285,9 +285,9 @@
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖2</label>
-                            <div v-if="item?.image2Preview || item?.P_IMG2">
+                            <div v-if="item?.image2Preview2 || item?.P_IMG2">
                               <img
-                                :src="item?.image2Preview || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG2}`"
+                                :src="item?.image2Preview2 || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG2}`"
                                 class="img-fluid img-thumbnail" alt="副圖2">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image2Upload-' + index" accept="image/*"
@@ -402,6 +402,9 @@ export default {
         P_HOT: false,
         P_STATUS: false,
         PS_ID: '',
+        newMainImage: null,
+        newImg1: null,
+        newImg2: null
       },
       productCount: 0,
       error: false,
@@ -531,6 +534,66 @@ export default {
     },
     
     // 修改商品
+    async updateItem(item) {
+      try {
+        const formData = new FormData();
+
+        // 遍歷所有項目並添加到 formData
+        for (const key in item) {
+          if (key === 'newMainImage' || key === 'newImg1' || key === 'newImg2') {
+            if (item[key]) {
+              formData.append(key, item[key]);
+            }
+          } else if (key !== 'imagePreviewMain' && key !== 'imagePreview1' && key !== 'imagePreview2') {
+            formData.append(key, item[key]);
+          }
+        }
+
+        // 如果沒有新圖片，也要傳遞原來的圖片
+        if (!item.newMainImage && item.P_MAIN_IMG) {
+          formData.append('P_MAIN_IMG', item.P_MAIN_IMG);
+        }
+        if (!item.newImg1 && item.P_IMG1) {
+          formData.append('P_IMG1', item.P_IMG1);
+        }
+        if (!item.newImg2 && item.P_IMG2) {
+          formData.append('P_IMG2', item.P_IMG2);
+        }
+
+        const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+
+        if (!response.data.error) {
+          this.fetchData();
+          delete item.newMainImage;
+          delete item.imagePreviewMain;
+          delete item.newImg1;
+          delete item.imagePreview1;
+          delete item.newImg2;
+          delete item.imagePreview2;
+          this.successMsg = "更新成功!";
+        } else {
+          this.error = true;
+          this.errorMsg = response.data.msg;
+        }
+      } catch (error) {
+        this.error = true;
+        this.errorMsg = error.message;
+      }
+    },
+
+
+    // 選擇圖片
+    onEditFileChange(e, item) {
+      const file = e.target.files[0];
+      if (file) {
+        item.newImage = file;
+        item.imagePreview = URL.createObjectURL(file);
+      }
+    },
     async updateItem(item) {
     try {
         const formData = new FormData();
