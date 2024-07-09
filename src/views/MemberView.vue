@@ -39,7 +39,7 @@
                 <tr v-for="(item, index) in paginatedMembers" :key="item.U_ID" class="align-middle">
                     <th scope="row">{{ (currentPage - 1) * membersPerPage + index + 1 }}</th>
                     <td>
-                        <img :src="`http://localhost/cid101/g1/upload/img/member/${item.U_AVATAR}`" class="rounded-circle" alt="..." style="width: 50px">
+                        <img :src="pathURL(item.U_AVATAR)" class="rounded-circle" alt="..." style="width: 50px">
                     </td>
                     <td>{{item.U_ACCOUNT}}</td>
                     <td>{{item.U_NAME}}</td>
@@ -63,7 +63,7 @@
                                     </div>
                                     <form>
                                         <div class="modal-body">
-                                            <img :src="`http://localhost/cid101/g1/upload/img/member/${item.U_AVATAR}`" class="rounded-circle mb-3 mx-auto d-block" alt="..." style="width: 100px">
+                                            <img :src="pathURL(item.U_AVATAR)" class="rounded-circle mb-3 mx-auto d-block" alt="..." style="width: 100px">
                                             <div class="input-group mb-3">
                                                 <span class="input-group-text" id="basic-addon1">帳號</span>
                                                 <input type="text" class="form-control" v-model="item.U_ACCOUNT"
@@ -200,7 +200,7 @@ export default {
          // 獲取會員數據
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/memberBack.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/memberBack.php`);
                 if (!response.data.error) {
                     this.members = response.data.members.map(member => {
                         if (!member.U_AVATAR) {
@@ -226,7 +226,7 @@ export default {
                     U_ID: item.U_ID,
                     U_STATUS: item.U_STATUS ? '1' : '0' // 確保與 v-model 使用的變數名稱一致
                 };
-                const response = await axios.post('http://localhost/cid101/g1/api/updateSuspension.php', data, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/updateSuspension.php`, data, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
@@ -249,6 +249,9 @@ export default {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
             }
+        },
+        pathURL(url){
+            return `${import.meta.env.VITE_IMG_URL}/member/${url}`
         }
         
     }
