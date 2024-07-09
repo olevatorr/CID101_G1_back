@@ -96,14 +96,18 @@
                                     <label for="basic-url" class="form-label">報名人數</label>
                                     <div class="input-group mb-3">
                                         <span class="input-group-text">人數上限</span>
-                                        <input v-model="newItem.E_SIGN_UP" type="text" class="form-control"
+                                        <input v-model="newItem.E_MAX_ATTEND" type="text" class="form-control"
                                             aria-label="Dollar amount">
                                     </div>
                                 </div>
                                 <div class="d-flex gap-4 mt-3">
                                     <div class="mb-3">
                                         <label for="formFile" class="form-label">活動主圖</label>
-                                        <input class="form-control" type="file" id="formFile" accept="image/*">
+                                        <div v-if="imagePreview">
+                                            <img :src="imagePreview" class="img-fluid img-thumbnail" alt="上傳的圖片">
+                                        </div>
+                                        <input class="form-control" type="file" id="formFile" accept="image/*"
+                                            @change="onFileChange" ref="fileInput">
                                     </div>
                                 </div>
                                 <div class="col-12">
@@ -140,7 +144,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr class="align-middle" v-for="(item, index) in filteredEvents " :key="item.id">
+                <tr class="align-middle" v-for="(item, index) in filteredEvents " :key="item.E_ID">
                     <th scope="row">{{ index + 1 }}</th>
                     <td>{{ item.E_DATE }}</td>
                     <td>{{ item.E_DEADLINE }}</td>
@@ -171,16 +175,18 @@
                     <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#eventlist">
+                            :data-bs-target="'#eventlist' + index" @click="filterList(item.E_ID)">
                             顯示名單
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="eventlist" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                            <div class="modal-dialog  modal-lg">
+                        <div class="modal fade" :id="'eventlist' + index" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">活動編號 #1</h1>
+                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ index
+                                            + 1 }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -197,17 +203,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th scope="row">1</th>
-                                                        <td>陳世修</td>
-                                                        <td>7人</td>
-                                                        <td>2024/5/14 12:43:11</td>
+                                                    <tr v-for="(apply, index) in selectedOrders" :key="apply.EO_ID">
+                                                        <th scope="row">{{ index + 1 }}</th>
+                                                        <td>{{ apply.U_NAME }}</td>
+                                                        <td>{{ apply.EO_ATTEND }}人</td>
+                                                        <td>{{ apply.EO_DATE }}</td>
                                                         <td>
                                                             <div class="form-check form-switch">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                    role="switch" id="flexSwitchCheckChecked">
+                                                                    role="switch" :id="'flexSwitchCheckChecked' + index"
+                                                                    :checked="apply.EO_STATUS"
+                                                                    @change="Cancel($event, apply)">
                                                                 <label class="form-check-label"
-                                                                    for="flexSwitchCheckChecked">取消此用戶報名</label>
+                                                                    :for="'flexSwitchCheckChecked' + index">取消此用戶報名</label>
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -223,19 +231,21 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td v-if="new Date() < new Date(item.E_DATE)">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             :data-bs-target="'#eventModify' + index">
                             活動修改
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" :id="'eventModify' + index" data-bs-backdrop="static" data-bs-keyboard="false"
-                            tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade" :id="'eventModify' + index" data-bs-backdrop="static"
+                            data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                            aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">活動編號 #1</h1>
+                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ index
+                                            + 1 }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -300,15 +310,19 @@
                                                     <label for="basic-url" class="form-label">報名人數</label>
                                                     <div class="input-group mb-3">
                                                         <span class="input-group-text">人數上限</span>
-                                                        <input v-model="item.E_SIGN_UP" type="text" class="form-control"
-                                                            aria-label="Dollar amount">
+                                                        <input v-model="item.E_MAX_ATTEND" type="text"
+                                                            class="form-control" aria-label="Dollar amount">
                                                     </div>
                                                 </div>
                                                 <div class="d-flex gap-4 mt-3">
                                                     <div class="mb-3">
                                                         <label for="formFile" class="form-label">活動主圖</label>
-                                                        <input class="form-control" type="file" id="formFile"
-                                                            accept="image/*">
+                                                        <div v-if="item.imagePreview || item.E_IMG">
+                                                            <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/events/${item.E_IMG}`"
+                                                                class="img-fluid img-thumbnail" alt="知識圖片">
+                                                        </div>
+                                                        <input class="form-control" type="file" :id="'formFile' + index"
+                                                            accept="image/*" @change="(e) => onEditFileChange(e, item)">
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
@@ -325,7 +339,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">關閉</button>
                                             <button type="submit" class="btn btn-primary"
-                                                @click="update(item)">儲存狀態</button>
+                                                @click="updateItem(item)">儲存狀態</button>
                                         </div>
                                     </form>
                                 </div>
@@ -362,22 +376,22 @@ export default {
     data() {
         return {
             events: [],
+            eventsApplied: [],
             newItem: {
                 E_TITLE: '',
                 E_ADDRESS: '',
-                E_AREA: '',
                 E_DATE: '',
-                E_START: '',
                 E_DEADLINE: '',
-                E_SIGN_UP: '',
-                E_CONTENT: '',
                 E_STATUS: '',
-                E_MAX_ATTEND: '',
+                E_IMG: null
             },
             error: false,
             errorMsg: '',
             edit: false,
-            currentFilter: 'all'
+            currentFilter: 'all',
+            imagePreview: '',
+            selectedOrders: '',
+            endApply:false,
         };
     },
     mounted() {
@@ -386,14 +400,34 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/events.php');
-                if (!response.data.error) {
-                    this.events = response.data.events;
+                const [eventsResponse, eventsAppliedResponse] = await Promise.all([
+                    axios.get('http://localhost/cid101/g1/api/events.php'),
+                    axios.get('http://localhost/cid101/g1/api/eventsApplied.php')
+                ]);
+
+                if (!eventsResponse.data.error) {
+                    this.events = eventsResponse.data.events;
                     // console.log(this.events);
                 } else {
                     this.error = true;
-                    this.errorMsg = response.data.msg;
+                    this.errorMsg = eventsResponse.data.msg;
                 }
+                if (!eventsAppliedResponse.data.error) {
+                    this.eventsApplied = eventsAppliedResponse.data.events;
+                    // console.log(this.eventsApplied);
+                } else {
+                    this.error = true;
+                    this.errorMsg = eventsResponse.data.msg;
+                }
+
+                // if (!orderResponse.data.error) {
+                //     this.order = orderResponse.data.event_order;
+                //     // console.log(this.order);
+                // } else {
+                //     this.error = true;
+                //     this.errorMsg = orderResponse.data.msg;
+                // }
+
             } catch (error) {
                 this.error = true;
                 this.errorMsg = error.message;
@@ -401,41 +435,28 @@ export default {
         },
         async addItem() {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/evenAdd.php', JSON.stringify(this.newItem), {
+                const formData = new FormData(); // 改用formData 以利傳送檔案
+                for (const key in this.newItem) {
+                    formData.append(key, this.newItem[key]);
+                }
+
+                const response = await axios.post('http://localhost/cid101/g1/api/evenAdd.php', formData, {
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'multipart/form-data'
                     }
                 });
+
                 if (!response.data.error) {
-                    this.fetchData();
                     this.newItem = {
                         E_TITLE: '',
                         E_ADDRESS: '',
-                        E_AREA: '',
                         E_DATE: '',
-                        E_START: '',
                         E_DEADLINE: '',
-                        E_SIGN_UP: '',
-                        E_CONTENT: '',
                         E_STATUS: '',
-                        E_MAX_ATTEND: '',
+                        E_IMG: null
                     };
-                } else {
-                    this.error = true;
-                    this.errorMsg = response.data.msg;
-                }
-            } catch (error) {
-                this.error = true;
-                this.errorMsg = error.message;
-            }
-        },
-        async deleteItem(id) {
-            console.log(id);
-            try {
-                const response = await axios.get('http://localhost/cid101/g1/api/evenDelete.php', {
-                    params: { E_ID: id }
-                }); console.log(id);
-                if (!response.data.error) {
+                    this.imagePreview = null;
+                    this.$refs.fileInput.value = '';
                     this.fetchData();
                 } else {
                     this.error = true;
@@ -446,11 +467,34 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-        async update(item) {
+        async updateItem(item) {
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/evenUpdate.php', item);
+                const formData = new FormData();
+                console.log(item);
+                for (const key in item) {
+                    if (key === 'newImage') {
+                        formData.append('E_IMG', item.newImage);
+                    } else if (key !== 'imagePreview') {
+                        formData.append(key, item[key]);
+                    }
+                }
+
+                // 如果沒有新圖片，也要傳遞原來的 E_IMG
+                if (!item.newImage && item.E_IMG) {
+                    formData.append('E_IMG', item.E_IMG);
+                }
+
+                const response = await axios.post('http://localhost/cid101/g1/api/evenUpdate.php', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+
                 if (!response.data.error) {
                     this.fetchData();
+                    // 清理臨時數據
+                    delete item.newImage;
+                    delete item.imagePreview;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -458,6 +502,38 @@ export default {
             } catch (error) {
                 this.error = true;
                 this.errorMsg = error.message;
+            }
+        },
+        // async deleteItem(id) {
+        //     console.log(id);
+        //     try {
+        //         const response = await axios.get('http://localhost/cid101/g1/api/evenDelete.php', {
+        //             params: { E_ID: id }
+        //         }); console.log(id);
+        //         if (!response.data.error) {
+        //             this.fetchData();
+        //         } else {
+        //             this.error = true;
+        //             this.errorMsg = response.data.msg;
+        //         }
+        //     } catch (error) {
+        //         this.error = true;
+        //         this.errorMsg = error.message;
+        //     }
+        // },
+        onFileChange(e) {
+            const file = e.target.files[0];
+            this.newItem.E_IMG = file;
+            if (file) {
+                this.imagePreview = URL.createObjectURL(file);
+            }
+        },
+        onEditFileChange(e, item) {
+            const file = e.target.files[0];
+            if (file) {
+                item.newImage = file;
+                console.log(item);
+                item.imagePreview = URL.createObjectURL(file);
             }
         },
         getAreaName(area) {
@@ -475,7 +551,44 @@ export default {
                 default:
                     return '未知';
             }
+        },
+        filterList(itemId) {
+            this.selectedOrders = this.eventsApplied.filter(order => order.E_ID === itemId);
+
+            // console.log(item);
+            // console.log(this.order);
+        },
+        async Cancel($event, apply) {
+            const eventItem = this.events.find(ev => ev.E_ID === apply.E_ID);
+            // console.log(eventItem); //該筆活動整理資訊
+            // console.log(apply);     //報名人的資訊
+            if (apply.EO_STATUS === 0) {
+                apply.EO_STATUS = 1;
+                eventItem.E_SIGN_UP -= apply.EO_ATTEND;
+            } else {
+                apply.EO_STATUS = 0;
+                if (eventItem) {
+                    eventItem.E_SIGN_UP += apply.EO_ATTEND;
+                }
+            }
+            const updateData = {
+                EO_STATUS: apply.EO_STATUS,
+                E_ID: apply.E_ID,
+                E_SIGN_UP: eventItem.E_SIGN_UP
+            };
+            try {
+                const response = await axios.post('http://localhost/cid101/g1/api/evenUpdatePeople.php', updateData,{
+                    headers: {
+                'Content-Type': 'application/json'
+            }
+                });
+                console.log('更新成功：', response.data);
+            } catch (error) {
+                console.error('更新失敗：', error);
+            }
+            console.log('報名人數：', eventItem.E_SIGN_UP);
         }
+
     },
     computed: {
         filteredEvents() {
