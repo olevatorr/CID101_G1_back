@@ -251,7 +251,7 @@ export default {
         //非同步
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/news.php');
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`);
                 if (!response.data.error) {
                     this.news = response.data.news;
                     // this.newsCount = response.data.newsCount;
@@ -271,7 +271,7 @@ export default {
                 for (const key in this.newItem) {
                     formData.append(key, this.newItem[key]);
                 }
-                const response = await axios.post('http://localhost/cid101/g1/api/newsAdd.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -317,7 +317,7 @@ export default {
                 if (!item.newImage && item.N_IMG) {
                     formData.append('N_IMG', item.N_IMG);
                 }
-                const response = await axios.post('http://localhost/cid101/g1/api/newsUpdate.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
