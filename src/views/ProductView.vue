@@ -521,7 +521,6 @@ export default {
       console.log();
       try {
         const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?P_ID=${id}`);
-        const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?P_ID=${id}`);
         if (!response.data.error) {
           this.fetchData();
         } else {
