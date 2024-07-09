@@ -239,9 +239,8 @@ export default {
             }
         },
         async addItem() {
-            try {FormData
+            try {
                 const formData = new FormData(); // 改用formData 以利傳送檔案
-                console.log(formData);
                 for (const key in this.newItem) {
                     formData.append(key, this.newItem[key]);
                 }
@@ -250,6 +249,7 @@ export default {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+
                 if (!response.data.error) {
                     this.newItem = {
                         K_TITLE: '',
@@ -296,7 +296,7 @@ export default {
         //         this.errorMsg = error.message;
         //     }
         // },
-
+        
         async deleteItem(id) {
             console.log();
             try {

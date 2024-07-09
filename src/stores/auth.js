@@ -8,7 +8,11 @@ export const useAuthStore = defineStore('auth', {
         loggedIn: false,
         adminName: '',
         adminLevel: '',
+<<<<<<< HEAD
         router: useRouter(),
+=======
+        router: useRouter()
+>>>>>>> evenList
     }),
     actions: {
         login(admin) {
@@ -30,6 +34,7 @@ export const useAuthStore = defineStore('auth', {
                 this.login(admin)
             } else {
                 this.logout()
+                this.router.push('/')
             }
         }
     }
