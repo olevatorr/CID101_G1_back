@@ -231,7 +231,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
+                    <td v-if="new Date() < new Date(item.E_DATE)">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             :data-bs-target="'#eventModify' + index">
@@ -339,7 +339,7 @@
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">關閉</button>
                                             <button type="submit" class="btn btn-primary"
-                                                @click.prevent="updateItem(item)">儲存狀態</button>
+                                                @click="updateItem(item)">儲存狀態</button>
                                         </div>
                                     </form>
                                 </div>
@@ -391,6 +391,7 @@ export default {
             currentFilter: 'all',
             imagePreview: '',
             selectedOrders: '',
+            endApply:false,
         };
     },
     mounted() {
