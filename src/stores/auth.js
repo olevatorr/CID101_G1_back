@@ -30,6 +30,7 @@ export const useAuthStore = defineStore('auth', {
                 this.login(admin)
             } else {
                 this.logout()
+                this.router.push('/')
             }
         }
     }
