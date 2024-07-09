@@ -111,7 +111,7 @@ export default {
         },
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/Debris.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Debris.php`);
                 this.dataList = response.data;
             } catch (error) {
                 this.error = true;
@@ -129,7 +129,7 @@ export default {
             formData.append('file', this.selectedFile);
 
             try {
-                let response = await axios.post('http://localhost/cid101/g1/api/DebrisAdd.php', formData, {
+                let response = await axios.post(`${import.meta.env.VITE_API_URL}/DebrisAdd.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -149,7 +149,7 @@ export default {
         async deleteItem(id) {
             console.log(id);
             try {
-                const response = await axios.delete(`http://localhost/cid101/g1/api/DebrisDelete.php?DDL_ID=${id}`);
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/DebrisDelete.php?DDL_ID=${id}`);
                 if (!response.data.error) {
                     this.fetchData();
                 } else {
