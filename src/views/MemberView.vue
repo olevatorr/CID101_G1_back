@@ -20,7 +20,6 @@
             </div>
             <form class="d-flex col-8 w-25" role="search" @submit.prevent="searchMembers">
                 <input class="form-control me-2" type="search" v-model="searchQuery" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
         <table class="table">
@@ -163,9 +162,18 @@ export default {
             // 檢查會員是否符合過濾條件
             return this.members.filter(member => {
                 const matchesFilter = this.filterStatus === 'all' || (this.filterStatus === 'suspended' && !member.U_STATUS);
-                 // 檢查會員是否符合搜索查詢
-                const matchesSearch = member.U_ACCOUNT.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-                    member.U_NAME.toLowerCase().includes(this.searchQuery.toLowerCase());
+                const searchQueryLower = this.searchQuery.toLowerCase();
+                
+                // 將各個字段轉換為字串並檢查是否包含搜尋查詢
+                // toLowerCase() ， 值轉換為小寫字串
+                // this.searchQuery.toLowerCase() ， 將搜尋查詢（使用者輸入）轉換為小寫
+                // includes() ， 檢查的小寫版本是否U_PHONE包含小寫搜尋查詢作為子字串
+                // toString() ， 數值轉換為字串
+                const matchesSearch = 
+                member.U_ACCOUNT.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                member.U_NAME.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                member.U_PHONE.includes(this.searchQuery.toLowerCase()) ||
+                member.U_DATE.toString().toLowerCase().includes(searchQueryLower);
                 // 返回同時符合過濾條件和搜索查詢的會員
                 return matchesFilter && matchesSearch;
             });
