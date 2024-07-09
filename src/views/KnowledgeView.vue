@@ -226,7 +226,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/knowledge.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/knowledge.php`);
                 if (!response.data.error) {
                     this.knowledge = response.data.knowledge;
                 } else {
@@ -239,16 +239,17 @@ export default {
             }
         },
         async addItem() {
-            try {FormData
+            try {
                 const formData = new FormData(); // 改用formData 以利傳送檔案
                 for (const key in this.newItem) {
                     formData.append(key, this.newItem[key]);
                 }
-                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeAdd.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/knowledgeAdd.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 });
+
                 if (!response.data.error) {
                     this.newItem = {
                         K_TITLE: '',
@@ -295,11 +296,11 @@ export default {
         //         this.errorMsg = error.message;
         //     }
         // },
-
+        
         async deleteItem(id) {
             console.log();
             try {
-                const response = await axios.delete(`http://localhost/cid101/g1/api/knowledgeDelete.php?K_ID=${id}`);
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/knowledgeDelete.php?K_ID=${id}`);
                 if (!response.data.error) {
                     this.fetchData();
                 } else {
@@ -328,7 +329,7 @@ export default {
                     formData.append('K_URL', item.K_URL);
                 }
 
-                const response = await axios.post('http://localhost/cid101/g1/api/knowledgeUpdate.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/knowledgeUpdate.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }

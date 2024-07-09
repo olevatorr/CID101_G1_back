@@ -13,7 +13,7 @@ onMounted(() => {
 // 抓取所有管理員資料
 const fetchAdminData = async () => {
   try {
-    const response = await axios.get(`${__API_BASE_URL__}/admin.php`)
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/admin.php`)
     if (!response.data.error) {
       adminList.value = response.data.admin
       // console.log(adminList.value);
@@ -33,7 +33,7 @@ const suspensionSwitch = async (e, admin) => {
             'AD_ID': admin.AD_ID,
             'AD_STATUS': admin.AD_STATUS
         }
-        const response = await axios.post(`${__API_BASE_URL__}adminStatusUpdate.php`, data)
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/adminStatusUpdate.php`, data)
         if(!response.data.error){
             fetchAdminData()
         } else {
@@ -47,7 +47,7 @@ const suspensionSwitch = async (e, admin) => {
 // 編輯
 const adminUpdate = async (admin) => {
     try {
-        const response = await axios.post(`${__API_BASE_URL__}adminUpdate.php`, admin)
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/adminUpdate.php`, admin)
         if(!response.data.error){
             fetchAdminData()
         } else {
@@ -62,7 +62,7 @@ const adminUpdate = async (admin) => {
 const adminDelete = async (adminID) => {
     console.log(adminID);
     try {
-        const response = await axios.delete(`${__API_BASE_URL__}/adminDelete.php`, {
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/adminDelete.php`, {
             params: { AD_ID: adminID }
         });
         if (!response.data.error) {

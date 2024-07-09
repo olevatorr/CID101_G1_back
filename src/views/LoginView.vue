@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
 import axios from 'axios';
 
 const admin = ref({
@@ -12,12 +11,11 @@ const admin = ref({
 const authStore = useAuthStore()
 const router = useRouter()
 
-const {loggedIn} = storeToRefs(authStore)
 
 const backLogin = async () => {
     try {
         // console.log('Sending data:', admin.value);  // 調試日誌
-        const response = await axios.post(`${__API_BASE_URL__}/adminLogin.php`, admin.value, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/adminLogin.php`, admin.value, {
             headers: {
                 'Content-Type': 'application/json'
             }
@@ -43,7 +41,6 @@ const backLogin = async () => {
 
 onMounted(() => {
     authStore.checkLoginStatus()
-    if(loggedIn) router.push('/home')
 })
 </script>
 <template>
