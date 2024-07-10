@@ -129,8 +129,7 @@
                                                 <div class="mb-3">
                                                     <label for="imageUpload" class="form-label">知識主圖</label>
                                                     <div v-if="item.imagePreview || item.K_URL">
-                                                        <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/knowledge/${item.K_URL}`"
-                                                            class="img-fluid img-thumbnail" alt="知識圖片">
+                                                        <img :src="getImageSrc(item)" class="img-fluid img-thumbnail" alt="知識圖片">
                                                     </div>
                                                     <input class="form-control mt-2" type="file"
                                                         :id="'imageUpload-' + index" accept="image/*"
@@ -387,6 +386,12 @@ export default {
                 this.selectedIdToDelete = null;
             }
         },
+        convertURL(url) {
+            return `${import.meta.env.VITE_IMG_URL}/knowledge/${url}`
+        },
+        getImageSrc(item) {
+            return item.imagePreview || this.convertURL(item.K_URL);
+        }
     },
 };
 </script>
