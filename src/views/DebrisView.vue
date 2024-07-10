@@ -60,7 +60,7 @@
                     <td>{{ item.DDL_DATA_DATE }}</td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">刪除</button>
+                            data-bs-target="#staticBackdrop" @click="selectItemToDelete(item.DDL_ID)">刪除</button>
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
@@ -80,7 +80,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">返回</button>
-                                        <button type="button" class="btn btn-primary" @click="deleteItem(item.DDL_ID)" data-bs-toggle="modal">確認刪除</button>
+                                        <button type="button" class="btn btn-primary" @click="confirmDelete" data-bs-toggle="modal">確認刪除</button>
                                     </div>
                                 </div>
                             </div>
@@ -147,7 +147,7 @@ export default {
             }
         },
         async deleteItem(id) {
-            console.log(id);
+            // console.log(id);
             try {
                 const response = await axios.delete(`${import.meta.env.VITE_API_URL}/DebrisDelete.php?DDL_ID=${id}`);
                 if (!response.data.error) {
@@ -159,6 +159,15 @@ export default {
             } catch (error) {
                 this.error = true;
                 this.errorMsg = error.message;
+            }
+        },
+        selectItemToDelete(id) {
+            this.selectedIdToDelete = id;
+        },
+        confirmDelete() {
+            if (this.selectedIdToDelete !== null) {
+                this.deleteItem(this.selectedIdToDelete);
+                this.selectedIdToDelete = null;
             }
         },
     },
