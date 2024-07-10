@@ -413,7 +413,7 @@ export default {
                     this.errorMsg = eventsResponse.data.msg;
                 }
                 if (!eventsAppliedResponse.data.error) {
-                    this.eventsApplied = eventsAppliedResponse.data.events;
+                    this.eventsApplied = eventsAppliedResponse.data.EVENTS;
                     // console.log(this.eventsApplied);
                 } else {
                     this.error = true;
