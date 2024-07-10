@@ -401,8 +401,8 @@ export default {
         async fetchData() {
             try {
                 const [eventsResponse, eventsAppliedResponse] = await Promise.all([
-                    axios.get('http://localhost/cid101/g1/api/events.php'),
-                    axios.get('http://localhost/cid101/g1/api/eventsApplied.php')
+                    axios.get(`${import.meta.env.VITE_API_URL}/events.php`),
+                    axios.get(`${import.meta.env.VITE_API_URL}/eventsApplied.php`)
                 ]);
 
                 if (!eventsResponse.data.error) {
@@ -440,7 +440,7 @@ export default {
                     formData.append(key, this.newItem[key]);
                 }
 
-                const response = await axios.post('http://localhost/cid101/g1/api/evenAdd.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/evenAdd.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -484,7 +484,7 @@ export default {
                     formData.append('E_IMG', item.E_IMG);
                 }
 
-                const response = await axios.post('http://localhost/cid101/g1/api/evenUpdate.php', formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/evenUpdate.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -577,7 +577,7 @@ export default {
                 E_SIGN_UP: eventItem.E_SIGN_UP
             };
             try {
-                const response = await axios.post('http://localhost/cid101/g1/api/evenUpdatePeople.php', updateData,{
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/evenUpdatePeople.php`, updateData,{
                     headers: {
                 'Content-Type': 'application/json'
             }
