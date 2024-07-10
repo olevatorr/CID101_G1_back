@@ -141,8 +141,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal">取消</button>
-              <button @click="addItem" type="button" class="btn btn-primary" data-bs-toggle="modal">新增商品</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+              <button @click="addItem" type="button" class="btn btn-primary" data-bs-dismiss="modal">新增商品</button>
             </div>
           </div>
         </div>
@@ -190,7 +190,7 @@
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                   <div class="modal-header bg-dark">
-                    <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">新增產品</h1>
+                    <h1 class="modal-title fs-5 text-white" id="staticBackdropLabel">編輯產品</h1>
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal"
                       aria-label="Close"></button>
                   </div>
@@ -265,33 +265,33 @@
                         <div class="d-flex gap-4 mt-3">
                           <div class="mb-3">
                             <label for="formFile" class="form-label">主圖(白色底)</label>
-                            <div v-if="item?.mainImagePreview || item?.P_MAIN_IMG">
+                            <div v-if="item.mainImagePreview || item.P_MAIN_IMG">
                               <img
-                                :src="item?.mainImagePreview || `http://localhost/cid101/g1/upload/img/product/${item?.P_MAIN_IMG}`"
+                                :src="item.P_MAIN_IMGPreview || `http://localhost/cid101/g1/upload/img/product/${item.P_MAIN_IMG}`"
                                 class="img-fluid img-thumbnail" alt="主圖(白色底)">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'mainImageUpload-' + index"
-                              accept="image/*" @change="(e) => onMainImageChange(e, item)">
+                              accept="image/*" @change="(e) => onImageChange(e, item, 'P_MAIN_IMG')">
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖1</label>
-                            <div v-if="item?.image1Preview1 || item?.P_IMG1">
+                            <div v-if="item.image1Preview || item.P_IMG1">
                               <img
-                                :src="item?.image1Preview1 || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG1}`"
+                                :src="item.P_IMG1Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG1}`"
                                 class="img-fluid img-thumbnail" alt="副圖1">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image1Upload-' + index" accept="image/*"
-                              @change="(e) => onImage1Change(e, item)">
+                              @change="(e) => onImageChange(e, item, 'P_IMG1')">
                           </div>
                           <div class="mb-3">
                             <label for="formFile" class="form-label">副圖2</label>
-                            <div v-if="item?.image2Preview2 || item?.P_IMG2">
+                            <div v-if="item.image2Preview || item.P_IMG2">
                               <img
-                                :src="item?.image2Preview2 || `http://localhost/cid101/g1/upload/img/product/${item?.P_IMG2}`"
+                                :src="item.P_IMG2Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG2}`"
                                 class="img-fluid img-thumbnail" alt="副圖2">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image2Upload-' + index" accept="image/*"
-                              @change="(e) => onImage2Change(e, item)">
+                              @change="(e) => onImageChange(e, item, 'P_IMG2')">
                           </div>
                         </div>
                       </div>
@@ -308,7 +308,7 @@
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                     <button @click="updateItem(item)" type="button" class="btn btn-primary"
-                      data-bs-toggle="modal">確認修改</button>
+                      data-bs-dismiss="modal">確認修改</button>
                   </div>
                 </div>
               </div>
@@ -368,6 +368,7 @@
 </template>
 
 <script>
+
 import axios from 'axios';
 
 export default {
@@ -404,7 +405,15 @@ export default {
         PS_ID: '',
         newMainImage: null,
         newImg1: null,
-        newImg2: null
+        newImg2: null,
+
+        //測試圖片預覽
+        P_MAIN_IMG: null,
+        P_IMG1: null,
+        P_IMG2: null,
+        mainImagePreview: null,
+        image1Preview: null,
+        image2Preview: null
       },
       productCount: 0,
       error: false,
@@ -471,6 +480,8 @@ export default {
         for (const key in this.newItem) {
           if (key === 'P_HOT' || key === 'P_STATUS') {
             formData.append(key, this.newItem[key] ? '1' : '0');
+          } else if (key === 'P_MAIN_IMG' || key === 'P_IMG1' || key === 'P_IMG2') {
+            formData.append(key, this.newItem[key]);
           } else {
             formData.append(key, this.newItem[key]);
           }
@@ -515,7 +526,6 @@ export default {
         this.errorMsg = error.message;
       }
     },
-
     //刪除商品
     async deleteItem(id) {
       console.log();
@@ -532,32 +542,28 @@ export default {
         this.errorMsg = error.message;
       }
     },
-    
+    onImageChange(event, item, imageKey) {
+      const file = event.target.files[0];
+      if (file) {
+        item[imageKey] = file;
+        item[imageKey + 'Preview'] = URL.createObjectURL(file);
+      }
+    },
     // 修改商品
     async updateItem(item) {
       try {
         const formData = new FormData();
 
-        // 遍歷所有項目並添加到 formData
         for (const key in item) {
-          if (key === 'newMainImage' || key === 'newImg1' || key === 'newImg2') {
-            if (item[key]) {
+          if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
+            if (item[key] instanceof File) {
+              formData.append(key, item[key], item[key].name);
+            } else if (typeof item[key] === 'string' && item[key].trim() !== '') {
               formData.append(key, item[key]);
             }
-          } else if (key !== 'imagePreviewMain' && key !== 'imagePreview1' && key !== 'imagePreview2') {
+          } else if (!key.includes('Preview')) {
             formData.append(key, item[key]);
           }
-        }
-
-        // 如果沒有新圖片，也要傳遞原來的圖片
-        if (!item.newMainImage && item.P_MAIN_IMG) {
-          formData.append('P_MAIN_IMG', item.P_MAIN_IMG);
-        }
-        if (!item.newImg1 && item.P_IMG1) {
-          formData.append('P_IMG1', item.P_IMG1);
-        }
-        if (!item.newImg2 && item.P_IMG2) {
-          formData.append('P_IMG2', item.P_IMG2);
         }
 
         const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
@@ -568,12 +574,6 @@ export default {
 
         if (!response.data.error) {
           this.fetchData();
-          delete item.newMainImage;
-          delete item.imagePreviewMain;
-          delete item.newImg1;
-          delete item.imagePreview1;
-          delete item.newImg2;
-          delete item.imagePreview2;
           this.successMsg = "更新成功!";
         } else {
           this.error = true;
@@ -584,8 +584,27 @@ export default {
         this.errorMsg = error.message;
       }
     },
-
-
+    async generatePreview(item, key) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          item[`imagePreview${key.replace('P_', '')}`] = e.target.result;
+          resolve();
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(item[key]);
+      });
+    },
+  
+    // 新方法：處理圖片變更
+    handleImageChange(event, item, imageKey) {
+      const file = event.target.files[0];
+      if (file) {
+        item[imageKey] = file;
+        this.generatePreview(item, imageKey);
+      }
+    },
+  
     // 選擇圖片
     onEditFileChange(e, item) {
       const file = e.target.files[0];
@@ -595,83 +614,83 @@ export default {
       }
     },
     async updateItem(item) {
-    try {
+      try {
         const formData = new FormData();
-        
+  
         for (const key in item) {
-            // 如果是圖片字段，檢查圖片是否存在，存在則添加到 formData
-            if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
-                if (item[key]) {
-                    formData.append(key, item[key]);
-                }
-            } else {
-                formData.append(key, item[key]);
+          // 如果是圖片字段，檢查圖片是否存在，存在則添加到 formData
+          if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
+            if (item[key]) {
+              formData.append(key, item[key]);
             }
+          } else {
+            formData.append(key, item[key]);
+          }
         }
-
+  
         // 如果圖片字段沒有新圖片，但原來的圖片URL存在，也要傳遞原來的 URL
         if (!item.P_MAIN_IMG && item.P_MAIN_IMG_URL) {
-            formData.append('P_MAIN_IMG', item.P_MAIN_IMG_URL);
+          formData.append('P_MAIN_IMG', item.P_MAIN_IMG_URL);
         }
         if (!item.P_IMG1 && item.P_IMG1_URL) {
-            formData.append('P_IMG1', item.P_IMG1_URL);
+          formData.append('P_IMG1', item.P_IMG1_URL);
         }
         if (!item.P_IMG2 && item.P_IMG2_URL) {
-            formData.append('P_IMG2', item.P_IMG2_URL);
+          formData.append('P_IMG2', item.P_IMG2_URL);
         }
-
+  
         const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         });
-
+  
         if (!response.data.error) {
-            this.fetchData();
-            // 清理臨時數據
-            delete item.P_MAIN_IMG;
-            delete item.P_IMG1;
-            delete item.P_IMG2;
+          this.fetchData();
+          delete item.P_MAIN_IMG;
+          delete item.P_IMG1;
+          delete item.P_IMG2;
         } else {
-            this.error = true;
-            this.errorMsg = response.data.msg;
+          this.error = true;
+          this.errorMsg = response.data.msg;
         }
-    } catch (error) {
+      } catch (error) {
         this.error = true;
         this.errorMsg = error.message;
-    }
-},
-
-
+      }
+    },
+  
+  
     onEditFileChange(e, item) {
-      const file = e.target.files[0];
-      if (file) {
-        item.newImage = file;
-        item.imagePreview = URL.createObjectURL(file);
+        const file = e.target.files[0];
+        if (file) {
+          item.newImage = file;
+          item.imagePreview = URL.createObjectURL(file);
+        }
+      },
+      onMainImageChange(e) {
+        const file = e.target.files[0];
+        this.newItem.P_MAIN_IMG = file;
+        if (file) {
+          this.mainImagePreview = URL.createObjectURL(file);
+        }
+      },
+      onImage1Change(e) {
+        const file = e.target.files[0];
+        this.newItem.P_IMG1 = file;
+        if (file) {
+          this.imagePreview1 = URL.createObjectURL(file);
+        }
+      },
+      onImage2Change(e) {
+        const file = e.target.files[0];
+        this.newItem.P_IMG2 = file;
+        if (file) {
+          this.imagePreview2 = URL.createObjectURL(file);
+        }
       }
-    },
-    onMainImageChange(e) {
-      const file = e.target.files[0];
-      this.newItem.P_MAIN_IMG = file;
-      if (file) {
-        this.mainImagePreview = URL.createObjectURL(file);
-      }
-    },
-    onImage1Change(e) {
-      const file = e.target.files[0];
-      this.newItem.P_IMG1 = file;
-      if (file) {
-        this.imagePreview1 = URL.createObjectURL(file);
-      }
-    },
-    onImage2Change(e) {
-      const file = e.target.files[0];
-      this.newItem.P_IMG2 = file;
-      if (file) {
-        this.imagePreview2 = URL.createObjectURL(file);
-      }
-    }
-
   },
+
+  // 新方法：生成圖片預覽
 };
 </script>
