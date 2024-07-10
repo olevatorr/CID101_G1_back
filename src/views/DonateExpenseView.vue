@@ -6,14 +6,14 @@
                 <div class="col-12 col-md-6">
                     <div class="mb-3">
                         <label for="basic-url" class="form-label">產品類別</label>
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" v-model="newItem.EL_NAME">
                             <option selected>請選擇支出類別</option>
-                            <option value="1">海洋生態保育專案</option>
-                            <option value="2">相關研究計畫</option>
-                            <option value="3">淨灘活動</option>
-                            <option value="4">教育宣導活動</option>
-                            <option value="5">行政及人事開支</option>
-                            <option value="6">網站維運及更新</option>
+                            <option value="海洋生態保育專案">海洋生態保育專案</option>
+                            <option value="相關研究計畫">相關研究計畫</option>
+                            <option value="淨灘活動">淨灘活動</option>
+                            <option value="教育宣導活動">教育宣導活動</option>
+                            <option value="行政及人事開支">行政及人事開支</option>
+                            <option value="網站維運及更新">網站維運及更新</option>
                         </select>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                     <div class="mb-3">
                         <label for="basic-url" class="form-label">名目</label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="basic-url"
+                            <input type="text" v-model="newItem.EL_TITLE" class="form-control" id="basic-url"
                                 aria-describedby="basic-addon3 basic-addon4">
                         </div>
                     </div>
@@ -31,12 +31,12 @@
                         <label for="basic-url" class="form-label">捐款金額</label>
                         <div class="input-group mb-3">
                             <span class="input-group-text">NT$</span>
-                            <input type="text" class="form-control" aria-label="Dollar amount">
+                            <input type="text" class="form-control" aria-label="Dollar amount" v-model="newItem.EL_OUTLAY">
                         </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary justify-self-center">送出</button>
+            <button type="submit" class="btn btn-primary justify-self-center" @click.prevent="addItem">送出</button>
         </form>
         <div class="col-12">
             <p class="text-center fs-3">支出明細</p>
@@ -52,7 +52,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in EXPENDITURE" :key="item.id">
+                    <tr v-for="(item, index) in Expenditure" :key="item.id">
                         <td>{{ index + 1 }}</td>
                         <td>{{ item.EL_NAME }}</td>
                         <td>{{ item.EL_TITLE }}</td>
@@ -61,7 +61,7 @@
                         <td>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                data-bs-target="#staticBackdrop">
+                                data-bs-target="#staticBackdrop" @click="selectItemToDelete(item.EL_ID)">
                                 刪除
                             </button>
 
@@ -91,7 +91,7 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">返回</button>
-                                            <button type="button" class="btn btn-primary">確認刪除</button>
+                                            <button type="button" class="btn btn-primary" @click="confirmDelete" data-bs-dismiss="modal">確認刪除</button>
                                         </div>
                                     </div>
                                 </div>
@@ -129,17 +129,23 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            EXPENDITURE: [],
+            Expenditure: [],
             error: false,
-            errorMsg: ''
+            errorMsg: '',
+            newItem: {
+                EL_NAME: '',
+                EL_TITLE: '',
+                EL_OUTLAY: '',
+            },
+            selectedIdToDelete: null,
         }
     },
     methods: {
-        async fetchData1() {
+        async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/EXPENDITURE.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Expenditure.php`);
                 if (!response.data.error) {
-                    this.EXPENDITURE = response.data;
+                    this.Expenditure = response.data;
                 } else {
                     this.error = true;
                     this.errorMsg = response.data.msg;
@@ -149,10 +155,57 @@ export default {
                 this.error = true;
                 this.errorMsg = error.message;
             }
-        }
+        },
+        async deleteItem(id) {
+            console.log(id);
+            try {
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/ExpenditureDelete.php?EL_ID=${id}`);
+                if (!response.data.error) {
+                    this.fetchData();
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        async addItem() { 
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/ExpenditureAdd.php`, JSON.stringify(this.newItem), {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (!response.data.error) {
+                    this.newItem = {
+                        EL_NAME: '',
+                        EL_TITLE: '',
+                        EL_OUTLAY: '',
+                    };
+                    this.fetchData();
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        selectItemToDelete(id) {
+            this.selectedIdToDelete = id;
+        },
+        confirmDelete() {
+            if (this.selectedIdToDelete !== null) {
+                this.deleteItem(this.selectedIdToDelete);
+                this.selectedIdToDelete = null;
+            }
+        },
     },
     mounted() {
-        this.fetchData1();
+        this.fetchData();
     }
 };
 </script>

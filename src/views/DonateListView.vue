@@ -125,7 +125,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/Donate.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Donate.php`);
                 console.log(response.data);
                 if (!response.data.error) {
                     this.DONATE = response.data.data;
@@ -141,7 +141,7 @@ export default {
         },
         async fetchData1() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/EXPENDITURE.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Expenditure.php`);
                 if (!response.data.error) {
                     this.EXPENDITURE = response.data;
                 } else {

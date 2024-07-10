@@ -160,7 +160,7 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
+                            data-bs-target="#staticBackdrop" @click="selectItemToDelete(item.K_ID)">
                             刪除
                         </button>
                         <!-- Modal -->
@@ -182,7 +182,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">取消</button>
-                                        <button @click="deleteItem(item.K_ID)" type="button" class="btn btn-primary"
+                                        <button @click="confirmDelete" type="button" class="btn btn-primary"
                                             data-bs-toggle="modal">確認</button>
                                     </div>
                                 </div>
@@ -208,6 +208,7 @@ export default {
                 K_DATE: '',
                 K_URL: null
             },
+            selectedIdToDelete: null,
             knowledgeCount: 0,
             error: false,
             errorMsg: '',
@@ -298,7 +299,7 @@ export default {
         // },
         
         async deleteItem(id) {
-            console.log();
+            console.log(id);
             try {
                 const response = await axios.delete(`${import.meta.env.VITE_API_URL}/knowledgeDelete.php?K_ID=${id}`);
                 if (!response.data.error) {
@@ -375,6 +376,15 @@ export default {
             if (file) {
                 item.newImage = file;
                 item.imagePreview = URL.createObjectURL(file);
+            }
+        },
+        selectItemToDelete(id) {
+            this.selectedIdToDelete = id;
+        },
+        confirmDelete() {
+            if (this.selectedIdToDelete !== null) {
+                this.deleteItem(this.selectedIdToDelete);
+                this.selectedIdToDelete = null;
             }
         },
     },
