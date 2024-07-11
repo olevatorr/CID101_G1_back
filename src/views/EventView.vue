@@ -318,8 +318,7 @@
                                                     <div class="mb-3">
                                                         <label for="formFile" class="form-label">活動主圖</label>
                                                         <div v-if="item.imagePreview || item.E_IMG">
-                                                            <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/events/${item.E_IMG}`"
-                                                                class="img-fluid img-thumbnail" alt="知識圖片">
+                                                            <img :src="getImageSrc(item)" class="img-fluid img-thumbnail" alt="知識圖片">
                                                         </div>
                                                         <input class="form-control" type="file" :id="'formFile' + index"
                                                             accept="image/*" @change="(e) => onEditFileChange(e, item)">
@@ -504,23 +503,6 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-        // async deleteItem(id) {
-        //     console.log(id);
-        //     try {
-        //         const response = await axios.get('http://localhost/cid101/g1/api/evenDelete.php', {
-        //             params: { E_ID: id }
-        //         }); console.log(id);
-        //         if (!response.data.error) {
-        //             this.fetchData();
-        //         } else {
-        //             this.error = true;
-        //             this.errorMsg = response.data.msg;
-        //         }
-        //     } catch (error) {
-        //         this.error = true;
-        //         this.errorMsg = error.message;
-        //     }
-        // },
         onFileChange(e) {
             const file = e.target.files[0];
             this.newItem.E_IMG = file;
@@ -587,6 +569,12 @@ export default {
                 console.error('更新失敗：', error);
             }
             console.log('報名人數：', eventItem.E_SIGN_UP);
+        },
+        convertURL(url) {
+            return `${import.meta.env.VITE_IMG_URL}/events/${url}`
+        },
+        getImageSrc(item) {
+            return item.imagePreview || this.convertURL(item.E_IMG);
         }
 
     },

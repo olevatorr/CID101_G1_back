@@ -3,14 +3,14 @@
         <p class="text-center fs-2">檢舉留言審核</p>
         <div class="modal-body mt-3">
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <input @click="switchFilter" value="all" type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
                 <label class="btn btn-outline-dark" for="btnradio1">
                     全部
                 </label>
-                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
+                <input @click="switchFilter" value="nopass" type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
                 <label class="btn btn-outline-dark" for="btnradio3">
                     審核未通過
-                    <span class="badge text-bg-danger rounded-pill">14</span>
+                    <span class="badge text-bg-danger rounded-pill">{{ filternoPass }}</span>
                 </label>
             </div>
         </div>
@@ -28,53 +28,45 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr class="align-middle">
-                    <th scope="row">1</th>
-                    <td>陳世修</td>
-                    <td>羅嘉明</td>
-                    <td>仇恨言論或歧視</td>
+                <tr class="align-middle" v-for="item in filterReport" :key="item.ER_ID">
+                    <th scope="row">{{ item.ER_ID }}</th>
+                    <td>{{ getUserName(item.UR_ID) }}</td>
+                    <td>{{ getUserName(item.U_ID) }}</td>
+                    <td>{{ getReasonName(item.ER_ORIGIN) }}</td>
                     <td>
                         <div class="text-nowrap" style="width: 10rem; text-overflow: ellipsis; overflow:hidden">
-                            今天參加了海灘清潔活動,感觸良多。一大早,我們就來到了海邊,看到沙灘上散落著各種垃圾,塑膠袋、瓶罐、魚網、甚至是廢棄的家電,令人觸目驚心。
-                            在接下來的幾個小時裡,我們分工合作,撿拾垃圾。儘管天氣炎熱,但大家都很積極,不怕辛苦。看著一袋袋垃圾被清理乾淨,心裡很有成就感。
-                            這次活動讓我意識到,海洋污染問題的嚴重性。人類製造的垃圾正在破壞海洋生態,危及海洋生物的生存。作為地球的一分子,我們每個人都有責任愛護環境,從日常做起。
-                            以後我要努力減少塑膠製品的使用,使用環保袋和可重複利用的水杯。同時,我也要向身邊的人宣導環保理念,讓更多人意識到保護海洋的重要性。
-                            今天的淨灘活動雖然結束了,但保護環境的行動不會停止。讓我們一起為美麗的海洋盡一份力,給未來的generations留下一個乾淨的家園。
+                        {{ item.F_CONTENT }}
                         </div>
                     </td>
-                    <td>2024/4/2 14:32:41</td>
+                    <td>{{ item.ER_TIME }}</td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-                            <label class="form-check-label" for="flexSwitchCheckChecked">審核通過</label>
+                            <input class="form-check-input" type="checkbox" role="switch" :id="'flexSwitchCheckChecked'+item.ER_ID" @change="pass(item)" :checked="item.ES_STATUS === 1">
+                            <label class="form-check-label" :for="'flexSwitchCheckChecked'+item.ER_ID">審核通過</label>
                         </div>
                     </td>
                     <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#eventModify">
+                            :data-bs-target="'#eventModify'+index" @click="showReports(item)">
                             詳細留言
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="eventModify" data-bs-backdrop="static" data-bs-keyboard="false"
+                        <div class="modal fade" :id="'eventModify'+index" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">留言編號 #1</h1>
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">留言編號 #{{ index+1 }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <form>
                                         <div class="modal-body">
-                                            <img src="https://live.staticflickr.com/65535/49330720018_2aeac1ffc3_b.jpg"
-                                                class="img-thumbnail rounded mx-auto d-block" alt="...">
+                                            <img :src="convertURL(item.F_IMG)"
+                                                class="img-thumbnail rounded mx-auto d-block" alt="檢舉圖片">
                                             <div class="mt-3 lh-base">
-                                                今天參加了海灘清潔活動,感觸良多。一大早,我們就來到了海邊,看到沙灘上散落著各種垃圾,塑膠袋、瓶罐、魚網、甚至是廢棄的家電,令人觸目驚心。
-                                                在接下來的幾個小時裡,我們分工合作,撿拾垃圾。儘管天氣炎熱,但大家都很積極,不怕辛苦。看著一袋袋垃圾被清理乾淨,心裡很有成就感。
-                                                這次活動讓我意識到,海洋污染問題的嚴重性。人類製造的垃圾正在破壞海洋生態,危及海洋生物的生存。作為地球的一分子,我們每個人都有責任愛護環境,從日常做起。
-                                                以後我要努力減少塑膠製品的使用,使用環保袋和可重複利用的水杯。同時,我也要向身邊的人宣導環保理念,讓更多人意識到保護海洋的重要性。
-                                                今天的淨灘活動雖然結束了,但保護環境的行動不會停止。讓我們一起為美麗的海洋盡一份力,給未來的generations留下一個乾淨的家園。
+                                                {{ item.F_CONTENT }}
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -108,3 +100,134 @@
         </nav>
     </div>
 </template>
+
+<script>
+import axios from 'axios';
+export default {
+    data() {
+        return {
+            REPORTS: [],
+            reportStatus:'all',
+            selectReport:{}
+        }
+    },
+    mounted() {
+        this.fetchData();
+    },
+    methods: {
+        async fetchData() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/feedReport.php`);
+                if (!response.data.error) {
+                    this.REPORTS = response.data.events.sort((a,b) => b.ER_ID - a.ER_ID);
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        showReports(item){
+            this.selectReport=item;
+            console.log(this.selectReport);
+        },
+        convertURL(url) {
+            return `${import.meta.env.VITE_IMG_URL}/events/${url}`
+        },
+        async pass(item) {
+            // 切换 F_Status 的值
+            item.ES_STATUS = item.ES_STATUS === 0 ? 1 : 0;
+
+            // 构建更新数据对象
+            let updateData = {
+                ES_STATUS: item.ES_STATUS,
+                F_ID: item.F_ID,
+                ER_ID: item.ER_ID,
+                F_STATUS: item.F_Status === 0 ? 1 : 0
+            };
+            try {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/feedReportUpdate.php`, updateData, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                // console.log('更新成功：', response.data);
+                this.fetchData()
+                // console.log(updateData);
+            } catch (error) {
+                // console.error('更新失敗：', error);
+            }
+        },
+        getUserName(name) {
+            switch (name) {
+                case 1:
+                    return 'Alice Smith';
+                case 2:
+                    return 'Johnson';
+                case 3:
+                    return 'Charlie';
+                case 4:
+                    return 'Diana';
+                case 5:
+                    return 'Eve Adams';
+                case 6:
+                    return 'Smith';
+                case 7:
+                    return 'Williams';
+                case 8:
+                    return 'Brown';
+                case 9:
+                    return 'Davis';
+                case 10:
+                    return 'Miller';
+                default:
+                    return '未知';
+            }
+        },
+        getReasonName(reason) {
+            switch (reason) {
+                case 0:
+                    return '仇恨言論或歧視';
+                case 1:
+                    return '暴力或威脅';
+                case 2:
+                    return '騷擾或霸凌';
+                case 3:
+                    return '虛假信息或誤導信息';
+                case 4:
+                    return '色情或不當內容';
+                case 5:
+                    return '非法活動';
+                case 6:
+                    return '垃圾信息或廣告';
+                case 7:
+                    return '侵犯隱私';
+                default:
+                    return '未知';
+            }
+        },
+        switchFilter(e){
+            if(e.target.value === 'all'){
+                this.reportStatus = 'all';
+            } else {
+                this.reportStatus = e.target.value;
+            }
+        }
+    },
+    computed: {
+        filterReport() {
+            if (this.reportStatus === 'nopass') {
+                return this.REPORTS.filter(e => e.ES_STATUS === 0);
+            } else {
+                return this.REPORTS;
+            }
+        },
+        filternoPass() {
+            return this.REPORTS.filter(e =>e.ES_STATUS===0).length;
+        }
+    }
+
+}
+</script>
