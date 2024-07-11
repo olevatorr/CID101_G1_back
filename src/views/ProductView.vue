@@ -166,12 +166,12 @@
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" :id="'hotSwitch' + item.P_ID"
                 :checked="item.P_HOT === 1" @change="switchHot(item)">
-              <label class="form-check-label" for="flexSwitchCheckDefault">主打商品</label>
+              <label class="form-check-label" for="'hotSwitch' + item.P_ID">主打商品</label>
             </div>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" :id="'statusSwitch' + item.P_ID"
               :checked="item.P_STATUS === 1" @change="switchOnShelf(item)">
-              <label class="form-check-label" for="flexSwitchCheckChecked">上架</label>
+              <label class="form-check-label" for="'statusSwitch' + item.P_ID">上架</label>
             </div>
           </td>
           <!-- 商品修改 -->
@@ -653,25 +653,25 @@ export default {
         } else {
             alert(response.data.msg || '修改失敗')
         }
-    } catch (error){
-        alert('修改失敗', error.message)
-    }
+        } catch (error){
+            alert('修改失敗', error.message)
+        }
     },
     async switchOnShelf(item){
       try {
-        const prod ={
-        P_HOT: item.P_STATUS === 1? 0 : 1,
+        const prodOnShelf ={
+        P_STATUS: item.P_STATUS === 1? 0 : 1,
         P_ID: item.P_ID
         }
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/prodOnShelfUpdate.php`,prod)
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/prodOnShelfUpdate.php`,prodOnShelf)
         if(!response.data.error){
             this.fetchData()
         } else {
             alert(response.data.msg || '修改失敗')
         }
-    } catch (error){
-        alert('修改失敗', error.message)
-    }
+      } catch (error){
+          alert('修改失敗', error.message)
+      }
     },
   },
 
