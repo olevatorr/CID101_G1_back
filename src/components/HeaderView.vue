@@ -82,14 +82,12 @@
 </template>
 <script setup>
 import { useAuthStore } from '@/stores/auth'
-import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { onMounted} from 'vue'
 
 
 const authStore = useAuthStore()
 const { loggedIn, adminName, adminLevel } = storeToRefs(authStore)
-const router = useRouter()
 
 
 onMounted(()=>{
@@ -98,6 +96,5 @@ onMounted(()=>{
 
 const navLogout = () => {
     authStore.logout()
-    router.push('/')
 }
 </script>

@@ -54,8 +54,8 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr class="align-middle" v-for="(item, index) in dataList" :key="index">
-                    <th scope="row">{{ index + 1 }}</th>
+                <tr class="align-middle" v-for="item in dataList" :key="item.DDL_ID">
+                    <th scope="row">{{ item.DDL_ID }}</th>
                     <td>{{ item.DDL_DATE }}</td>
                     <td>{{ item.DDL_DATA_DATE }}</td>
                     <td>

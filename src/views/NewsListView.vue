@@ -157,7 +157,7 @@
                                                     <!-- 預覽上傳圖片 -->
                                                     <label for="imageUpload" class="form-label">最新消息主圖</label>
                                                     <div v-if="item.imagePreview || item.N_IMG">
-                                                        <img :src="item.imagePreview || `http://localhost/cid101/g1/upload/img/news/${item.N_IMG}`"
+                                                        <img :src="item.imagePreview || formatImg(item.N_IMG)"
                                                             class="img-fluid img-thumbnail" alt="消息圖片">
                                                     </div>
                                                     <input class="form-control mt-2" type="file"
@@ -189,23 +189,6 @@
                 </tr>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link text-dark" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link text-dark" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
 </template>
 <script>
@@ -271,7 +254,7 @@ export default {
                 for (const key in this.newItem) {
                     formData.append(key, this.newItem[key]);
                 }
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`, formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/newsAdd.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -317,7 +300,7 @@ export default {
                 if (!item.newImage && item.N_IMG) {
                     formData.append('N_IMG', item.N_IMG);
                 }
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`, formData, {
+                const response = await axios.post(`${import.meta.env.VITE_API_URL}/newsUpdate.php`, formData, {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
@@ -350,7 +333,9 @@ export default {
                 item.imagePreview = URL.createObjectURL(file);
             }
         },
-
+        formatImg(url){
+            return `${import.meta.env.VITE_IMG_URL}/news/${url}`
+        }
     }
 }
 </script>

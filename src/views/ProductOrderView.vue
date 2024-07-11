@@ -180,7 +180,6 @@
 
 <script>
 import axios from 'axios';
-import { computed } from 'vue';
 
 export default {
     data() {
@@ -208,7 +207,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/productOrder.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/productOrder.php`);
                 if (!response.data.error) {
                     // 以PO_ID為基礎合併訂單和訂單明細
                     const orders = response.data.productOrder.reduce((acc, curr) => {
