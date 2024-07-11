@@ -234,10 +234,8 @@ export default {
                 if (response.data.error) {
                     throw new Error(response.data.message);
                     }
-                    console.log('Member status updated successfully:', response.data.message);
                 } catch (error) {
                     item.U_STATUS = !item.U_STATUS; // 如果發生錯誤，恢復更改前狀態
-                    console.error('Error updating member status:', error.message);
                 }
         },
         // 搜索會員
