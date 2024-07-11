@@ -267,7 +267,7 @@
                             <label for="formFile" class="form-label">主圖(白色底)</label>
                             <div v-if="item.mainImagePreview || item.P_MAIN_IMG">
                               <img
-                                :src="item.P_MAIN_IMGPreview || `http://localhost/cid101/g1/upload/img/product/${item.P_MAIN_IMG}`"
+                                :src="item.P_MAIN_IMGPreview || formatImg(item.P_MAIN_IMG)"
                                 class="img-fluid img-thumbnail" alt="主圖(白色底)">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'mainImageUpload-' + index"
@@ -277,7 +277,7 @@
                             <label for="formFile" class="form-label">副圖1</label>
                             <div v-if="item.image1Preview || item.P_IMG1">
                               <img
-                                :src="item.P_IMG1Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG1}`"
+                                :src="item.P_IMG1Preview || formatImg(item.P_IMG1)"
                                 class="img-fluid img-thumbnail" alt="副圖1">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image1Upload-' + index" accept="image/*"
@@ -287,7 +287,7 @@
                             <label for="formFile" class="form-label">副圖2</label>
                             <div v-if="item.image2Preview || item.P_IMG2">
                               <img
-                                :src="item.P_IMG2Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG2}`"
+                                :src="item.P_IMG2Preview || formatImg(item.P_IMG2)"
                                 class="img-fluid img-thumbnail" alt="副圖2">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image2Upload-' + index" accept="image/*"
@@ -454,7 +454,7 @@ export default {
     // 取得資料
     async fetchData() {
       try {
-        const response = await axios.get('http://localhost/cid101/g1/api/product.php');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/product.php`);
         if (!response.data.error) {
           this.product = response.data.product;
           this.productCount = response.data.productCount;
@@ -486,8 +486,7 @@ export default {
             formData.append(key, this.newItem[key]);
           }
         }
-
-        const response = await axios.post('http://localhost/cid101/g1/api/productAdd.php', formData, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/productAdd.php`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -530,7 +529,7 @@ export default {
     async deleteItem(id) {
       console.log();
       try {
-        const response = await axios.delete(`http://localhost/cid101/g1/api/productDelete.php?P_ID=${id}`);
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/productDelete.php?P_ID=${id}`);
         if (!response.data.error) {
           this.fetchData();
         } else {
@@ -565,8 +564,7 @@ export default {
             formData.append(key, item[key]);
           }
         }
-
-        const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/productUpdate.php`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
@@ -595,7 +593,7 @@ export default {
         reader.readAsDataURL(item[key]);
       });
     },
-  
+
     // 新方法：處理圖片變更
     handleImageChange(event, item, imageKey) {
       const file = event.target.files[0];
@@ -604,7 +602,7 @@ export default {
         this.generatePreview(item, imageKey);
       }
     },
-  
+
     // 選擇圖片
     onEditFileChange(e, item) {
       const file = e.target.files[0];
@@ -616,7 +614,7 @@ export default {
     async updateItem(item) {
       try {
         const formData = new FormData();
-  
+
         for (const key in item) {
           // 如果是圖片字段，檢查圖片是否存在，存在則添加到 formData
           if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
@@ -627,7 +625,7 @@ export default {
             formData.append(key, item[key]);
           }
         }
-  
+
         // 如果圖片字段沒有新圖片，但原來的圖片URL存在，也要傳遞原來的 URL
         if (!item.P_MAIN_IMG && item.P_MAIN_IMG_URL) {
           formData.append('P_MAIN_IMG', item.P_MAIN_IMG_URL);
@@ -638,13 +636,13 @@ export default {
         if (!item.P_IMG2 && item.P_IMG2_URL) {
           formData.append('P_IMG2', item.P_IMG2_URL);
         }
-  
-        const response = await axios.post('http://localhost/cid101/g1/api/productUpdate.php', formData, {
+
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/productUpdate.php`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
           }
         });
-  
+
         if (!response.data.error) {
           this.fetchData();
           delete item.P_MAIN_IMG;
@@ -659,36 +657,39 @@ export default {
         this.errorMsg = error.message;
       }
     },
-  
-  
+
+
     onEditFileChange(e, item) {
-        const file = e.target.files[0];
-        if (file) {
-          item.newImage = file;
-          item.imagePreview = URL.createObjectURL(file);
-        }
-      },
-      onMainImageChange(e) {
-        const file = e.target.files[0];
-        this.newItem.P_MAIN_IMG = file;
-        if (file) {
-          this.mainImagePreview = URL.createObjectURL(file);
-        }
-      },
-      onImage1Change(e) {
-        const file = e.target.files[0];
-        this.newItem.P_IMG1 = file;
-        if (file) {
-          this.imagePreview1 = URL.createObjectURL(file);
-        }
-      },
-      onImage2Change(e) {
-        const file = e.target.files[0];
-        this.newItem.P_IMG2 = file;
-        if (file) {
-          this.imagePreview2 = URL.createObjectURL(file);
-        }
+      const file = e.target.files[0];
+      if (file) {
+        item.newImage = file;
+        item.imagePreview = URL.createObjectURL(file);
       }
+    },
+    onMainImageChange(e) {
+      const file = e.target.files[0];
+      this.newItem.P_MAIN_IMG = file;
+      if (file) {
+        this.mainImagePreview = URL.createObjectURL(file);
+      }
+    },
+    onImage1Change(e) {
+      const file = e.target.files[0];
+      this.newItem.P_IMG1 = file;
+      if (file) {
+        this.imagePreview1 = URL.createObjectURL(file);
+      }
+    },
+    onImage2Change(e) {
+      const file = e.target.files[0];
+      this.newItem.P_IMG2 = file;
+      if (file) {
+        this.imagePreview2 = URL.createObjectURL(file);
+      }
+    },
+    formatImg(URL) {
+      return `${import.meta.env.VITE_IMG_URL}/product/${URL}`
+    }
   },
 
   // 新方法：生成圖片預覽

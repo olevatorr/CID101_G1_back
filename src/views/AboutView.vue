@@ -164,7 +164,7 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const response = await axios.get('http://localhost/cid101/g1/api/inquiry.php');
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/inquiry.php`);
                 if (!response.data.error) {
                     this.inquiry = response.data.inquiry;
                 } else {
