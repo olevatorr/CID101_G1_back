@@ -7,7 +7,7 @@
             <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                 <!-- 用 template 渲染時不會直接在 DOM 中生成額外的元素，它本身就像是一個隱藏的容器，只用來包裝內部的元素。 -->
                 <template v-for="category in categories" :key="category.id">
-                    <!-- :checked，跟 input 綁定，以以 :id="'btnradio' + category.id" -->
+                    <!-- :checked，跟 input 綁定，以 :id="'btnradio' + category.id" -->
                     <!-- :id="'btnradio' + category.id"，動態生成每個單選按鈕的 id 屬性，確保每個按鈕有唯一的識別符。 -->
                     <input type="radio" class="btn-check" name="btnradio" :id="'btnradio' + category.id"
                         autocomplete="off" :checked="selectedCategory === category.id"
@@ -166,12 +166,12 @@
                                                 </div>
                                             </div>
                                             <div class="col-12">
-                                                <label for="basic-url" class="form-label mt-3">產品詳細描述</label>
+                                                <label for="basic-url" class="form-label mt-3">消息詳細描述</label>
                                                 <div class="form-floating">
                                                     <textarea v-model="item.N_CONTENT" class="form-control"
                                                         placeholder="Leave a comment here" id="floatingTextarea2"
                                                         style="height: 300px"></textarea>
-                                                    <label for="floatingTextarea2">出現於商品主要描述區域</label>
+                                                    <label for="floatingTextarea2">消息主要描述區域</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -333,7 +333,7 @@ export default {
                 item.imagePreview = URL.createObjectURL(file);
             }
         },
-        formatImg(url){
+        formatImg(url) {
             return `${import.meta.env.VITE_IMG_URL}/news/${url}`
         }
     }
