@@ -66,10 +66,7 @@
                     <label for="basic-url" class="form-label">產品類別</label>
                     <select v-model="newItem.PS_ID" class="form-select" aria-label="Default select example">
                       <option value="" disabled selected>請選擇類別</option>
-                      <option value="1">杯套類</option>
-                      <option value="2">上衣類</option>
-                      <option value="3">包包類</option>
-                      <option value="4">馬克杯</option>
+                      <option v-for="s in sort" :key="s.PS_ID" :value="s.PS_ID">{{ s.PS_NAME }}</option>
                     </select>
                   </div>
                 </div>
@@ -160,20 +157,20 @@
         </tr>
       </thead>
       <tbody class="table-group-divider">
-        <tr v-for="(item, index) in filteredProducts" :key="item.P_ID" class="align-middle">
-          <th scope="row">{{ index + 1 }}</th>
+        <tr v-for="item in filteredProducts" :key="item.P_ID" class="align-middle">
+          <th scope="row">{{ item.P_ID }}</th>
           <td>{{ item.P_NAME }}</td>
           <td>{{ item.P_PRICE }}</td>
           <!-- 商品狀態 -->
           <td>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" :id="'hotSwitch' + item.P_ID"
-                v-model="item.P_HOT">
+                :checked="item.P_HOT === 1" @change="switchHot(item)">
               <label class="form-check-label" for="flexSwitchCheckDefault">主打商品</label>
             </div>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" :id="'statusSwitch' + item.P_ID"
-                v-model="item.P_STATUS">
+              :checked="item.P_STATUS === 1" @change="switchOnShelf(item)">
               <label class="form-check-label" for="flexSwitchCheckChecked">上架</label>
             </div>
           </td>
@@ -181,11 +178,11 @@
           <td>
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
-              :data-bs-target="'#staticBackdrop-revised2-' + index">
+              :data-bs-target="'#staticBackdrop-revised2-' + item.P_ID">
               編輯
             </button>
             <!-- Modal -->
-            <div class="modal fade" :id="'staticBackdrop-revised2-' + index" data-bs-backdrop="static"
+            <div class="modal fade" :id="'staticBackdrop-revised2-' + item.P_ID" data-bs-backdrop="static"
               data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -219,10 +216,7 @@
                           <label for="basic-url" class="form-label">產品類別</label>
                           <select class="form-select" aria-label="Default select example">
                             <option selected>請選擇類別</option>
-                            <option value="1">杯套類</option>
-                            <option value="2">上衣類</option>
-                            <option value="3">包包類</option>
-                            <option value="4">馬克杯</option>
+                            <option v-for="s in sort" :key="s.PS_ID" :value="s.PS_ID" :selected="item.PS_ID === s.PS_ID">{{ s.PS_NAME }}</option>
                           </select>
                         </div>
                       </div>
@@ -406,11 +400,6 @@ export default {
         newMainImage: null,
         newImg1: null,
         newImg2: null,
-
-        //測試圖片預覽
-        P_MAIN_IMG: null,
-        P_IMG1: null,
-        P_IMG2: null,
         mainImagePreview: null,
         image1Preview: null,
         image2Preview: null
@@ -420,10 +409,12 @@ export default {
       errorMsg: '',
       edit: true,
       filter: 'all',
+      sort: '',
     };
   },
   mounted() {
     this.fetchData();
+    this.fetchSort()
   },
   computed: {
     filteredProducts() {
@@ -457,7 +448,23 @@ export default {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/product.php`);
         if (!response.data.error) {
           this.product = response.data.product;
+          console.log(this.product);
           this.productCount = response.data.productCount;
+        } else {
+          this.error = true;
+          this.errorMsg = response.data.msg;
+        }
+      } catch (error) {
+        this.error = true;
+        this.errorMsg = error.message;
+      }
+    },
+    // 取得分類
+    async fetchSort(){
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/prodSort.php`);
+        if (!response.data.error) {
+          this.sort = response.data.ps;
         } else {
           this.error = true;
           this.errorMsg = response.data.msg;
@@ -474,7 +481,6 @@ export default {
           alert('請輸入產品名稱');
           return;
         }
-        FormData
         const formData = new FormData();
         console.log(formData);
         for (const key in this.newItem) {
@@ -603,61 +609,6 @@ export default {
       }
     },
 
-    // 選擇圖片
-    onEditFileChange(e, item) {
-      const file = e.target.files[0];
-      if (file) {
-        item.newImage = file;
-        item.imagePreview = URL.createObjectURL(file);
-      }
-    },
-    async updateItem(item) {
-      try {
-        const formData = new FormData();
-
-        for (const key in item) {
-          // 如果是圖片字段，檢查圖片是否存在，存在則添加到 formData
-          if (['P_MAIN_IMG', 'P_IMG1', 'P_IMG2'].includes(key)) {
-            if (item[key]) {
-              formData.append(key, item[key]);
-            }
-          } else {
-            formData.append(key, item[key]);
-          }
-        }
-
-        // 如果圖片字段沒有新圖片，但原來的圖片URL存在，也要傳遞原來的 URL
-        if (!item.P_MAIN_IMG && item.P_MAIN_IMG_URL) {
-          formData.append('P_MAIN_IMG', item.P_MAIN_IMG_URL);
-        }
-        if (!item.P_IMG1 && item.P_IMG1_URL) {
-          formData.append('P_IMG1', item.P_IMG1_URL);
-        }
-        if (!item.P_IMG2 && item.P_IMG2_URL) {
-          formData.append('P_IMG2', item.P_IMG2_URL);
-        }
-
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/productUpdate.php`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-
-        if (!response.data.error) {
-          this.fetchData();
-          delete item.P_MAIN_IMG;
-          delete item.P_IMG1;
-          delete item.P_IMG2;
-        } else {
-          this.error = true;
-          this.errorMsg = response.data.msg;
-        }
-      } catch (error) {
-        this.error = true;
-        this.errorMsg = error.message;
-      }
-    },
-
 
     onEditFileChange(e, item) {
       const file = e.target.files[0];
@@ -689,7 +640,39 @@ export default {
     },
     formatImg(URL) {
       return `${import.meta.env.VITE_IMG_URL}/product/${URL}`
+    },
+    async switchHot(item){
+      try {
+        const prod ={
+        P_HOT: item.P_HOT === 1? 0 : 1,
+        P_ID: item.P_ID
+        }
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/prodHotUpdate.php`,prod)
+        if(!response.data.error){
+            this.fetchData()
+        } else {
+            alert(response.data.msg || '修改失敗')
+        }
+    } catch (error){
+        alert('修改失敗', error.message)
     }
+    },
+    async switchOnShelf(item){
+      try {
+        const prod ={
+        P_HOT: item.P_STATUS === 1? 0 : 1,
+        P_ID: item.P_ID
+        }
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/prodOnShelfUpdate.php`,prod)
+        if(!response.data.error){
+            this.fetchData()
+        } else {
+            alert(response.data.msg || '修改失敗')
+        }
+    } catch (error){
+        alert('修改失敗', error.message)
+    }
+    },
   },
 
   // 新方法：生成圖片預覽
