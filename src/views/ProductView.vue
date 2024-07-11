@@ -267,7 +267,7 @@
                             <label for="formFile" class="form-label">主圖(白色底)</label>
                             <div v-if="item.mainImagePreview || item.P_MAIN_IMG">
                               <img
-                                :src="item.P_MAIN_IMGPreview || `http://localhost/cid101/g1/upload/img/product/${item.P_MAIN_IMG}`"
+                                :src="item.P_MAIN_IMGPreview || formatImg(item.P_MAIN_IMG)"
                                 class="img-fluid img-thumbnail" alt="主圖(白色底)">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'mainImageUpload-' + index"
@@ -277,7 +277,7 @@
                             <label for="formFile" class="form-label">副圖1</label>
                             <div v-if="item.image1Preview || item.P_IMG1">
                               <img
-                                :src="item.P_IMG1Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG1}`"
+                                :src="item.P_IMG1Preview || formatImg(item.P_IMG1)"
                                 class="img-fluid img-thumbnail" alt="副圖1">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image1Upload-' + index" accept="image/*"
@@ -287,7 +287,7 @@
                             <label for="formFile" class="form-label">副圖2</label>
                             <div v-if="item.image2Preview || item.P_IMG2">
                               <img
-                                :src="item.P_IMG2Preview || `http://localhost/cid101/g1/upload/img/product/${item.P_IMG2}`"
+                                :src="item.P_IMG2Preview || formatImg(item.P_IMG2)"
                                 class="img-fluid img-thumbnail" alt="副圖2">
                             </div>
                             <input class="form-control mt-2" type="file" :id="'image2Upload-' + index" accept="image/*"
@@ -686,6 +686,9 @@ export default {
       if (file) {
         this.imagePreview2 = URL.createObjectURL(file);
       }
+    },
+    formatImg(URL) {
+      return `${import.meta.env.VITE_IMG_URL}/product/${URL}`
     }
   },
 
