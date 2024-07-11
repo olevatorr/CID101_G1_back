@@ -29,8 +29,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in DONATE" :key="index">
-                            <th scope="row">{{ index + 1 }}</th>
+                        <!-- 使用 paginatedDONATE 來顯示當前頁的資料 -->
+                        <tr v-for="(item, index) in paginatedDONATE" :key="index">
+                            <th scope="row">{{ currentPage * itemsPerPage + index + 1 }}</th>
                             <td>{{ item.U_NAME }}</td>
                             <td>NT${{ item.DO_AMOUNT }}</td>
                             <td>{{ item.DO_DATE }}</td>
@@ -39,16 +40,16 @@
                 </table>
                 <nav aria-label="Page navigation example m-auto">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Previous">
+                        <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                            <a class="page-link text-dark" href="#" aria-label="Previous" @click.prevent="prevPage('donate')">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Next">
+                        <li class="page-item" v-for="page in totalDonatePages" :key="page" :class="{ active: currentPage === page - 1 }">
+                            <a class="page-link text-dark" href="#" @click.prevent="setPage(page - 1, 'donate')">{{ page }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPage === totalDonatePages - 1 }">
+                            <a class="page-link text-dark" href="#" aria-label="Next" @click.prevent="nextPage('donate')">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -68,8 +69,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item, index) in EXPENDITURE" :key="item.id">
-                            <td>{{ index + 1 }}</td>
+                        <!-- 使用 paginatedEXPENDITURE 來顯示當前頁的資料 -->
+                        <tr v-for="(item, index) in paginatedEXPENDITURE" :key="item.id">
+                            <td>{{ currentPageEx * itemsPerPage + index + 1 }}</td>
                             <td>{{ item.EL_NAME }}</td>
                             <td>{{ item.EL_TITLE }}</td>
                             <td>{{ item.EL_OUTLAY }}</td>
@@ -79,16 +81,16 @@
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Previous">
+                        <li class="page-item" :class="{ disabled: currentPageEx === 0 }">
+                            <a class="page-link text-dark" href="#" aria-label="Previous" @click.prevent="prevPage('expenditure')">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Next">
+                        <li class="page-item" v-for="page in totalExpenditurePages" :key="page" :class="{ active: currentPageEx === page - 1 }">
+                            <a class="page-link text-dark" href="#" @click.prevent="setPage(page - 1, 'expenditure')">{{ page }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPageEx === totalExpenditurePages - 1 }">
+                            <a class="page-link text-dark" href="#" aria-label="Next" @click.prevent="nextPage('expenditure')">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -105,10 +107,13 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            DONATE: [],
-            EXPENDITURE: [],
-            error: false,
-            errorMsg: ''
+            DONATE: [], // 捐款資料
+            EXPENDITURE: [], // 支出資料
+            error: false, // 是否有錯誤
+            errorMsg: '', // 錯誤訊息
+            currentPage: 0, // 當前頁碼
+            currentPageEx: 0, // 當前支出頁碼
+            itemsPerPage: 10 // 每頁顯示的項目數量
         }
     },
     computed: {
@@ -120,13 +125,32 @@ export default {
         },
         remainingAmount() {
             return this.totalAmount - this.totalOUTLAY;
+        },
+        paginatedDONATE() {
+            // 根據當前頁碼分割捐款資料
+            const start = this.currentPage * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.DONATE.slice(start, end);
+        },
+        paginatedEXPENDITURE() {
+            // 根據當前頁碼分割支出資料
+            const start = this.currentPageEx * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.EXPENDITURE.slice(start, end);
+        },
+        totalDonatePages() {
+            // 計算捐款資料的總頁數
+            return Math.ceil(this.DONATE.length / this.itemsPerPage);
+        },
+        totalExpenditurePages() {
+            // 計算支出資料的總頁數
+            return Math.ceil(this.EXPENDITURE.length / this.itemsPerPage);
         }
     },
     methods: {
         async fetchData() {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_API_URL}/Donate.php`);
-                console.log(response.data);
                 if (!response.data.error) {
                     this.DONATE = response.data.data;
                 } else {
@@ -134,7 +158,7 @@ export default {
                     this.errorMsg = response.data.msg;
                 }
             } catch (error) {
-                console.error(error); // 打印错误信息
+                console.error(error); // 打印錯誤信息
                 this.error = true;
                 this.errorMsg = error.message;
             }
@@ -152,6 +176,30 @@ export default {
                 console.error(error);
                 this.error = true;
                 this.errorMsg = error.message;
+            }
+        },
+        setPage(page, type) {
+            // 設置當前頁碼
+            if (type === 'donate') {
+                this.currentPage = page;
+            } else if (type === 'expenditure') {
+                this.currentPageEx = page;
+            }
+        },
+        prevPage(type) {
+            // 切換到上一頁
+            if (type === 'donate' && this.currentPage > 0) {
+                this.currentPage--;
+            } else if (type === 'expenditure' && this.currentPageEx > 0) {
+                this.currentPageEx--;
+            }
+        },
+        nextPage(type) {
+            // 切換到下一頁
+            if (type === 'donate' && this.currentPage < this.totalDonatePages - 1) {
+                this.currentPage++;
+            } else if (type === 'expenditure' && this.currentPageEx < this.totalExpenditurePages - 1) {
+                this.currentPageEx++;
             }
         }
     },

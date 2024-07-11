@@ -52,8 +52,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(item, index) in Expenditure" :key="item.id">
-                        <td>{{ index + 1 }}</td>
+                    <tr v-for="(item, index) in paginatedEXPENDITURE" :key="item.id">
+                        <td>{{ currentPage * itemsPerPage + index + 1 }}</td>
                         <td>{{ item.EL_NAME }}</td>
                         <td>{{ item.EL_TITLE }}</td>
                         <td>{{ item.EL_OUTLAY }}</td>
@@ -98,22 +98,20 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                    </tr>
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link text-dark" href="#" aria-label="Previous">
+                    <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                        <a class="page-link text-dark" href="#" aria-label="Previous" @click.prevent="prevPage">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link text-dark" href="#" aria-label="Next">
+                    <li class="page-item" v-for="page in totalExpenditurePages" :key="page" :class="{ active: currentPage === page - 1 }">
+                        <a class="page-link text-dark" href="#" @click.prevent="setPage(page - 1)">{{ page }}</a>
+                    </li>
+                    <li class="page-item" :class="{ disabled: currentPage === totalExpenditurePages - 1 }">
+                        <a class="page-link text-dark" href="#" aria-label="Next" @click.prevent="nextPage">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -129,15 +127,29 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            Expenditure: [],
-            error: false,
-            errorMsg: '',
+            Expenditure: [], // 支出資料
+            error: false, // 是否有錯誤
+            errorMsg: '', // 錯誤訊息
             newItem: {
                 EL_NAME: '',
                 EL_TITLE: '',
                 EL_OUTLAY: '',
             },
-            selectedIdToDelete: null,
+            selectedIdToDelete: null, // 被選擇刪除的支出ID
+            currentPage: 0, // 當前頁碼
+            itemsPerPage: 10 // 每頁顯示的項目數量
+        }
+    },
+    computed: {
+        paginatedEXPENDITURE() {
+            // 根據當前頁碼分割支出資料
+            const start = this.currentPage * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.Expenditure.slice(start, end);
+        },
+        totalExpenditurePages() {
+            // 計算支出資料的總頁數
+            return Math.ceil(this.Expenditure.length / this.itemsPerPage);
         }
     },
     methods: {
@@ -171,7 +183,7 @@ export default {
                 this.errorMsg = error.message;
             }
         },
-        async addItem() { 
+        async addItem() {
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_URL}/ExpenditureAdd.php`, JSON.stringify(this.newItem), {
                     headers: {
@@ -203,6 +215,19 @@ export default {
                 this.selectedIdToDelete = null;
             }
         },
+        setPage(page) {
+            this.currentPage = page;
+        },
+        prevPage() {
+            if (this.currentPage > 0) {
+                this.currentPage--;
+            }
+        },
+        nextPage() {
+            if (this.currentPage < this.totalExpenditurePages - 1) {
+                this.currentPage++;
+            }
+        }
     },
     mounted() {
         this.fetchData();
