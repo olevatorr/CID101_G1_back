@@ -161,7 +161,7 @@ export default {
             // 构建更新数据对象
             let updateData = {
                 F_ID: message.F_ID,
-                F_Status: message.F_STATUS
+                F_STATUS: message.F_STATUS
             };
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_URL}/feedbackUpdate.php`, updateData, {

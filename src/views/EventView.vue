@@ -144,8 +144,8 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-                <tr class="align-middle" v-for="(item, index) in filteredEvents " :key="item.E_ID">
-                    <th scope="row">{{ index + 1 }}</th>
+                <tr class="align-middle" v-for="item in filteredEvents " :key="item.E_ID">
+                    <th scope="row">{{ item.E_ID }}</th>
                     <td>{{ item.E_DATE }}</td>
                     <td>{{ item.E_DEADLINE }}</td>
                     <td>{{ getAreaName(item.E_AREA) }}</td>
@@ -175,18 +175,17 @@
                     <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            :data-bs-target="'#eventlist' + index" @click="filterList(item.E_ID)">
+                            :data-bs-target="'#eventlist' + item.E_ID" @click="filterList(item.E_ID)">
                             顯示名單
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" :id="'eventlist' + index" data-bs-backdrop="static"
+                        <div class="modal fade" :id="'eventlist' + item.E_ID" data-bs-backdrop="static"
                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-xl">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ index
-                                            + 1 }}</h1>
+                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ item.E_ID }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -244,8 +243,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ index
-                                            + 1 }}</h1>
+                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ item.E_ID }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
