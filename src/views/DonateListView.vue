@@ -4,17 +4,17 @@
         <div class="row">
             <div class="col-12 col-md-4">
                 <div class="text-center bg-dark rounded">
-                    <p class="fs-4 text-white m-2">總金額<span class="fs-2 ms-2 me-2">23,302,440</span>元</p>
+                    <p class="fs-4 text-white m-2">總金額<span class="fs-2 ms-2 me-2">{{ totalAmount }}</span>元</p>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="text-center bg-dark rounded">
-                    <p class="fs-4 text-white m-2">支出金額<span class="fs-2 ms-2 me-2">19,301,929</span>元</p>
+                    <p class="fs-4 text-white m-2">支出金額<span class="fs-2 ms-2 me-2">{{ totalOUTLAY }}</span>元</p>
                 </div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="text-center bg-dark rounded">
-                    <p class="fs-4 text-white m-2">剩餘金額<span class="fs-2 ms-2 me-2">4,000,511</span>元</p>
+                    <p class="fs-4 text-white m-2">剩餘金額<span class="fs-2 ms-2 me-2">{{ remainingAmount }}</span>元</p>
                 </div>
             </div>
             <div class="col-12">
@@ -29,62 +29,27 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>邱妤婕</td>
-                            <td>NT$ 3,000,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>黃政宏</td>
-                            <td>NT$ 5,000,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>陳昇志</td>
-                            <td>NT$ 1,000,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">4</th>
-                            <td>羅嘉明</td>
-                            <td>NT$ 2,400,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">5</th>
-                            <td>陳世修</td>
-                            <td>NT$ 4,300,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">6</th>
-                            <td>林芊芃</td>
-                            <td>NT$ 3,250,000</td>
-                            <td>2024/4/23 10:20:33</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">7</th>
-                            <td>彭淳華</td>
-                            <td>NT$ 5,250,000</td>
-                            <td>2024/4/23 10:20:33</td>
+                        <!-- 使用 paginatedDONATE 來顯示當前頁的資料 -->
+                        <tr v-for="(item, index) in paginatedDONATE" :key="index">
+                            <th scope="row">{{ currentPage * itemsPerPage + index + 1 }}</th>
+                            <td>{{ item.U_NAME }}</td>
+                            <td>NT${{ item.DO_AMOUNT }}</td>
+                            <td>{{ item.DO_DATE }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation example m-auto">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Previous">
+                        <li class="page-item" :class="{ disabled: currentPage === 0 }">
+                            <a class="page-link text-dark" href="#" aria-label="Previous" @click.prevent="prevPage('donate')">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Next">
+                        <li class="page-item" v-for="page in totalDonatePages" :key="page" :class="{ active: currentPage === page - 1 }">
+                            <a class="page-link text-dark" href="#" @click.prevent="setPage(page - 1, 'donate')">{{ page }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPage === totalDonatePages - 1 }">
+                            <a class="page-link text-dark" href="#" aria-label="Next" @click.prevent="nextPage('donate')">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -104,90 +69,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>海洋生態保育專案</td>
-                            <td>珊瑚礁復育計畫資助</td>
-                            <td>300,000</td>
-                            <td>2023/7/1 08:30:00</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>相關研究計畫</td>
-                            <td>海洋塑膠污染研究項目</td>
-                            <td>200,000</td>
-                            <td>2023/8/15 14:20:00</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>淨灘活動</td>
-                            <td>全國淨灘日活動經費</td>
-                            <td>180,000</td>
-                            <td>2023/9/20 10:00:00</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>教育宣導活動</td>
-                            <td>校園海洋環保講座系列</td>
-                            <td>150,000</td>
-                            <td>2023/10/5 15:45:00</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>行政及人事開支</td>
-                            <td>海洋保護組織運營費用</td>
-                            <td>150,000</td>
-                            <td>2023/11/10 11:30:00</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>網站維運及更新</td>
-                            <td>海洋環保資料庫建設</td>
-                            <td>20,000</td>
-                            <td>2023/12/1 09:15:00</td>
-                        </tr>
-                        <tr>
-                            <td>7</td>
-                            <td>海洋生態保育專案</td>
-                            <td>海龜保護計畫</td>
-                            <td>250,000</td>
-                            <td>2024/1/15 13:00:00</td>
-                        </tr>
-                        <tr>
-                            <td>8</td>
-                            <td>教育宣導活動</td>
-                            <td>海洋環保線上課程開發</td>
-                            <td>120,000</td>
-                            <td>2024/2/20 16:30:00</td>
-                        </tr>
-                        <tr>
-                            <td>9</td>
-                            <td>相關研究計畫</td>
-                            <td>永續漁業研究項目</td>
-                            <td>180,000</td>
-                            <td>2024/3/10 10:45:00</td>
-                        </tr>
-                        <tr>
-                            <td>10</td>
-                            <td>淨灘活動</td>
-                            <td>海岸污染監測與清理</td>
-                            <td>200,000</td>
-                            <td>2024/4/5 14:00:00</td>
+                        <!-- 使用 paginatedEXPENDITURE 來顯示當前頁的資料 -->
+                        <tr v-for="(item, index) in paginatedEXPENDITURE" :key="item.id">
+                            <td>{{ currentPageEx * itemsPerPage + index + 1 }}</td>
+                            <td>{{ item.EL_NAME }}</td>
+                            <td>{{ item.EL_TITLE }}</td>
+                            <td>{{ item.EL_OUTLAY }}</td>
+                            <td>{{ item.EL_DATE }}</td>
                         </tr>
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Previous">
+                        <li class="page-item" :class="{ disabled: currentPageEx === 0 }">
+                            <a class="page-link text-dark" href="#" aria-label="Previous" @click.prevent="prevPage('expenditure')">
                                 <span aria-hidden="true">&laquo;</span>
                             </a>
                         </li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link text-dark" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link text-dark" href="#" aria-label="Next">
+                        <li class="page-item" v-for="page in totalExpenditurePages" :key="page" :class="{ active: currentPageEx === page - 1 }">
+                            <a class="page-link text-dark" href="#" @click.prevent="setPage(page - 1, 'expenditure')">{{ page }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: currentPageEx === totalExpenditurePages - 1 }">
+                            <a class="page-link text-dark" href="#" aria-label="Next" @click.prevent="nextPage('expenditure')">
                                 <span aria-hidden="true">&raquo;</span>
                             </a>
                         </li>
@@ -197,3 +100,112 @@
         </div>
     </div>
 </template>
+
+<script>
+import axios from 'axios';
+
+export default {
+    data() {
+        return {
+            DONATE: [], // 捐款資料
+            EXPENDITURE: [], // 支出資料
+            error: false, // 是否有錯誤
+            errorMsg: '', // 錯誤訊息
+            currentPage: 0, // 當前頁碼
+            currentPageEx: 0, // 當前支出頁碼
+            itemsPerPage: 10 // 每頁顯示的項目數量
+        }
+    },
+    computed: {
+        totalAmount() {
+            return this.DONATE.reduce((sum, item) => sum + parseFloat(item.DO_AMOUNT), 0);
+        },
+        totalOUTLAY() {
+            return this.EXPENDITURE.reduce((sum, item) => sum + parseFloat(item.EL_OUTLAY), 0);
+        },
+        remainingAmount() {
+            return this.totalAmount - this.totalOUTLAY;
+        },
+        paginatedDONATE() {
+            // 根據當前頁碼分割捐款資料
+            const start = this.currentPage * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.DONATE.slice(start, end);
+        },
+        paginatedEXPENDITURE() {
+            // 根據當前頁碼分割支出資料
+            const start = this.currentPageEx * this.itemsPerPage;
+            const end = start + this.itemsPerPage;
+            return this.EXPENDITURE.slice(start, end);
+        },
+        totalDonatePages() {
+            // 計算捐款資料的總頁數
+            return Math.ceil(this.DONATE.length / this.itemsPerPage);
+        },
+        totalExpenditurePages() {
+            // 計算支出資料的總頁數
+            return Math.ceil(this.EXPENDITURE.length / this.itemsPerPage);
+        }
+    },
+    methods: {
+        async fetchData() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Donate.php`);
+                if (!response.data.error) {
+                    this.DONATE = response.data.data;
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                console.error(error); // 打印錯誤信息
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        async fetchData1() {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/Expenditure.php`);
+                if (!response.data.error) {
+                    this.EXPENDITURE = response.data;
+                } else {
+                    this.error = true;
+                    this.errorMsg = response.data.msg;
+                }
+            } catch (error) {
+                console.error(error);
+                this.error = true;
+                this.errorMsg = error.message;
+            }
+        },
+        setPage(page, type) {
+            // 設置當前頁碼
+            if (type === 'donate') {
+                this.currentPage = page;
+            } else if (type === 'expenditure') {
+                this.currentPageEx = page;
+            }
+        },
+        prevPage(type) {
+            // 切換到上一頁
+            if (type === 'donate' && this.currentPage > 0) {
+                this.currentPage--;
+            } else if (type === 'expenditure' && this.currentPageEx > 0) {
+                this.currentPageEx--;
+            }
+        },
+        nextPage(type) {
+            // 切換到下一頁
+            if (type === 'donate' && this.currentPage < this.totalDonatePages - 1) {
+                this.currentPage++;
+            } else if (type === 'expenditure' && this.currentPageEx < this.totalExpenditurePages - 1) {
+                this.currentPageEx++;
+            }
+        }
+    },
+    mounted() {
+        this.fetchData();
+        this.fetchData1();
+    }
+};
+</script>

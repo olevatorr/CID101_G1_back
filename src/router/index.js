@@ -5,6 +5,11 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/home',
       name: 'home',
       component: () => import('../views/HomeView.vue')
     },
@@ -70,6 +75,16 @@ const router = createRouter({
       path: '/Debris',
       name: 'Debris',
       component: () => import('../views/DebrisView.vue')
+    },
+    {
+      path: '/About',
+      name: 'About',
+      component: () => import('../views/AboutView.vue')
+    },
+    {
+      path: '/Robot',
+      name: 'Robot',
+      component: () => import('../views/RobotView.vue')
     },
   ]
 })
