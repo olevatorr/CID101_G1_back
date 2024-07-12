@@ -57,7 +57,7 @@
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">留言編號 #{{ index+1 }}</h1>
+                                        <h1 class="modal-title fs-5" id="staticBackdropLabel">留言編號 #{{ selectReport.ER_ID }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
@@ -131,7 +131,6 @@ export default {
         },
         showReports(item){
             this.selectReport=item;
-            console.log(this.selectReport);
         },
         convertURL(url) {
             return `${import.meta.env.VITE_IMG_URL}/events/${url}`
