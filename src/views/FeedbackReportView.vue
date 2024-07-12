@@ -48,11 +48,11 @@
                     <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            :data-bs-target="'#eventModify'+index" @click="showReports(item)">
+                            :data-bs-target="'#eventModify'+item.ER_ID" @click="showReports(item)">
                             詳細留言
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" :id="'eventModify'+index" data-bs-backdrop="static" data-bs-keyboard="false"
+                        <div class="modal fade" :id="'eventModify'+item.ER_ID" data-bs-backdrop="static" data-bs-keyboard="false"
                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
