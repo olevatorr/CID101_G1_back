@@ -81,6 +81,11 @@ const router = createRouter({
       name: 'About',
       component: () => import('../views/AboutView.vue')
     },
+    {
+      path: '/Robot',
+      name: 'Robot',
+      component: () => import('../views/RobotView.vue')
+    },
   ]
 })
 

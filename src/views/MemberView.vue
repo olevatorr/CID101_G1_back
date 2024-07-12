@@ -2,7 +2,7 @@
     <div class="container">
         <p class="text-center fs-2">會員列表</p>
         <div class="row">
-            <div class="modal-body col-4">
+            <div class="modal-body col-4 px-3">
                 <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
                     <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" :checked="filterStatus === 'all'"
                     @change="filterStatus = 'all'">

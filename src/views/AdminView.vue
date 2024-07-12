@@ -161,7 +161,7 @@ const showAdmin = computed(()=>{
               救救G1
             </button>
     <div class="row">
-      <div class="modal-body col-4">
+      <div class="modal-body col-4 px-3">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
           <input
             type="radio"

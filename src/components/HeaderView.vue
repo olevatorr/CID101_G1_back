@@ -1,100 +1,129 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-dark" v-if="loggedIn">
-        <div class="container-fluid">
-            <router-link to="/home">
-                <a class="navbar-brand" href="#">
-                    <img src="../../public/img/LOGO-white.png" alt="Bootstrap" width="40" height="40">
-                </a>
-            </router-link>
-            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav gap-3 me-auto">
-                    <li class="nav-item">
-                        <RouterLink to="/ProductOrder"><a class="nav-link text-white" aria-current="page" href="#">
-                                管理訂單</a></RouterLink>
-                    </li>
-                    <li class="nav-item">
-                        <RouterLink to="/Product"><a class="nav-link text-white" aria-current="page" href="#">
-                                商品管理</a></RouterLink>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            捐款
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><router-link to="/DonateList"><a class="dropdown-item" href="#">查看捐款明細</a></router-link>
-                            </li>
-                            <li v-if="adminLevel===1"><router-link to="/DonateExpense"><a class="dropdown-item"
-                                        href="#">捐款支出</a></router-link></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <RouterLink to="/Event"><a class="nav-link text-white" aria-current="page" href="#">
-                                活動管理</a></RouterLink>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-white dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                            role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            留言管理
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><router-link to="/Feedback"><a class="dropdown-item" href="#">留言列表</a></router-link>
-                            </li>
-                            <li><router-link to="/FeedbackReport"><a class="dropdown-item"
-                                        href="#">留言檢舉審核</a></router-link></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/NewsList"><a class="nav-link text-white" href="#">最新消息管理</a></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/Knowledge"><a class="nav-link text-white" href="#">知識管理</a></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/Member"><a class="nav-link text-white" href="#">會員管理</a></router-link>
-                    </li>
-                    <li class="nav-item" v-if="adminLevel===1">
-                        <router-link to="/Admin"><a class="nav-link text-white" href="#">管理員帳號管理</a></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/Debris"><a class="nav-link text-white" href="#">海廢知識管理</a></router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to="/About"><a class="nav-link text-white" href="#">關於我們管理</a></router-link>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <span class="nav-link text-white">{{ adminName }}</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white" href="#" @click="navLogout">登出</a>
-                    </li>
-                </ul>
-            </div>
+    <nav class="sidebar bg-dark d-flex flex-column" v-if="loggedIn">
+      <div class="sidebar-top">
+        <router-link to="/home" class="navbar-brand d-flex justify-content-center py-3">
+          <img src="../../public/img/LOGO-white.png" alt="Logo" width="40" height="40">
+        </router-link>
+      </div>
+      <ul class="nav flex-column flex-grow-1">
+        <li class="nav-item">
+          <RouterLink to="/ProductOrder" class="nav-link text-white">管理訂單</RouterLink>
+        </li>
+        <li class="nav-item">
+          <RouterLink to="/Product" class="nav-link text-white">商品管理</RouterLink>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link text-white dropdown-toggle" href="#" id="donateDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            捐款
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="donateDropdown">
+            <li><router-link to="/DonateList" class="dropdown-item">查看捐款明細</router-link></li>
+            <li v-if="adminLevel===1"><router-link to="/DonateExpense" class="dropdown-item">捐款支出</router-link></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <RouterLink to="/Event" class="nav-link text-white">活動管理</RouterLink>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link text-white dropdown-toggle" href="#" id="feedbackDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            留言管理
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="feedbackDropdown">
+            <li><router-link to="/Feedback" class="dropdown-item">留言列表</router-link></li>
+            <li><router-link to="/FeedbackReport" class="dropdown-item">留言檢舉審核</router-link></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <router-link to="/NewsList" class="nav-link text-white">最新消息管理</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/Knowledge" class="nav-link text-white">知識管理</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/Member" class="nav-link text-white">會員管理</router-link>
+        </li>
+        <li class="nav-item" v-if="adminLevel===1">
+          <router-link to="/Admin" class="nav-link text-white">管理員帳號管理</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/Debris" class="nav-link text-white">海廢知識管理</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/About" class="nav-link text-white">關於我們管理</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/Robot" class="nav-link text-white">客服機器人</router-link>
+        </li>
+      </ul>
+      <div class="sidebar-bottom mt-auto">
+        <div class="d-flex justify-content-between align-items-center px-3 py-2">
+          <span class="text-white">{{ adminName }}</span>
+          <a class="btn btn-outline-light btn-sm" href="#" @click="navLogout">登出</a>
         </div>
+      </div>
     </nav>
-</template>
-<script setup>
-import { useAuthStore } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
-import { onMounted} from 'vue'
-
-
-const authStore = useAuthStore()
-const { loggedIn, adminName, adminLevel } = storeToRefs(authStore)
-
-
-onMounted(()=>{
+  </template>
+  
+  <script setup>
+  import { useAuthStore } from '@/stores/auth'
+  import { storeToRefs } from 'pinia'
+  import { onMounted } from 'vue'
+  
+  const authStore = useAuthStore()
+  const { loggedIn, adminName, adminLevel } = storeToRefs(authStore)
+  
+  onMounted(() => {
     authStore.checkLoginStatus()
-})
-
-const navLogout = () => {
+  })
+  
+  const navLogout = () => {
     authStore.logout()
-}
-</script>
+  }
+  </script>
+  
+  <style scoped>
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+  
+  .sidebar-top {
+    min-height: 60px;
+  }
+  
+  .nav-link {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .dropdown-menu {
+    background-color: #343a40;
+  }
+  
+  .dropdown-item {
+    color: white;
+    font-size: 0.85rem;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #495057;
+  }
+  
+  /* 為主內容區域添加左邊距 */
+  :global(#app) {
+    padding-left: 250px;
+  }
+  
+  /* 調整導航項的間距 */
+  .nav-item {
+    margin-bottom: 2px;
+  }
+  
+  /* 使用更緊湊的字體大小 */
+  .sidebar {
+    font-size: 0.9rem;
+  }
+  </style>
