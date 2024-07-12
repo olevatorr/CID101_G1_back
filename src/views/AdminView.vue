@@ -107,19 +107,19 @@ const suspensionCount = computed(()=> {
 })
 
 
-const help = async()=> {
-  try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/help.php`)
-    if (!response.data.error) {
-      alert('資料修改成功')
-      // console.log(adminList.value);
-    } else {
-      alert(response.data.msg || '資料獲取失敗')
-    }
-  } catch (error) {
-    alert('資料獲取失敗', error.message)
-  }
-}
+// const help = async()=> {
+//   try {
+//     const response = await axios.post(`${import.meta.env.VITE_API_URL}/help.php`)
+//     if (!response.data.error) {
+//       alert('資料修改成功')
+//       // console.log(adminList.value);
+//     } else {
+//       alert(response.data.msg || '資料獲取失敗')
+//     }
+//   } catch (error) {
+//     alert('資料獲取失敗', error.message)
+//   }
+// }
 
 const filterAdmin = (num) => {
     filterBtn.value = num
@@ -153,13 +153,13 @@ const showAdmin = computed(()=>{
 <template>
   <div class="container">
     <p class="text-center fs-2">管理員列表</p>
-    <button
+    <!-- <button
               type="button"
               class="btn btn-primary ms-2"
               @click="help"
             >
               救救G1
-            </button>
+            </button> -->
     <div class="row">
       <div class="modal-body col-4 px-3">
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
