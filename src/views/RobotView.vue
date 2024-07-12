@@ -19,6 +19,8 @@ const fetchRobotData = async () => {
     if (!response.data.error) {
       RobotList.value = response.data.ROBOT
       // console.log(adminList.value);
+      newRobot.value.R_QUESTION = ''
+      newRobot.value.R_ANSWER = ''
     } else {
       alert(response.data.msg || '資料獲取失敗')
     }
