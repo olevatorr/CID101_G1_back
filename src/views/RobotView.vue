@@ -46,7 +46,7 @@ const robotAdd = async () => {
 // 編輯
 const robotUpdate = async (robot) => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/RobotUpdate.php`, robot)
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/robotUpdate.php`, robot)
     if (!response.data.error) {
       fetchRobotData()
     } else {
@@ -60,7 +60,7 @@ const robotUpdate = async (robot) => {
 // 刪除
 const robotDelete = async (robotID) => {
   try {
-    const response = await axios.delete(`${import.meta.env.VITE_API_URL}/RobotDelete.php`, {
+    const response = await axios.delete(`${import.meta.env.VITE_API_URL}/robotDelete.php`, {
       params: { R_ID: robotID }
     })
     if (!response.data.error) {
