@@ -233,17 +233,17 @@
                     <td v-if="new Date() < new Date(item.E_DATE)">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                            :data-bs-target="'#eventModify' + index">
+                            :data-bs-target="'#eventModify' + item.E_ID">
                             活動修改
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" :id="'eventModify' + index" data-bs-backdrop="static"
+                        <div class="modal fade" :id="'eventModify' + item.E_ID" data-bs-backdrop="static"
                             data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                             aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + index">活動編號 #{{ item.E_ID }}</h1>
+                                        <h1 class="modal-title fs-5" :id="'staticBackdropLabel' + item.E_ID">活動編號 #{{ item.E_ID }}</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
