@@ -1,7 +1,7 @@
 <template>
     <nav class="sidebar bg-dark d-flex flex-column" v-if="loggedIn">
       <div class="sidebar-top">
-        <router-link to="/home" class="navbar-brand d-flex justify-content-center py-3">
+        <router-link to="/" class="navbar-brand d-flex justify-content-center py-3">
           <img src="../../public/img/LOGO-white.png" alt="Logo" width="40" height="40">
         </router-link>
       </div>

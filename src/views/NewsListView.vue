@@ -236,7 +236,7 @@ export default {
             try {
                 const response = await axios.post(`${import.meta.env.VITE_API_URL}/news.php`);
                 if (!response.data.error) {
-                    this.news = response.data.news;
+                    this.news = response.data.news.sort((a, b) => b.N_ID - a.N_ID);
                     // this.newsCount = response.data.newsCount;
                 } else {
                     this.error = true;

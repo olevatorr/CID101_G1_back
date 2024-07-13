@@ -230,7 +230,8 @@
                             </div>
                         </div>
                     </td>
-                    <td v-if="new Date() < new Date(item.E_DATE)">
+                    <!-- <td v-if="new Date() < new Date(item.E_DATE)"> -->
+                    <td>
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                             :data-bs-target="'#eventModify' + index">
