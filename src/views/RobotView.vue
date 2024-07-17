@@ -19,10 +19,6 @@ const fetchRobotData = async () => {
     if (!response.data.error) {
       RobotList.value = response.data.ROBOT
       // console.log(adminList.value);
-      newRobot.value.R_QUESTION = ''
-      newRobot.value.R_ANSWER = ''
-    } else {
-      alert(response.data.msg || '資料獲取失敗')
     }
   } catch (error) {
     alert('資料獲取失敗', error.message)
@@ -34,6 +30,8 @@ const robotAdd = async () => {
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/robotAdd.php`, newRobot)
     if (!response.data.error) {
       fetchRobotData()
+      newRobot.value.R_QUESTION = ''
+      newRobot.value.R_ANSWER = ''
     } else {
       alert(response.data.msg || '新增失敗')
     }
