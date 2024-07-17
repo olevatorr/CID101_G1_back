@@ -16,13 +16,13 @@ export const useAuthStore = defineStore('auth', {
             this.adminName = admin.AD_NAME
             this.adminLevel = admin.AD_LEVEL
             Cookies.set('loggedInAdmin', JSON.stringify(admin), { expires: 3 })
-            this.router.push('/home')
+            this.router.push('/')
         },
         logout() {
             this.loggedIn = false
             this.adminName = ''
             Cookies.remove('loggedInAdmin')
-            this.router.push('/')
+            this.router.push('/login')
         },
         checkLoginStatus() {
             const loggedInAdmin = Cookies.get('loggedInAdmin')
@@ -31,7 +31,7 @@ export const useAuthStore = defineStore('auth', {
                 this.login(admin)
             } else {
                 this.logout()
-                this.router.push('/')
+                this.router.push('/login')
             }
         }
     }
