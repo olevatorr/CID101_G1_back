@@ -70,16 +70,13 @@
   import { useAuthStore } from '@/stores/auth'
   import { storeToRefs } from 'pinia'
   import { onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 
-const router = useRouter()
   
   const authStore = useAuthStore()
   const { loggedIn, adminName, adminLevel } = storeToRefs(authStore)
   
   onMounted(() => {
     authStore.checkLoginStatus()
-    router.push('/')
   })
   
   const navLogout = () => {
